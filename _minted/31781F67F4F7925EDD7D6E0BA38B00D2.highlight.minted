@@ -1,0 +1,32 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{numpy}\PYG{+w}{ }\PYG{k}{as}\PYG{+w}{ }\PYG{n+nn}{np}
+
+\PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{f}\PYG{p}{(}\PYG{n}{x}\PYG{p}{):}
+    \PYG{k}{return} \PYG{n}{x}\PYG{o}{**}\PYG{l+m+mi}{3} \PYG{o}{+} \PYG{n}{x} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{1}
+
+\PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{iqi}\PYG{p}{(}\PYG{n}{f}\PYG{p}{,} \PYG{n}{x0}\PYG{p}{,} \PYG{n}{x1}\PYG{p}{,} \PYG{n}{x2}\PYG{p}{,} \PYG{n}{tol}\PYG{o}{=}\PYG{l+m+mf}{1e\PYGZhy{}8}\PYG{p}{,} \PYG{n}{max\PYGZus{}iter}\PYG{o}{=}\PYG{l+m+mi}{100}\PYG{p}{):}
+    \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n}{max\PYGZus{}iter}\PYG{p}{):}
+        \PYG{n}{y0}\PYG{p}{,} \PYG{n}{y1}\PYG{p}{,} \PYG{n}{y2} \PYG{o}{=} \PYG{n}{f}\PYG{p}{(}\PYG{n}{x0}\PYG{p}{),} \PYG{n}{f}\PYG{p}{(}\PYG{n}{x1}\PYG{p}{),} \PYG{n}{f}\PYG{p}{(}\PYG{n}{x2}\PYG{p}{)}
+
+        \PYG{c+c1}{\PYGZsh{} Check if we are close enough to zero}
+        \PYG{k}{if} \PYG{n+nb}{abs}\PYG{p}{(}\PYG{n}{y2}\PYG{p}{)} \PYG{o}{\PYGZlt{}} \PYG{n}{tol}\PYG{p}{:}
+            \PYG{k}{return} \PYG{n}{x2}
+
+        \PYG{c+c1}{\PYGZsh{} These are the terms for the Lagrange interpolation formula (but sideways!)}
+        \PYG{c+c1}{\PYGZsh{} We calculate the next x guess by plugging y=0 into the sideways parabola}
+        \PYG{n}{q} \PYG{o}{=} \PYG{n}{f}\PYG{p}{(}\PYG{n}{x0}\PYG{p}{)} \PYG{o}{/} \PYG{n}{f}\PYG{p}{(}\PYG{n}{x1}\PYG{p}{)}
+        \PYG{n}{r} \PYG{o}{=} \PYG{n}{f}\PYG{p}{(}\PYG{n}{x2}\PYG{p}{)} \PYG{o}{/} \PYG{n}{f}\PYG{p}{(}\PYG{n}{x1}\PYG{p}{)}
+        \PYG{n}{s} \PYG{o}{=} \PYG{n}{f}\PYG{p}{(}\PYG{n}{x2}\PYG{p}{)} \PYG{o}{/} \PYG{n}{f}\PYG{p}{(}\PYG{n}{x0}\PYG{p}{)}
+
+        \PYG{c+c1}{\PYGZsh{} Formula for the next guess (algebraically simplified)}
+        \PYG{n}{x3} \PYG{o}{=} \PYG{n}{x2} \PYG{o}{\PYGZhy{}} \PYG{p}{(}\PYG{n}{r} \PYG{o}{*} \PYG{p}{(}\PYG{n}{r} \PYG{o}{\PYGZhy{}} \PYG{n}{q}\PYG{p}{)} \PYG{o}{*} \PYG{p}{(}\PYG{n}{x2} \PYG{o}{\PYGZhy{}} \PYG{n}{x1}\PYG{p}{)} \PYG{o}{+} \PYG{n}{s} \PYG{o}{*} \PYG{p}{(}\PYG{l+m+mi}{1} \PYG{o}{\PYGZhy{}} \PYG{n}{r}\PYG{p}{)} \PYG{o}{*} \PYG{p}{(}\PYG{n}{x2} \PYG{o}{\PYGZhy{}} \PYG{n}{x0}\PYG{p}{))} \PYG{o}{/} \PYG{p}{((}\PYG{n}{q} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{1}\PYG{p}{)} \PYG{o}{*} \PYG{p}{(}\PYG{n}{r} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{1}\PYG{p}{)} \PYG{o}{*} \PYG{p}{(}\PYG{n}{s} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{1}\PYG{p}{))}
+
+        \PYG{c+c1}{\PYGZsh{} Shift everything over for the next loop}
+        \PYG{n}{x0}\PYG{p}{,} \PYG{n}{x1}\PYG{p}{,} \PYG{n}{x2} \PYG{o}{=} \PYG{n}{x1}\PYG{p}{,} \PYG{n}{x2}\PYG{p}{,} \PYG{n}{x3}
+
+    \PYG{k}{return} \PYG{n}{x2}
+
+\PYG{c+c1}{\PYGZsh{} Example usage}
+\PYG{n}{root} \PYG{o}{=} \PYG{n}{iqi}\PYG{p}{(}\PYG{n}{f}\PYG{p}{,} \PYG{l+m+mf}{0.1}\PYG{p}{,} \PYG{l+m+mf}{0.15}\PYG{p}{,} \PYG{l+m+mf}{0.25}\PYG{p}{)}
+\PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}Root is:\PYGZdq{}}\PYG{p}{,} \PYG{n}{root}\PYG{p}{)}
+\end{MintedVerbatim}

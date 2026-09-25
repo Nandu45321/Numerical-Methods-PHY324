@@ -1,0 +1,79 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{numpy}\PYG{+w}{ }\PYG{k}{as}\PYG{+w}{ }\PYG{n+nn}{np}
+\PYG{k+kn}{from}\PYG{+w}{ }\PYG{n+nn}{matplotlib}\PYG{+w}{ }\PYG{k+kn}{import} \PYG{n}{pyplot} \PYG{k}{as} \PYG{n}{plt}
+
+\PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{compute\PYGZus{}natural\PYGZus{}cubic\PYGZus{}spline}\PYG{p}{(}\PYG{n}{x}\PYG{p}{,} \PYG{n}{y}\PYG{p}{):}
+\PYG{+w}{    }\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+\PYG{l+s+sd}{    Computes coefficients for the piecewise cubic polynomials:}
+\PYG{l+s+sd}{    S\PYGZus{}i(x) = a\PYGZus{}i + b\PYGZus{}i*(x \PYGZhy{} x\PYGZus{}i) + c\PYGZus{}i*(x \PYGZhy{} x\PYGZus{}i)\PYGZca{}2 + d\PYGZus{}i*(x \PYGZhy{} x\PYGZus{}i)\PYGZca{}3}
+\PYG{l+s+sd}{    \PYGZdq{}\PYGZdq{}\PYGZdq{}}
+    \PYG{n}{x} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{(}\PYG{n}{x}\PYG{p}{,} \PYG{n}{dtype}\PYG{o}{=}\PYG{n+nb}{float}\PYG{p}{)}
+    \PYG{n}{y} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{(}\PYG{n}{y}\PYG{p}{,} \PYG{n}{dtype}\PYG{o}{=}\PYG{n+nb}{float}\PYG{p}{)}
+    \PYG{n}{n} \PYG{o}{=} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{x}\PYG{p}{)}
+
+    \PYG{c+c1}{\PYGZsh{} 1. Widths of the intervals}
+    \PYG{n}{h} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{diff}\PYG{p}{(}\PYG{n}{x}\PYG{p}{)}
+
+    \PYG{c+c1}{\PYGZsh{} 2. Set up the linear system system: A * c = B}
+    \PYG{n}{A} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{zeros}\PYG{p}{((}\PYG{n}{n}\PYG{p}{,} \PYG{n}{n}\PYG{p}{))}
+    \PYG{n}{B} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{zeros}\PYG{p}{(}\PYG{n}{n}\PYG{p}{)}
+
+    \PYG{c+c1}{\PYGZsh{} Natural boundary conditions: second derivative at endpoints is 0}
+    \PYG{n}{A}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{]} \PYG{o}{=} \PYG{l+m+mf}{1.0}
+    \PYG{n}{A}\PYG{p}{[}\PYG{n}{n}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{n}{n}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]} \PYG{o}{=} \PYG{l+m+mf}{1.0}
+
+    \PYG{c+c1}{\PYGZsh{} Fill the tridiagonal matrix based on continuity conditions}
+    \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{n}{n}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{):}
+        \PYG{n}{A}\PYG{p}{[}\PYG{n}{i}\PYG{p}{,} \PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]} \PYG{o}{=} \PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]}
+        \PYG{n}{A}\PYG{p}{[}\PYG{n}{i}\PYG{p}{,} \PYG{n}{i}\PYG{p}{]} \PYG{o}{=} \PYG{l+m+mi}{2} \PYG{o}{*} \PYG{p}{(}\PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]} \PYG{o}{+} \PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])}
+        \PYG{n}{A}\PYG{p}{[}\PYG{n}{i}\PYG{p}{,} \PYG{n}{i}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{]} \PYG{o}{=} \PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}
+        \PYG{n}{B}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{=} \PYG{l+m+mi}{3} \PYG{o}{*} \PYG{p}{((}\PYG{n}{y}\PYG{p}{[}\PYG{n}{i}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{y}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])} \PYG{o}{/} \PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{p}{(}\PYG{n}{y}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{y}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{])} \PYG{o}{/} \PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{])}
+
+    \PYG{c+c1}{\PYGZsh{} 3. Solve for \PYGZsq{}c\PYGZsq{} coefficients}
+    \PYG{n}{c} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{linalg}\PYG{o}{.}\PYG{n}{solve}\PYG{p}{(}\PYG{n}{A}\PYG{p}{,} \PYG{n}{B}\PYG{p}{)}
+
+    \PYG{c+c1}{\PYGZsh{} 4. Derive \PYGZsq{}a\PYGZsq{}, \PYGZsq{}b\PYGZsq{}, and \PYGZsq{}d\PYGZsq{} coefficients from \PYGZsq{}c\PYGZsq{}}
+    \PYG{n}{a} \PYG{o}{=} \PYG{n}{y}\PYG{p}{[:}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]}
+    \PYG{n}{b} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{zeros}\PYG{p}{(}\PYG{n}{n} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{1}\PYG{p}{)}
+    \PYG{n}{d} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{zeros}\PYG{p}{(}\PYG{n}{n} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{1}\PYG{p}{)}
+
+    \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n}{n} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{1}\PYG{p}{):}
+        \PYG{n}{b}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{=} \PYG{p}{(}\PYG{n}{y}\PYG{p}{[}\PYG{n}{i}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{y}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])} \PYG{o}{/} \PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{*} \PYG{p}{(}\PYG{l+m+mi}{2} \PYG{o}{*} \PYG{n}{c}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{+} \PYG{n}{c}\PYG{p}{[}\PYG{n}{i}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{])} \PYG{o}{/} \PYG{l+m+mi}{3}
+        \PYG{n}{d}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{=} \PYG{p}{(}\PYG{n}{c}\PYG{p}{[}\PYG{n}{i}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{c}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])} \PYG{o}{/} \PYG{p}{(}\PYG{l+m+mi}{3} \PYG{o}{*} \PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])}
+
+    \PYG{k}{return} \PYG{n}{a}\PYG{p}{,} \PYG{n}{b}\PYG{p}{,} \PYG{n}{c}\PYG{p}{[:}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{],} \PYG{n}{d}
+
+\PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{evaluate\PYGZus{}spline}\PYG{p}{(}\PYG{n}{x\PYGZus{}query}\PYG{p}{,} \PYG{n}{x\PYGZus{}data}\PYG{p}{,} \PYG{n}{a}\PYG{p}{,} \PYG{n}{b}\PYG{p}{,} \PYG{n}{c}\PYG{p}{,} \PYG{n}{d}\PYG{p}{):}
+\PYG{+w}{    }\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}Evaluates the spline at given query coordinates.\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+    \PYG{n}{y\PYGZus{}query} \PYG{o}{=} \PYG{p}{[]}
+    \PYG{k}{for} \PYG{n}{x\PYGZus{}val} \PYG{o+ow}{in} \PYG{n}{x\PYGZus{}query}\PYG{p}{:}
+        \PYG{c+c1}{\PYGZsh{} Find which interval the query point falls into}
+        \PYG{k}{if} \PYG{n}{x\PYGZus{}val} \PYG{o}{\PYGZlt{}=} \PYG{n}{x\PYGZus{}data}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]:}
+            \PYG{n}{i} \PYG{o}{=} \PYG{l+m+mi}{0}
+        \PYG{k}{elif} \PYG{n}{x\PYGZus{}val} \PYG{o}{\PYGZgt{}=} \PYG{n}{x\PYGZus{}data}\PYG{p}{[}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{2}\PYG{p}{]:}
+            \PYG{n}{i} \PYG{o}{=} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{x\PYGZus{}data}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{2}
+        \PYG{k}{else}\PYG{p}{:}
+            \PYG{c+c1}{\PYGZsh{} Binary search to locate interval index}
+            \PYG{n}{i} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{searchsorted}\PYG{p}{(}\PYG{n}{x\PYGZus{}data}\PYG{p}{,} \PYG{n}{x\PYGZus{}val}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{1}
+
+        \PYG{n}{dx} \PYG{o}{=} \PYG{n}{x\PYGZus{}val} \PYG{o}{\PYGZhy{}} \PYG{n}{x\PYGZus{}data}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}
+        \PYG{n}{val} \PYG{o}{=} \PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{+} \PYG{n}{b}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{*}\PYG{n}{dx} \PYG{o}{+} \PYG{n}{c}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{*}\PYG{p}{(}\PYG{n}{dx}\PYG{o}{**}\PYG{l+m+mi}{2}\PYG{p}{)} \PYG{o}{+} \PYG{n}{d}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{*}\PYG{p}{(}\PYG{n}{dx}\PYG{o}{**}\PYG{l+m+mi}{3}\PYG{p}{)}
+        \PYG{n}{y\PYGZus{}query}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{val}\PYG{p}{)}
+
+    \PYG{k}{return} \PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{(}\PYG{n}{y\PYGZus{}query}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZhy{}\PYGZhy{}\PYGZhy{} Example Execution \PYGZam{} Plotting \PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{n}{x\PYGZus{}points} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{([}\PYG{l+m+mf}{0.0}\PYG{p}{,} \PYG{l+m+mf}{1.0}\PYG{p}{,} \PYG{l+m+mf}{2.0}\PYG{p}{,} \PYG{l+m+mf}{4.0}\PYG{p}{])}
+\PYG{n}{y\PYGZus{}points} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{([}\PYG{l+m+mf}{1.0}\PYG{p}{,} \PYG{l+m+mf}{3.0}\PYG{p}{,} \PYG{l+m+mf}{2.0}\PYG{p}{,} \PYG{l+m+mf}{5.0}\PYG{p}{])}
+
+\PYG{n}{a}\PYG{p}{,} \PYG{n}{b}\PYG{p}{,} \PYG{n}{c}\PYG{p}{,} \PYG{n}{d} \PYG{o}{=} \PYG{n}{compute\PYGZus{}natural\PYGZus{}cubic\PYGZus{}spline}\PYG{p}{(}\PYG{n}{x\PYGZus{}points}\PYG{p}{,} \PYG{n}{y\PYGZus{}points}\PYG{p}{)}
+\PYG{n}{x\PYGZus{}dense} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{linspace}\PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{5}\PYG{p}{,} \PYG{l+m+mi}{200}\PYG{p}{)}
+\PYG{n}{y\PYGZus{}dense} \PYG{o}{=} \PYG{n}{evaluate\PYGZus{}spline}\PYG{p}{(}\PYG{n}{x\PYGZus{}dense}\PYG{p}{,} \PYG{n}{x\PYGZus{}points}\PYG{p}{,} \PYG{n}{a}\PYG{p}{,} \PYG{n}{b}\PYG{p}{,} \PYG{n}{c}\PYG{p}{,} \PYG{n}{d}\PYG{p}{)}
+
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{figure}\PYG{p}{(}\PYG{n}{figsize}\PYG{o}{=}\PYG{p}{(}\PYG{l+m+mi}{8}\PYG{p}{,} \PYG{l+m+mi}{5}\PYG{p}{))}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{scatter}\PYG{p}{(}\PYG{n}{x\PYGZus{}points}\PYG{p}{,} \PYG{n}{y\PYGZus{}points}\PYG{p}{,} \PYG{n}{color}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}red\PYGZsq{}}\PYG{p}{,} \PYG{n}{label}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}Data Points\PYGZsq{}}\PYG{p}{,} \PYG{n}{zorder}\PYG{o}{=}\PYG{l+m+mi}{5}\PYG{p}{,} \PYG{n}{marker}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}.\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{plot}\PYG{p}{(}\PYG{n}{x\PYGZus{}dense}\PYG{p}{,} \PYG{n}{y\PYGZus{}dense}\PYG{p}{,} \PYG{n}{color}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}blue\PYGZsq{}}\PYG{p}{,} \PYG{n}{label}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}Custom Cubic Spline\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{grid}\PYG{p}{(}\PYG{k+kc}{True}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{legend}\PYG{p}{()}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{show}\PYG{p}{()}
+\end{MintedVerbatim}

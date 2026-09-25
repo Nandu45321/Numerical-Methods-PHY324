@@ -1,0 +1,53 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{numpy}\PYG{+w}{ }\PYG{k}{as}\PYG{+w}{ }\PYG{n+nn}{np}
+
+\PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{pa\PYGZus{}lu\PYGZus{}decomposition}\PYG{p}{(}\PYG{n}{A}\PYG{p}{):}
+    \PYG{n}{n} \PYG{o}{=} \PYG{n}{A}\PYG{o}{.}\PYG{n}{shape}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}
+    \PYG{n}{L} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{eye}\PYG{p}{(}\PYG{n}{n}\PYG{p}{)}
+    \PYG{n}{U} \PYG{o}{=} \PYG{n}{A}\PYG{o}{.}\PYG{n}{copy}\PYG{p}{()}
+    \PYG{n}{P} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{eye}\PYG{p}{(}\PYG{n}{n}\PYG{p}{)}
+
+    \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n}{n}\PYG{p}{):}
+        \PYG{c+c1}{\PYGZsh{} Partial Pivoting: find the row with the largest absolute value in the current column}
+        \PYG{n}{max\PYGZus{}idx} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{argmax}\PYG{p}{(}\PYG{n}{np}\PYG{o}{.}\PYG{n}{abs}\PYG{p}{(}\PYG{n}{U}\PYG{p}{[}\PYG{n}{i}\PYG{p}{:,} \PYG{n}{i}\PYG{p}{]))} \PYG{o}{+} \PYG{n}{i}
+
+        \PYG{c+c1}{\PYGZsh{} Swap rows in U, P, and the previously calculated parts of L}
+        \PYG{k}{if} \PYG{n}{i} \PYG{o}{!=} \PYG{n}{max\PYGZus{}idx}\PYG{p}{:}
+            \PYG{c+c1}{\PYGZsh{} Swap in U}
+            \PYG{n}{U}\PYG{p}{[}\PYG{n}{i}\PYG{p}{],} \PYG{n}{U}\PYG{p}{[}\PYG{n}{max\PYGZus{}idx}\PYG{p}{]} \PYG{o}{=} \PYG{n}{U}\PYG{p}{[}\PYG{n}{max\PYGZus{}idx}\PYG{p}{]}\PYG{o}{.}\PYG{n}{copy}\PYG{p}{(),} \PYG{n}{U}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{.}\PYG{n}{copy}\PYG{p}{()}
+            \PYG{c+c1}{\PYGZsh{} Swap in P}
+            \PYG{n}{P}\PYG{p}{[}\PYG{n}{i}\PYG{p}{],} \PYG{n}{P}\PYG{p}{[}\PYG{n}{max\PYGZus{}idx}\PYG{p}{]} \PYG{o}{=} \PYG{n}{P}\PYG{p}{[}\PYG{n}{max\PYGZus{}idx}\PYG{p}{]}\PYG{o}{.}\PYG{n}{copy}\PYG{p}{(),} \PYG{n}{P}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{.}\PYG{n}{copy}\PYG{p}{()}
+            \PYG{c+c1}{\PYGZsh{} Swap in L (only the columns up to i)}
+            \PYG{k}{if} \PYG{n}{i} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{0}\PYG{p}{:}
+                \PYG{n}{L}\PYG{p}{[}\PYG{n}{i}\PYG{p}{,} \PYG{p}{:}\PYG{n}{i}\PYG{p}{],} \PYG{n}{L}\PYG{p}{[}\PYG{n}{max\PYGZus{}idx}\PYG{p}{,} \PYG{p}{:}\PYG{n}{i}\PYG{p}{]} \PYG{o}{=} \PYG{n}{L}\PYG{p}{[}\PYG{n}{max\PYGZus{}idx}\PYG{p}{,} \PYG{p}{:}\PYG{n}{i}\PYG{p}{]}\PYG{o}{.}\PYG{n}{copy}\PYG{p}{(),} \PYG{n}{L}\PYG{p}{[}\PYG{n}{i}\PYG{p}{,} \PYG{p}{:}\PYG{n}{i}\PYG{p}{]}\PYG{o}{.}\PYG{n}{copy}\PYG{p}{()}
+
+        \PYG{c+c1}{\PYGZsh{} Standard LU elimination steps}
+        \PYG{k}{for} \PYG{n}{j} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n}{i}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{n}{n}\PYG{p}{):}
+            \PYG{n}{factor} \PYG{o}{=} \PYG{n}{U}\PYG{p}{[}\PYG{n}{j}\PYG{p}{,} \PYG{n}{i}\PYG{p}{]} \PYG{o}{/} \PYG{n}{U}\PYG{p}{[}\PYG{n}{i}\PYG{p}{,} \PYG{n}{i}\PYG{p}{]}
+            \PYG{n}{L}\PYG{p}{[}\PYG{n}{j}\PYG{p}{,} \PYG{n}{i}\PYG{p}{]} \PYG{o}{=} \PYG{n}{factor}
+            \PYG{n}{U}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]} \PYG{o}{\PYGZhy{}=} \PYG{n}{factor} \PYG{o}{*} \PYG{n}{U}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}
+
+    \PYG{k}{return} \PYG{n}{P}\PYG{p}{,} \PYG{n}{L}\PYG{p}{,} \PYG{n}{U}
+
+\PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{solve\PYGZus{}pa\PYGZus{}lu}\PYG{p}{(}\PYG{n}{P}\PYG{p}{,} \PYG{n}{L}\PYG{p}{,} \PYG{n}{U}\PYG{p}{,} \PYG{n}{b}\PYG{p}{):}
+    \PYG{c+c1}{\PYGZsh{} 1. Apply permutation to b (We are solving L U x = P b)}
+    \PYG{n}{Pb} \PYG{o}{=} \PYG{n}{P} \PYG{o}{@} \PYG{n}{b}
+
+    \PYG{c+c1}{\PYGZsh{} 2. Forward substitution (Solve L y = Pb)}
+    \PYG{n}{y} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{linalg}\PYG{o}{.}\PYG{n}{solve}\PYG{p}{(}\PYG{n}{L}\PYG{p}{,} \PYG{n}{Pb}\PYG{p}{)}
+
+    \PYG{c+c1}{\PYGZsh{} 3. Backward substitution (Solve U x = y)}
+    \PYG{n}{x} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{linalg}\PYG{o}{.}\PYG{n}{solve}\PYG{p}{(}\PYG{n}{U}\PYG{p}{,} \PYG{n}{y}\PYG{p}{)}
+
+    \PYG{k}{return} \PYG{n}{x}
+
+\PYG{c+c1}{\PYGZsh{} Example using a matrix that would fail standard LU (0 on diagonal)}
+\PYG{n}{A} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{([[}\PYG{l+m+mf}{0.0}\PYG{p}{,} \PYG{l+m+mf}{2.0}\PYG{p}{,} \PYG{l+m+mf}{3.0}\PYG{p}{],} \PYG{p}{[}\PYG{l+m+mf}{1.0}\PYG{p}{,} \PYG{o}{\PYGZhy{}}\PYG{l+m+mf}{1.0}\PYG{p}{,} \PYG{l+m+mf}{1.0}\PYG{p}{],} \PYG{p}{[}\PYG{o}{\PYGZhy{}}\PYG{l+m+mf}{1.0}\PYG{p}{,} \PYG{l+m+mf}{1.0}\PYG{p}{,} \PYG{l+m+mf}{0.0}\PYG{p}{]])}
+\PYG{n}{b} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{([}\PYG{l+m+mf}{4.0}\PYG{p}{,} \PYG{l+m+mf}{3.0}\PYG{p}{,} \PYG{l+m+mf}{1.0}\PYG{p}{])}
+
+\PYG{n}{P}\PYG{p}{,} \PYG{n}{L}\PYG{p}{,} \PYG{n}{U} \PYG{o}{=} \PYG{n}{pa\PYGZus{}lu\PYGZus{}decomposition}\PYG{p}{(}\PYG{n}{A}\PYG{p}{)}
+\PYG{n}{x} \PYG{o}{=} \PYG{n}{solve\PYGZus{}pa\PYGZus{}lu}\PYG{p}{(}\PYG{n}{P}\PYG{p}{,} \PYG{n}{L}\PYG{p}{,} \PYG{n}{U}\PYG{p}{,} \PYG{n}{b}\PYG{p}{)}
+
+\PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}Verify P @ A == L @ U:}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,} \PYG{n}{np}\PYG{o}{.}\PYG{n}{allclose}\PYG{p}{(}\PYG{n}{P} \PYG{o}{@} \PYG{n}{A}\PYG{p}{,} \PYG{n}{L} \PYG{o}{@} \PYG{n}{U}\PYG{p}{))}
+\PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s+s2}{Solution x:\PYGZdq{}}\PYG{p}{,} \PYG{n}{x}\PYG{p}{)}
+\end{MintedVerbatim}

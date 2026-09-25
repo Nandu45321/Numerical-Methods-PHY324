@@ -1,0 +1,20 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{numpy}\PYG{+w}{ }\PYG{k}{as}\PYG{+w}{ }\PYG{n+nn}{np}
+
+\PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{f}\PYG{p}{(}\PYG{n}{x}\PYG{p}{):}
+    \PYG{k}{return} \PYG{n}{np}\PYG{o}{.}\PYG{n}{exp}\PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{n}{x}\PYG{o}{**}\PYG{l+m+mi}{2} \PYG{o}{/} \PYG{l+m+mi}{2}\PYG{p}{)}
+
+\PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{gaussian\PYGZus{}quadrature}\PYG{p}{(}\PYG{n}{f}\PYG{p}{,} \PYG{n}{a}\PYG{p}{,} \PYG{n}{b}\PYG{p}{,} \PYG{n}{n}\PYG{p}{):}
+    \PYG{c+c1}{\PYGZsh{} NumPy has a built\PYGZhy{}in function to generate the perfect optimal points (t) and their weights (c)}
+    \PYG{n}{t}\PYG{p}{,} \PYG{n}{c} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{polynomial}\PYG{o}{.}\PYG{n}{legendre}\PYG{o}{.}\PYG{n}{leggauss}\PYG{p}{(}\PYG{n}{n}\PYG{p}{)}
+
+    \PYG{c+c1}{\PYGZsh{} The points it gives are from \PYGZhy{}1 to 1. We have to map them to our actual interval [a, b]}
+    \PYG{n}{mapped\PYGZus{}x} \PYG{o}{=} \PYG{l+m+mf}{0.5} \PYG{o}{*} \PYG{p}{(}\PYG{n}{b} \PYG{o}{\PYGZhy{}} \PYG{n}{a}\PYG{p}{)} \PYG{o}{*} \PYG{n}{t} \PYG{o}{+} \PYG{l+m+mf}{0.5} \PYG{o}{*} \PYG{p}{(}\PYG{n}{b} \PYG{o}{+} \PYG{n}{a}\PYG{p}{)}
+
+    \PYG{c+c1}{\PYGZsh{} Multiply the weights by our function evaluated at those perfect points}
+    \PYG{n}{area} \PYG{o}{=} \PYG{l+m+mf}{0.5} \PYG{o}{*} \PYG{p}{(}\PYG{n}{b} \PYG{o}{\PYGZhy{}} \PYG{n}{a}\PYG{p}{)} \PYG{o}{*} \PYG{n}{np}\PYG{o}{.}\PYG{n}{sum}\PYG{p}{(}\PYG{n}{c} \PYG{o}{*} \PYG{n}{f}\PYG{p}{(}\PYG{n}{mapped\PYGZus{}x}\PYG{p}{))}
+    \PYG{k}{return} \PYG{n}{area}
+
+\PYG{c+c1}{\PYGZsh{} Example usage (Notice how accurate it is with just 4 points!)}
+\PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}Gaussian Quadrature (4 points):\PYGZdq{}}\PYG{p}{,} \PYG{n}{gaussian\PYGZus{}quadrature}\PYG{p}{(}\PYG{n}{f}\PYG{p}{,} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{4}\PYG{p}{))}
+\end{MintedVerbatim}

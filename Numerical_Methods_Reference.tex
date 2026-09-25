@@ -1,0 +1,722 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\usepackage{tcolorbox}
+\tcbuselibrary{listings}
+
+\definecolor{lightbg}{HTML}{F7F7F7}
+\definecolor{vscodeblue}{HTML}{0000FF}
+\definecolor{vscodered}{HTML}{A31515}
+\definecolor{vscodegreen}{HTML}{008000}
+\definecolor{vscodegray}{HTML}{808080}
+
+\newtcblisting{jupytercode}{
+  colback=lightbg,
+  colframe=gray!40,
+  listing only,
+  left=15pt,
+  top=0pt,
+  bottom=0pt,
+  boxrule=0.5pt,
+  arc=3pt,
+  listing options={
+    language=Python,
+    basicstyle=\ttfamily\footnotesize\color{black},
+    keywordstyle=\color{vscodeblue}\bfseries,
+    commentstyle=\color{vscodegreen}\itshape,
+    stringstyle=\color{vscodered},
+    numberstyle=\tiny\color{vscodegray},
+    numbers=left,
+    stepnumber=1,
+    showstringspaces=false,
+    breaklines=true,
+    tabsize=4
+  }
+}
+
+\title{Numerical Methods: Comprehensive Code and Theory Reference}
+\author{Python Implementation Reference}
+\date{}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CHAPTER 1: ROOT FINDING
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Root-Finding Methods}
+
+\subsection{Bisection Method}
+\textbf{Theory:} The Bisection method finds a root of $f(x) = 0$ by repeatedly halving a bracketing interval $[a, b]$ where $f(a)f(b) < 0$. It evaluates the midpoint $c = (a+b)/2$ and replaces either $a$ or $b$ with $c$ such that the root remains bracketed. \\
+\textbf{Error Bounds \& Convergence:} The error after $n$ iterations is bounded by $|x_n - r| \le \frac{b - a}{2^{n+1}}$. The convergence is \textbf{linear}.
+
+\begin{jupytercode}
+import numpy as np
+
+def f(x):
+    return (x)**3 + x - 1
+
+a = 0.1
+b = 1.0
+tol = 10**(-8)
+
+# Bisection Method implementation
+if f(a)*f(b) > 0:
+    print('choose different points')
+else:
+    while np.abs(b-a)/2 > tol:
+        c = 0.5*(a+b)
+        if f(a)*f(c) < 0:
+            b = c
+        else:
+            a = c
+            
+    print('root = ', c)
+    print('f(c) = ', f(c))
+\end{jupytercode}
+\newpage
+
+\subsection{Newton-Raphson Method}
+\textbf{Theory:} Uses the tangent line at the current guess to find the next guess. The iteration formula is $x_{i+1} = x_i - \frac{f(x_i)}{f'(x_i)}$. \\
+\textbf{Error Bounds \& Convergence:} The error scales quadratically near a simple root: $\epsilon_{n+1} \approx \frac{f''(r)}{2f'(r)} \epsilon_n^2$. Convergence is \textbf{quadratic}.
+
+\begin{jupytercode}
+import numpy as np
+
+def f(x):
+    return x**3 + x - 1
+    
+def fd(x):
+    return 3*x**2 + 1
+
+x0 = 0.1
+tol = 10**(-8)
+val = 1
+
+# Newton-Raphson implementation
+if np.abs(f(x0)) < tol:
+    print('root =', x0)
+else:
+    while np.abs(val) > tol:
+        x = x0 - f(x0)/fd(x0)
+        val = (x - x0)
+        x0 = x
+        
+    print('root = ', x)
+\end{jupytercode}
+\newpage
+
+\subsection{Secant Method}
+\textbf{Theory:} Replaces the derivative in Newton's method with a finite-difference slope passing through the last two iterates. \\
+\textbf{Error Bounds \& Convergence:} The error scales as $\epsilon_{n+1} \approx C \epsilon_n^\alpha$, where $\alpha = \frac{1+\sqrt{5}}{2} \approx 1.618$ (the golden ratio). Convergence is \textbf{superlinear}.
+
+\begin{jupytercode}
+import numpy as np
+
+def f(x):
+    return x**3 + x - 1
+
+x0 = 0.1
+x1 = 0.2
+tol = 10**(-8)
+val = 1
+
+# Secant Method implementation
+if np.abs(f(x0)) < tol:
+    print('root =', x0)
+elif np.abs(f(x1)) < tol:
+    print('root =', x1)
+else:
+    while np.abs(val) > tol:
+        fd = (f(x1) - f(x0))/(x1 - x0)
+        x = x1 - f(x1)/fd
+        val = (x - x1)
+        x0 = x1
+        x1 = x
+
+    print('root = ', x1)
+\end{jupytercode}
+\newpage
+
+\subsection{Inverse Quadratic Interpolation (IQI)}
+\textbf{Theory:} Fits a sideways quadratic curve (where $x = P(y)$) through the last three iterates. 
+$$ P(y) = x_0 \frac{(y - y_1)(y - y_2)}{(y_0 - y_1)(y_0 - y_2)} + x_1 \frac{(y - y_0)(y - y_2)}{(y_1 - y_0)(y_1 - y_2)} + x_2 \frac{(y - y_0)(y - y_1)}{(y_2 - y_0)(y_2 - y_1)} $$
+The next root guess is found by evaluating $P(0)$, which simplifies to:
+$$ x_3 = x_2 - \frac{r(r - q)(x_2 - x_1) + s(1 - r)(x_2 - x_0)}{(q - 1)(r - 1)(s - 1)} $$ \\
+\textbf{Error Bounds \& Convergence:} The convergence is \textbf{superlinear}, with an order of $\approx 1.84$. It requires no derivatives but needs three initial guesses.
+
+\begin{jupytercode}
+import numpy as np
+
+def f(x):
+    return x**3 + x - 1
+
+def iqi(f, x0, x1, x2, tol=1e-8, max_iter=100):
+    for i in range(max_iter):
+        y0, y1, y2 = f(x0), f(x1), f(x2)
+        
+        # Check if we are close enough to zero
+        if abs(y2) < tol:
+            return x2
+            
+        # These are the terms for the Lagrange interpolation formula (but sideways!)
+        # We calculate the next x guess by plugging y=0 into the sideways parabola
+        q = f(x0) / f(x1)
+        r = f(x2) / f(x1)
+        s = f(x2) / f(x0)
+        
+        # Formula for the next guess (algebraically simplified)
+        x3 = x2 - (r * (r - q) * (x2 - x1) + s * (1 - r) * (x2 - x0)) / ((q - 1) * (r - 1) * (s - 1))
+        
+        # Shift everything over for the next loop
+        x0, x1, x2 = x1, x2, x3
+        
+    return x2
+
+# Example usage
+root = iqi(f, 0.1, 0.15, 0.25)
+print("Root is:", root)
+\end{jupytercode}
+\newpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CHAPTER 2: INTERPOLATION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Interpolation}
+
+\subsection{Lagrange Interpolation}
+\textbf{Theory:} Builds the unique degree-$(n-1)$ interpolating polynomial directly as a weighted sum of Lagrange basis polynomials $L_i(x)$.
+\begin{equation*}
+P(x) = \sum_{i=0}^{n-1} y_i L_i(x) \quad \text{where} \quad L_i(x) = \prod_{j \neq i} \frac{x - x_j}{x_i - x_j}
+\end{equation*}
+\textbf{Error Bounds:} The interpolation error is $f(x) - P(x) = \frac{f^{(n)}(\xi)}{n!} \prod_{i=0}^{n-1} (x - x_i)$.
+
+\begin{jupytercode}
+import numpy as np
+import matplotlib.pyplot as plt
+
+def f(x):
+    return 1/(1 + 12*x**2)
+
+# define continuous points for plotting
+t = np.arange(-1, 1, 0.01)
+
+# interpolation nodes
+x = np.array([-1, -0.99, -0.97, -0.92, -0.8, -0.7, -0.5, -0.25, 0, 0.25, 0.5, 0.7, 0.8, 0.92, 0.97, 0.99, 1])
+
+# init lagrange basis polynomial matrix
+l = np.zeros((len(t), len(x)))
+
+# compute basis polynomials automatically
+for i in range(len(x)):
+    p = np.ones_like(t)
+    for j in range(len(x)):
+        if i != j:
+            p = p * (t - x[j]) / (x[i] - x[j])
+    l[:, i] = p
+
+# lagrange interpolating polynomial for f(x)
+L = np.zeros_like(t)
+for i in range(len(x)):
+    L += f(x[i]) * l[:, i]
+
+# plotting
+plt.plot(t, f(t), label = 'f(t)')
+plt.scatter(x, f(x), color = 'red', marker = '.', label = 'Interpolation nodes')
+plt.plot(t, L, label = 'Lagrange Interpolating Polynomial')
+plt.grid(True)
+plt.title("Lagrange Interpolation [Un-equally spaced]")
+plt.legend()
+plt.show()
+\end{jupytercode}
+\newpage
+
+\subsection{Newton's Divided-Difference Interpolation}
+\textbf{Theory:} Builds the same unique interpolating polynomial recursively using a divided-difference table.
+\textbf{Error Bounds:} Same error as Lagrange interpolation since the resulting polynomial is identical. 
+
+\begin{jupytercode}
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Fine grid for plotting the true function and interpolation
+x = np.linspace(0, np.pi / 2, 100)
+f = np.sin(x)
+
+# Interpolation nodes and their function values
+t = np.array([0, np.pi/6, 2*np.pi/6, 3*np.pi/6])
+y = np.sin(t)
+
+# --- 1. Calculate Newton Divided Difference Coefficients ---
+n = len(t)
+coef = np.zeros([n, n])
+coef[:, 0] = y # first column is just the function values
+
+for j in range(1, n):
+    for i in range(n - j):
+        coef[i][j] = (coef[i+1][j-1] - coef[i][j-1]) / (t[i+j] - t[i])
+
+# The coefficients for the Newton polynomial are the top row of our table
+c = coef[0, :]
+
+# --- 2. Evaluate the Newton Interpolating Polynomial ---
+P_x = np.zeros_like(x)
+for i in range(len(x)):
+    val = c[0]
+    prod = 1.0
+    for j in range(1, n):
+        prod *= (x[i] - t[j-1])
+        val += c[j] * prod
+    P_x[i] = val
+
+# --- 3. Plotting ---
+plt.plot(x, f, label='True function: sin(x)')
+plt.scatter(t, y, color='red', marker='x', label='Interpolation nodes')
+plt.plot(x, P_x, label='Newton Interpolating Polynomial', linestyle='--')
+plt.legend()
+plt.title("Newton Divided Difference Interpolation")
+plt.grid(True)
+plt.show()
+\end{jupytercode}
+\newpage
+
+\subsection{Natural Cubic Spline Interpolation}
+\textbf{Theory:} Fits a piecewise-cubic interpolant ensuring continuous value, slope, and curvature at every interior node. The "Natural" boundary condition specifies that the curvature at the endpoints is zero ($S''(x_1) = S''(x_n) = 0$). \\
+\textbf{Error Bounds:} The error bound for cubic splines is $|f(x) - S(x)| \le \frac{5}{384} \max |f^{(4)}(x)| h^4$.
+
+\begin{jupytercode}
+import numpy as np 
+from matplotlib import pyplot as plt 
+
+def compute_natural_cubic_spline(x, y):
+    """
+    Computes coefficients for the piecewise cubic polynomials:
+    S_i(x) = a_i + b_i*(x - x_i) + c_i*(x - x_i)^2 + d_i*(x - x_i)^3
+    """
+    x = np.array(x, dtype=float)
+    y = np.array(y, dtype=float)
+    n = len(x)
+    
+    # 1. Widths of the intervals
+    h = np.diff(x)
+    
+    # 2. Set up the linear system system: A * c = B
+    A = np.zeros((n, n))
+    B = np.zeros(n)
+    
+    # Natural boundary conditions: second derivative at endpoints is 0
+    A[0, 0] = 1.0
+    A[n-1, n-1] = 1.0
+    
+    # Fill the tridiagonal matrix based on continuity conditions
+    for i in range(1, n-1):
+        A[i, i-1] = h[i-1]
+        A[i, i] = 2 * (h[i-1] + h[i])
+        A[i, i+1] = h[i]
+        B[i] = 3 * ((y[i+1] - y[i]) / h[i] - (y[i] - y[i-1]) / h[i-1])
+        
+    # 3. Solve for 'c' coefficients
+    c = np.linalg.solve(A, B)
+    
+    # 4. Derive 'a', 'b', and 'd' coefficients from 'c'
+    a = y[:-1]
+    b = np.zeros(n - 1)
+    d = np.zeros(n - 1)
+    
+    for i in range(n - 1):
+        b[i] = (y[i+1] - y[i]) / h[i] - h[i] * (2 * c[i] + c[i+1]) / 3
+        d[i] = (c[i+1] - c[i]) / (3 * h[i])
+        
+    return a, b, c[:-1], d
+
+def evaluate_spline(x_query, x_data, a, b, c, d):
+    """Evaluates the spline at given query coordinates."""
+    y_query = []
+    for x_val in x_query:
+        # Find which interval the query point falls into
+        if x_val <= x_data[0]:
+            i = 0
+        elif x_val >= x_data[-2]:
+            i = len(x_data) - 2
+        else:
+            # Binary search to locate interval index
+            i = np.searchsorted(x_data, x_val) - 1
+            
+        dx = x_val - x_data[i]
+        val = a[i] + b[i]*dx + c[i]*(dx**2) + d[i]*(dx**3)
+        y_query.append(val)
+        
+    return np.array(y_query)
+
+# --- Example Execution & Plotting ---
+x_points = np.array([0.0, 1.0, 2.0, 4.0])
+y_points = np.array([1.0, 3.0, 2.0, 5.0])
+
+a, b, c, d = compute_natural_cubic_spline(x_points, y_points)
+x_dense = np.linspace(-1, 5, 200)
+y_dense = evaluate_spline(x_dense, x_points, a, b, c, d)
+
+plt.figure(figsize=(8, 5))
+plt.scatter(x_points, y_points, color='red', label='Data Points', zorder=5, marker='.')
+plt.plot(x_dense, y_dense, color='blue', label='Custom Cubic Spline')
+plt.grid(True)
+plt.legend()
+plt.show()
+\end{jupytercode}
+\newpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CHAPTER 3: NUMERICAL INTEGRATION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Numerical Integration}
+
+\subsection{Trapezoidal Rule}
+\textbf{Theory:} Approximates the integral by treating the area under the curve as a series of trapezoids.
+$$ \text{Area} = \frac{b - a}{2} (f(a) + f(b)) $$
+$$ \int_a^b f(x) dx \approx \frac{h}{2} \left[ f(x_0) + 2 \sum_{i=1}^{m-1} f(x_i) + f(x_m) \right] $$ \\
+\textbf{Error Bounds:} 
+\begin{itemize}
+    \item Local Error (Single Panel): $-\frac{h^3}{12}f''(\xi)$
+    \item Global Error (Composite): $-\frac{b-a}{12}h^2 f''(\xi)$
+\end{itemize}
+
+\begin{jupytercode}
+import numpy as np
+
+def f(x):
+    return x**2
+
+def trapezoidal_single(f, a, b):
+    h = b - a
+    area = h * (f(a) + f(b)) / 2
+    return area
+
+def trapezoidal_composite(f, a, b, num_panels):
+    h = (b - a) / num_panels
+    x = np.linspace(a, b, num_panels + 1)
+    
+    # Area = h/2 * [f(x_first) + 2*f(x_middles) + f(x_last)]
+    # The middle points get counted twice because they touch two trapezoids
+    area = (h / 2) * (f(x[0]) + 2 * np.sum(f(x[1:-1])) + f(x[-1]))
+    return area
+
+# Example usage
+print("Single Trapezoid Area:", trapezoidal_single(f, 0, 1))
+print("Composite Trapezoid Area (100 panels):", trapezoidal_composite(f, 0, 1, 100))
+\end{jupytercode}
+\newpage
+
+\subsection{Simpson's Rule}
+\textbf{Theory:} Approximates the integral by fitting a parabola through sets of three points (the endpoints and the midpoint).
+$$ \text{Area} = \frac{h}{3} (f(a) + 4f(m) + f(b)) $$
+$$ \int_a^b f(x) dx \approx \frac{h}{3} \left[ f(x_0) + 4 \sum_{\text{odd } i} f(x_i) + 2 \sum_{\text{even } i} f(x_i) + f(x_m) \right] $$ \\
+\textbf{Error Bounds:} 
+\begin{itemize}
+    \item Local Error (Single Panel): $-\frac{h^5}{90}f^{(4)}(\xi)$
+    \item Global Error (Composite): $-\frac{b-a}{180}h^4 f^{(4)}(\xi)$
+\end{itemize}
+
+\begin{jupytercode}
+import numpy as np
+
+def f(x):
+    return x**2
+
+def simpson_single(f, a, b):
+    # A single application requires 3 points: the ends and the exact middle
+    midpoint = (a + b) / 2
+    h = (b - a) / 2
+    
+    # Formula uses weights: 1, 4, 1
+    area = (h / 3) * (f(a) + 4*f(midpoint) + f(b))
+    return area
+
+def simpson_composite(f, a, b, num_panels):
+    # Simpson's rule needs an EVEN number of panels
+    if num_panels % 2 != 0:
+        raise ValueError("Number of panels must be even for Simpson's Rule.")
+        
+    h = (b - a) / num_panels
+    x = np.linspace(a, b, num_panels + 1)
+    
+    # Weights follow a pattern: 1, 4, 2, 4, 2, ... 4, 1
+    y = f(x)
+    area = (h / 3) * (y[0] + 4 * np.sum(y[1:-1:2]) + 2 * np.sum(y[2:-1:2]) + y[-1])
+    return area
+
+# Example usage
+print("Single Simpson Area:", simpson_single(f, 0, 1))
+print("Composite Simpson Area (100 panels):", simpson_composite(f, 0, 1, 100))
+\end{jupytercode}
+\newpage
+
+\subsection{Midpoint Rule}
+\textbf{Theory:} Approximates the area with flat rectangles evaluated exactly at the midpoint of each panel. It avoids evaluating the function at the endpoints.
+$$ \text{Area} = h \cdot f(m) $$
+$$ \int_a^b f(x) dx \approx h \sum_{i=1}^{n} f(m_i) $$ \\
+\textbf{Error Bounds:} 
+\begin{itemize}
+    \item Local Error (Single Panel): $\frac{h^3}{24}f''(\xi)$
+    \item Global Error (Composite): $\frac{b-a}{24}h^2 f''(\xi)$
+\end{itemize}
+
+\begin{jupytercode}
+import numpy as np
+
+def f(x):
+    return x**2
+
+def midpoint_single(f, a, b):
+    midpoint = (a + b) / 2
+    h = b - a
+    area = h * f(midpoint)
+    return area
+
+def midpoint_composite(f, a, b, num_panels):
+    h = (b - a) / num_panels
+    
+    # Get the exact midpoints of every single panel
+    midpoints = np.linspace(a + h/2, b - h/2, num_panels)
+    
+    # We just sum the height of all the rectangles and multiply by width
+    area = h * np.sum(f(midpoints))
+    return area
+
+# Example usage
+print("Single Midpoint Area:", midpoint_single(f, 0, 1))
+print("Composite Midpoint Area (100 panels):", midpoint_composite(f, 0, 1, 100))
+\end{jupytercode}
+\newpage
+
+\subsection{Gaussian Quadrature}
+\textbf{Theory:} Optimally chooses the nodes ($t_i$) and weights ($c_i$) to maximize the exactness of the integral.
+$$ \int_{-1}^1 f(t) dt \approx \sum_{i=1}^n c_i f(t_i) $$
+$$ \int_a^b f(x) dx \approx \frac{b-a}{2} \sum_{i=1}^n c_i f\left( \frac{b-a}{2}t_i + \frac{b+a}{2} \right) $$ \\
+\textbf{Error Bounds:} An $n$-point Gaussian Quadrature rule is completely exact for all polynomials up to degree $2n - 1$. The error for general functions is proportional to $f^{(2n)}(\xi)$.
+
+\begin{jupytercode}
+import numpy as np
+
+def f(x):
+    return np.exp(-x**2 / 2)
+
+def gaussian_quadrature(f, a, b, n):
+    # NumPy has a built-in function to generate the perfect optimal points (t) and their weights (c)
+    t, c = np.polynomial.legendre.leggauss(n)
+    
+    # The points it gives are from -1 to 1. We have to map them to our actual interval [a, b]
+    mapped_x = 0.5 * (b - a) * t + 0.5 * (b + a)
+    
+    # Multiply the weights by our function evaluated at those perfect points
+    area = 0.5 * (b - a) * np.sum(c * f(mapped_x))
+    return area
+
+# Example usage (Notice how accurate it is with just 4 points!)
+print("Gaussian Quadrature (4 points):", gaussian_quadrature(f, -1, 1, 4))
+\end{jupytercode}
+\newpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CHAPTER 4: LINEAR SYSTEMS & NEWTON FOR SYSTEMS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Linear Systems and Newton's Method for Systems}
+
+\subsection{Gaussian Elimination}
+\textbf{Theory:} Transforms a system $A\mathbf{x} = \mathbf{b}$ into an upper-triangular matrix via forward elimination, and then solves for $\mathbf{x}$ using backward substitution. \\
+\textbf{Error Bounds \& Stability:} Vulnerable to round-off error if pivots are close to zero. The residual error heavily depends on the condition number of the matrix $A$.
+
+\begin{jupytercode}
+import numpy as np
+
+def gauss_elimination(A, b):
+    n = len(b)
+    # Forward elimination
+    for i in range(n):
+        for j in range(i+1, n):
+            factor = A[j, i] / A[i, i]
+            A[j] -= factor * A[i]
+            b[j] -= factor * b[i]
+            
+    # Back substitution
+    x = np.zeros(n)
+    for i in range(n-1, -1, -1):
+        known_chunk = np.dot(A[i, i+1:], x[i+1:])
+        x[i] = (b[i] - known_chunk) / A[i, i]
+        
+    return x
+
+# Example 3x3 system
+A = np.array([[3.0, 2.0, -4.0], [2.0, 3.0, 3.0], [5.0, -3.0, 1.0]])
+b = np.array([3.0, 15.0, 14.0])
+
+x = gauss_elimination(A.copy(), b.copy())
+print("Solution x:", x)
+\end{jupytercode}
+\newpage
+
+\subsection{LU Decomposition}
+\textbf{Theory:} Factorizes $A = LU$ (Lower and Upper triangular matrices) to solve $A\mathbf{x} = \mathbf{b}$ efficiently for multiple $\mathbf{b}$ vectors. We solve $L\mathbf{y} = \mathbf{b}$ followed by $U\mathbf{x} = \mathbf{y}$.
+
+\begin{jupytercode}
+import numpy as np
+
+def lu_decomposition(A):
+    n = A.shape[0]
+    L = np.eye(n)
+    U = A.copy()
+    
+    for i in range(n):
+        for j in range(i+1, n):
+            factor = U[j, i] / U[i, i]
+            U[j] -= factor * U[i]
+            L[j, i] = factor
+            
+    return L, U
+
+def solve_lu(L, U, b):
+    # 1. Forward substitution (Solve L y = b)
+    y = np.linalg.solve(L, b)
+        
+    # 2. Backward substitution (Solve U x = y)
+    x = np.linalg.solve(U, y)
+        
+    return x
+
+A = np.array([[3.0, 2.0, -4.0], [2.0, 3.0, 3.0], [5.0, -3.0, 1.0]])
+b = np.array([3.0, 15.0, 14.0])
+
+# Factorize once
+L, U = lu_decomposition(A)
+
+# Solve for x
+x = solve_lu(L, U, b)
+
+print("L matrix:\n", L)
+print("\nU matrix:\n", U)
+print("\nVerify L @ U == A:\n", np.allclose(L @ U, A))
+print("\nSolution x:", x)
+\end{jupytercode}
+\newpage
+
+\subsection{PA = LU Decomposition (Partial Pivoting)}
+\textbf{Theory:} Implements partial pivoting by swapping rows to ensure the largest possible absolute pivot is used. This prevents division by zero and maintains extreme numerical stability.
+
+\begin{jupytercode}
+import numpy as np
+
+def pa_lu_decomposition(A):
+    n = A.shape[0]
+    L = np.eye(n)
+    U = A.copy()
+    P = np.eye(n)
+    
+    for i in range(n):
+        # Partial Pivoting: find the row with the largest absolute value in the current column
+        max_idx = np.argmax(np.abs(U[i:, i])) + i
+        
+        # Swap rows in U, P, and the previously calculated parts of L
+        if i != max_idx:
+            # Swap in U
+            U[i], U[max_idx] = U[max_idx].copy(), U[i].copy()
+            # Swap in P
+            P[i], P[max_idx] = P[max_idx].copy(), P[i].copy()
+            # Swap in L (only the columns up to i)
+            if i > 0:
+                L[i, :i], L[max_idx, :i] = L[max_idx, :i].copy(), L[i, :i].copy()
+                
+        # Standard LU elimination steps
+        for j in range(i+1, n):
+            factor = U[j, i] / U[i, i]
+            L[j, i] = factor
+            U[j] -= factor * U[i]
+            
+    return P, L, U
+
+def solve_pa_lu(P, L, U, b):
+    # 1. Apply permutation to b (We are solving L U x = P b)
+    Pb = P @ b
+    
+    # 2. Forward substitution (Solve L y = Pb)
+    y = np.linalg.solve(L, Pb)
+        
+    # 3. Backward substitution (Solve U x = y)
+    x = np.linalg.solve(U, y)
+        
+    return x
+
+# Example using a matrix that would fail standard LU (0 on diagonal)
+A = np.array([[0.0, 2.0, 3.0], [1.0, -1.0, 1.0], [-1.0, 1.0, 0.0]])
+b = np.array([4.0, 3.0, 1.0])
+
+P, L, U = pa_lu_decomposition(A)
+x = solve_pa_lu(P, L, U, b)
+
+print("Verify P @ A == L @ U:\n", np.allclose(P @ A, L @ U))
+print("\nSolution x:", x)
+\end{jupytercode}
+\newpage
+
+\subsection{Newton's Method for Systems of Nonlinear Equations}
+\textbf{Theory:} Solves $\mathbf{F}(\mathbf{x}) = \mathbf{0}$ for multi-variable systems. We repeatedly compute the Jacobian matrix $\mathbf{J}(\mathbf{x})$, find its inverse $\mathbf{J}^{-1}$, and update our guess using the standard inverse formula:
+$$ \mathbf{x}_{i+1} = \mathbf{x}_i - [\mathbf{J}(\mathbf{x}_i)]^{-1} \mathbf{F}(\mathbf{x}_i) $$ \\
+\textbf{Error Bounds \& Convergence:} Like single-variable Newton's Method, convergence is \textbf{quadratic} near the solution, assuming the Jacobian is non-singular.
+
+\begin{jupytercode}
+import numpy as np
+
+# We have two equations we want to solve simultaneously:
+# 1) x1 - x0^3 = 0
+# 2) x0^2 + x1^2 - 1 = 0
+def F(x):
+    return np.array([
+        x[1] - x[0]**3,
+        x[0]**2 + x[1]**2 - 1
+    ])
+
+# The Jacobian is a matrix of the partial derivatives of those equations
+def Jacobian(x):
+    return np.array([
+        [-3 * x[0]**2,  1],
+        [ 2 * x[0],     2 * x[1]]
+    ])
+
+def newton_system(F, Jacobian, initial_guess, tol=1e-6, max_iter=100):
+    x = np.array(initial_guess, dtype=float)
+    
+    for i in range(max_iter):
+        J = Jacobian(x)
+        fx = F(x)
+        
+        # Find the inverse of the Jacobian
+        J_inv = np.linalg.inv(J)
+        
+        # Calculate the step: - J_inv * F(x)
+        step = -(J_inv @ fx)
+        
+        # Update x: x = x + step
+        x = x + step
+        
+        # If the step was tiny, we have converged!
+        if np.linalg.norm(step) < tol:
+            print(f"Converged in {i+1} iterations.")
+            return x
+            
+    return x
+
+# Example usage
+initial_guess = [1.0, 2.0]
+solution = newton_system(F, Jacobian, initial_guess)
+print("Solution:", solution)
+\end{jupytercode}
+
+\end{document}

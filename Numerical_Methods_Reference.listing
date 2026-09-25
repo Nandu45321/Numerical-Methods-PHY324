@@ -1,0 +1,45 @@
+import numpy as np
+
+# We have two equations we want to solve simultaneously:
+# 1) x1 - x0^3 = 0
+# 2) x0^2 + x1^2 - 1 = 0
+def F(x):
+    return np.array([
+        x[1] - x[0]**3,
+        x[0]**2 + x[1]**2 - 1
+    ])
+
+# The Jacobian is a matrix of the partial derivatives of those equations
+def Jacobian(x):
+    return np.array([
+        [-3 * x[0]**2,  1],
+        [ 2 * x[0],     2 * x[1]]
+    ])
+
+def newton_system(F, Jacobian, initial_guess, tol=1e-6, max_iter=100):
+    x = np.array(initial_guess, dtype=float)
+
+    for i in range(max_iter):
+        J = Jacobian(x)
+        fx = F(x)
+
+        # Find the inverse of the Jacobian
+        J_inv = np.linalg.inv(J)
+
+        # Calculate the step: - J_inv * F(x)
+        step = -(J_inv @ fx)
+
+        # Update x: x = x + step
+        x = x + step
+
+        # If the step was tiny, we have converged!
+        if np.linalg.norm(step) < tol:
+            print(f"Converged in {i+1} iterations.")
+            return x
+
+    return x
+
+# Example usage
+initial_guess = [1.0, 2.0]
+solution = newton_system(F, Jacobian, initial_guess)
+print("Solution:", solution)

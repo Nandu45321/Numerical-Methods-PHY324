@@ -1,0 +1,39 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{numpy}\PYG{+w}{ }\PYG{k}{as}\PYG{+w}{ }\PYG{n+nn}{np}
+
+\PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{lu\PYGZus{}decomposition}\PYG{p}{(}\PYG{n}{A}\PYG{p}{):}
+    \PYG{n}{n} \PYG{o}{=} \PYG{n}{A}\PYG{o}{.}\PYG{n}{shape}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}
+    \PYG{n}{L} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{eye}\PYG{p}{(}\PYG{n}{n}\PYG{p}{)}
+    \PYG{n}{U} \PYG{o}{=} \PYG{n}{A}\PYG{o}{.}\PYG{n}{copy}\PYG{p}{()}
+
+    \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n}{n}\PYG{p}{):}
+        \PYG{k}{for} \PYG{n}{j} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n}{i}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{n}{n}\PYG{p}{):}
+            \PYG{n}{factor} \PYG{o}{=} \PYG{n}{U}\PYG{p}{[}\PYG{n}{j}\PYG{p}{,} \PYG{n}{i}\PYG{p}{]} \PYG{o}{/} \PYG{n}{U}\PYG{p}{[}\PYG{n}{i}\PYG{p}{,} \PYG{n}{i}\PYG{p}{]}
+            \PYG{n}{U}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]} \PYG{o}{\PYGZhy{}=} \PYG{n}{factor} \PYG{o}{*} \PYG{n}{U}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}
+            \PYG{n}{L}\PYG{p}{[}\PYG{n}{j}\PYG{p}{,} \PYG{n}{i}\PYG{p}{]} \PYG{o}{=} \PYG{n}{factor}
+
+    \PYG{k}{return} \PYG{n}{L}\PYG{p}{,} \PYG{n}{U}
+
+\PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{solve\PYGZus{}lu}\PYG{p}{(}\PYG{n}{L}\PYG{p}{,} \PYG{n}{U}\PYG{p}{,} \PYG{n}{b}\PYG{p}{):}
+    \PYG{c+c1}{\PYGZsh{} 1. Forward substitution (Solve L y = b)}
+    \PYG{n}{y} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{linalg}\PYG{o}{.}\PYG{n}{solve}\PYG{p}{(}\PYG{n}{L}\PYG{p}{,} \PYG{n}{b}\PYG{p}{)}
+
+    \PYG{c+c1}{\PYGZsh{} 2. Backward substitution (Solve U x = y)}
+    \PYG{n}{x} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{linalg}\PYG{o}{.}\PYG{n}{solve}\PYG{p}{(}\PYG{n}{U}\PYG{p}{,} \PYG{n}{y}\PYG{p}{)}
+
+    \PYG{k}{return} \PYG{n}{x}
+
+\PYG{n}{A} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{([[}\PYG{l+m+mf}{3.0}\PYG{p}{,} \PYG{l+m+mf}{2.0}\PYG{p}{,} \PYG{o}{\PYGZhy{}}\PYG{l+m+mf}{4.0}\PYG{p}{],} \PYG{p}{[}\PYG{l+m+mf}{2.0}\PYG{p}{,} \PYG{l+m+mf}{3.0}\PYG{p}{,} \PYG{l+m+mf}{3.0}\PYG{p}{],} \PYG{p}{[}\PYG{l+m+mf}{5.0}\PYG{p}{,} \PYG{o}{\PYGZhy{}}\PYG{l+m+mf}{3.0}\PYG{p}{,} \PYG{l+m+mf}{1.0}\PYG{p}{]])}
+\PYG{n}{b} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{([}\PYG{l+m+mf}{3.0}\PYG{p}{,} \PYG{l+m+mf}{15.0}\PYG{p}{,} \PYG{l+m+mf}{14.0}\PYG{p}{])}
+
+\PYG{c+c1}{\PYGZsh{} Factorize once}
+\PYG{n}{L}\PYG{p}{,} \PYG{n}{U} \PYG{o}{=} \PYG{n}{lu\PYGZus{}decomposition}\PYG{p}{(}\PYG{n}{A}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} Solve for x}
+\PYG{n}{x} \PYG{o}{=} \PYG{n}{solve\PYGZus{}lu}\PYG{p}{(}\PYG{n}{L}\PYG{p}{,} \PYG{n}{U}\PYG{p}{,} \PYG{n}{b}\PYG{p}{)}
+
+\PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}L matrix:}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,} \PYG{n}{L}\PYG{p}{)}
+\PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s+s2}{U matrix:}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,} \PYG{n}{U}\PYG{p}{)}
+\PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s+s2}{Verify L @ U == A:}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,} \PYG{n}{np}\PYG{o}{.}\PYG{n}{allclose}\PYG{p}{(}\PYG{n}{L} \PYG{o}{@} \PYG{n}{U}\PYG{p}{,} \PYG{n}{A}\PYG{p}{))}
+\PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s+s2}{Solution x:\PYGZdq{}}\PYG{p}{,} \PYG{n}{x}\PYG{p}{)}
+\end{MintedVerbatim}
