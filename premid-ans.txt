@@ -1,0 +1,131 @@
+Numerical Methods: Answer Key
+
+Condensed model answers (proof sketches with every key step). Notation: e_i = x_i − r, ω(x) = ∏(x − x_i).
+Part A: Root Finding
+
+A1. Each step halves the bracket, so length = (b−a)/2ⁿ, and the midpoint is within (b−a)/2^(n+1) of any point in the bracket. Requiring (b−a)/2^(n+1) < TOL gives n > log₂((b−a)/TOL) − 1. Only the sign of f is used, so f drops out of the bound. The bracket shrinks monotonically but the midpoint error need not: a midpoint can land near the root and the next one farther away. f(a)f(b) < 0 plus continuity gives at least one root (an odd number counting multiplicity) but not which one; an even number of roots inside can hide behind f(a)f(b) > 0.
+
+A2. Taylor: f(x) ≈ f(x₀) + f′(x₀)(x−x₀); setting this to 0 gives x₁ = x₀ − f(x₀)/f′(x₀). Geometry: the tangent at (x₀, f(x₀)) has slope f′(x₀); its x-intercept is x₁. In both views f is replaced by its linearisation and the root of the linear model is taken.
+
+A3. 0 = f(r) = f(x_i) + (r−x_i)f′(x_i) + ½(r−x_i)²f″(c_i). Divide by f′(x_i): f/f′ = e_i − ½e_i² f″(c_i)/f′(x_i). Then x_{i+1} − r = e_i − f/f′ = e_i² f″(c_i)/(2f′(x_i)). Since c_i → r, lim |e_{i+1}|/e_i² = |f″(r)/2f′(r)|. Hidden hypotheses: f ∈ C², f′(r) ≠ 0, x₀ close enough that f′(x_i) ≠ 0 and iterates stay in the neighbourhood. At a multiple root f′(r) = 0 and the constant blows up.
+
+A4. By Leibniz, f = (x−r)^m Q gives f^(k)(r) = 0 for k < m and f^(m)(r) = m! Q(r) ≠ 0; conversely Taylor gives Q(r) = f^(m)(r)/m!. Also f′ = (x−r)^(m−1)[mQ + (x−r)Q′], so f/f′ = (x−r)Q/(mQ + (x−r)Q′). Differentiating at r: d/dxf/f′ = Q(r)/(mQ(r)) = 1/m. Hence g′(r) = 1 − 1/m = (m−1)/m and e_{i+1} ≈ S e_i with S = (m−1)/m.
+
+A5. For g = x − m f/f′, the same computation gives g′(r) = 1 − m·(1/m) = 0. With g ∈ C², Taylor gives e_{i+1} ≈ ½g″(r)e_i², which is quadratic. To estimate m: for ordinary Newton the ratio (x_{i+1}−x_i)/(x_i−x_{i−1}) → S = (m−1)/m, so m ≈ 1/(1 − ratio). Round-off limits this: near a multiple root f is computed with relative error ε, so the root is only located to about ε^(1/m), and f/f′ becomes noisy.
+
+A6. (i) f′(x_i) = 0: the tangent is horizontal, so there is no intercept or a huge jump. (ii) f = 4x⁴ − 6x² − 11/4, x₀ = ½: f(½) = −4, f′(½) = −4, so x₁ = −½; f is even, so x₂ = ½ and the iterates cycle. Newton is a local method: the basins of the different roots (and of cycles) interleave, so which limit is reached depends on x₀.
+
+A7. With D_h = [f(x+h) − f(x−h)]/2h = f′(1 + δ), δ ≈ h²f‴/(6f′). Then e_{i+1} ≈ δ·e_i + O(e_i²). (i) Fixed h: the iteration still converges to the exact root (since f(r) = 0) but only linearly, with rate ∝ h². (ii) If h_i² = O(|e_i|), i.e. h_i ∝ √|e_i|, then δ = O(e_i) and quadratic convergence is restored (h_i ∝ |e_i| even better). Lower bound: subtraction error in the difference quotient is about ε_mach|f|/h, so h cannot go much below √ε_mach·scale.
+
+A8. Write f(r+e) = f′e(1 + Ce) with C = f″/2f′. The secant step gives e_{i+1} = e_i − e_i(1+Ce_i)/(1+C(e_i+e_{i−1})) ≈ C e_i e_{i−1}. Ansatz |e_{i+1}| = K|e_i|^α gives K|e_i|^(α−1) = C|e_{i−1}|, so |e_i| ∝ |e_{i−1}|^(1/(α−1)). Matching with |e_i| ∝ |e_{i−1}|^α gives α = 1/(α−1), i.e. α² − α − 1 = 0, α = (1+√5)/2. Golden ratio: with ℓ_i = log|e_i| + log|C|, the relation reads ℓ_{i+1} = ℓ_i + ℓ_{i−1}, a Fibonacci recurrence whose growth ratio is φ.
+
+A9. Efficiency index p^(1/w): Newton 2^(1/2) ≈ 1.414 (w = 2 evaluations), secant 1.618 (w = 1). Secant is cheaper per digit when f′ costs about as much as f. If f′ costs θ times an f-evaluation, Newton wins when ln2/(1+θ) > ln1.618, i.e. θ < 0.44 (e.g. f′ reuses the work of f, as with polynomials or exponentials).
+
+A10. With three distinct y-values, x = P(y) is a single-valued quadratic in y; the next guess is P(0), which needs no root-finding. Fitting y = P(x) and solving P(x) = 0 gives 0, 1 or 2 (possibly complex) roots, and one must choose. IQI breaks when two function values coincide (A = B makes the Lagrange denominators zero) and can extrapolate wildly. Hence Brent-type solvers keep a bracket and fall back to bisection when an IQI/secant step leaves it or converges slowly. IQI's order is ≈ 1.84 (root of α³ = α² + α + 1).
+Part B: Polynomial Interpolation
+
+B1. Existence: P = Σ y_i l_i; each l_i has degree n−1 and l_i(x_j) = δ_ij, so P(x_j) = y_j. Uniqueness: two interpolants P, Q give H = P − Q of degree ≤ n−1 with n roots, so H ≡ 0. If nodes coincide, l_i has a zero denominator; H then has only n−1 distinct roots (no contradiction), and repeated x with different y has no interpolant at all.
+
+B2. Vandermonde: solve costs O(n³), evaluation O(n) by Horner, adding a node needs a full re-solve. Lagrange: no setup, direct evaluation O(n²) (O(n) with barycentric weights), adding a node changes every l_i. Newton: table O(n²), evaluation O(n) nested, adding a node appends one coefficient in O(n). The Vandermonde matrix is ill-conditioned because the monomials 1, x, …, x^(n−1) become nearly parallel on an interval; the condition number grows roughly exponentially in n.
+
+B3. g(x) = x^k with k ≤ n−1 is a polynomial of degree ≤ n−1; by uniqueness its interpolant is g itself, and the interpolant is Σ g(x_i) l_i. So Σ x_i^k l_i(x) = x^k; k = 0 gives Σ l_i ≡ 1. Interpretation: the interpolation operator is a projection reproducing all polynomials of degree ≤ n−1.
+
+B4. P₁ interpolates x₂…x_{k−1}, x₁, x_k in that order and P₂ in the order …x_k, x₁. Both interpolate the same k points with degree ≤ k−1, so P₁ = P₂ by uniqueness. The coefficient of x^(k−1) is thus independent of the ordering, so f[x₁…x_k] is symmetric. Evaluating P₁(x_k) = P₂(x_k), the last P₂ term contains (x_k − x_k) = 0 and cancels, leaving f[x₂…x_{k−1}x₁] + f[x₂…x_{k−1}x₁x_k](x_k − x₁) = f[x₂…x_k]. Using symmetry inductively on the lower-order term gives f[x₁…x_k] = (f[x₂…x_k] − f[x₁…x_{k−1}])/(x_k − x₁).
+
+B5. In P = Σ_j f[x₁…x_j]∏_{i<j}(x−x_i) only the last term has degree n−1, so f[x₁…x_n] is the leading coefficient of the interpolant. Let h = f − P: it has n zeros, so h^(n−1) has a zero c, and h^(n−1) = f^(n−1) − (n−1)! f[x₁…x_n]. Therefore f[x₁…x_n] = f^(n−1)(c)/(n−1)!. Letting nodes coalesce: f[x,x] = f′(x) and f[x,…,x] (k copies) = f^(k−1)(x)/(k−1)!. Repeated nodes are filled with derivative data, which is Hermite interpolation.
+
+B6. h(t) = f(t) − P_{n−1}(t) − f[x₁…x_n x]∏(t−x_i) vanishes at x₁…x_n (P interpolates, product is 0) and at x (by construction): n+1 zeros. Rolle: h′ has ≥ n zeros, …, h^(n) has ≥ 1 zero c. P_{n−1}^(n) = 0 and the monic degree-n product has nth derivative n!, so f^(n)(c) = n! f[x₁…x_n x]. Hence f(x) − P_{n−1}(x) = f^(n)(c)/n!·ω(x). f must be C^(n−1) with an nth derivative on the interval. The bound is pointwise with unknown c; as n → ∞, f^(n) can grow faster than n! (Runge), so it does not imply convergence.
+
+B7. (1) If f is a polynomial of degree ≤ n−1, then f itself interpolates the data, so by uniqueness P = f. (2) f^(n) ≡ 0, so the error formula gives 0.
+
+B8. Polynomials of degree ≤ 6 vanishing at 1,…,6 are exactly L = a∏_{k=1}^6(x−k) (6 roots leave one constant). L(7) = 720a = 10 gives a = 1/72. Then L(8) = (1/72)·7! = 70. So (b) exists (the 8th condition holds here because 10·7 = 70, otherwise it is overdetermined: 7 coefficients, 8 conditions). With L(8) = 71 no such polynomial exists.
+Part C: Runge, Chebyshev, Splines
+
+C1. Error = f^(n)(c)/n!·ω(x). For equispaced nodes |ω| is small in the middle and very large in the outer subintervals (roughly by an exponentially growing factor), and f^(n) for 1/(1+12x²) grows factorially because of the poles at ±i/√12. Both matter: the equispaced node choice (the process) and the nearby complex singularities (the function). Better nodes cure the first; the second only makes convergence slower.
+
+C2. Statement: among monic polynomials of degree n, T_n/2^(n−1) has the smallest sup-norm on [−1,1], namely 2^(1−n). Proof: T_n has leading coefficient 2^(n−1), so T_n/2^(n−1) is monic. Suppose a monic P has ‖P‖ < 2^(1−n). At the n+1 extrema of T_n (values ±2^(1−n) after scaling), D = P − T_n/2^(n−1) has the sign of −T_n because of the strict inequality, so it alternates in sign: n sign changes, n roots. But D is a difference of two monic polynomials, so deg D ≤ n−1; hence D ≡ 0, contradicting the strictness.
+
+C3. With x = cosθ, cos((n+1)θ) + cos((n−1)θ) = 2cosθ cos nθ gives T_{n+1} = 2xT_n − T_{n−1}, T₀ = 1, T₁ = x. By induction deg T_n = n with leading coefficient 2^(n−1). Roots: nθ = (2i−1)π/2, so x_i = cos((2i−1)π/2n). Extrema at θ = kπ/n, k = 0…n: n+1 alternating ±1 values. On [a,b], with x = ((b−a)t + b + a)/2, ω(x) = ((b−a)/2)^n·T_n(t)/2^(n−1), so max|ω| = 2((b−a)/4)^n.
+
+C4. |ω| ≤ 2^(1−n), so the error is ≤ M_n/(2^(n−1) n!). For f = 1/(1+12x²), M_n ~ n!·(√12)^(n+1), so the bound behaves like (√12/2)^n = 1.73^n, which grows. So the bound proves nothing here. It is too pessimistic, not wrong: Chebyshev interpolation does converge geometrically for this f (analytic in an ellipse, rate ≈ 1/1.33), but that needs complex-analytic arguments.
+
+C5. S_i(x_i) = y_i holds automatically because the constant term is y_i, so Property 1 supplies only the n−1 right-end conditions. Equations: (n−1) + (n−2) [C¹] + (n−2) [C²] = 3n−5 against 3n−3 unknowns, so two more are needed. Natural: S″ = 0 at both ends (free end, no bending moment). Clamped: prescribe S′ at both ends (known end slopes). Not-a-knot: S‴ continuous at x₂ and x_{n−1}, so the first two and last two pieces are single cubics.
+
+C6. C⁰ at x_{i+1}: y_{i+1} = y_i + b_iδ_i + c_iδ_i² + d_iδ_i³ ⇒ b_i = Δ_i/δ_i − c_iδ_i − d_iδ_i². C² at x_{i+1}: 2c_i + 6d_iδ_i = 2c_{i+1} ⇒ d_i = (c_{i+1}−c_i)/(3δ_i). Substituting both into the C¹ condition b_i + 2c_iδ_i + 3d_iδ_i² = b_{i+1} gives δ_i c_i + 2(δ_i+δ_{i+1})c_{i+1} + δ_{i+1}c_{i+2} = 3(Δ_{i+1}/δ_{i+1} − Δ_i/δ_i). With natural rows c₁ = c_n = 0 the matrix has diagonal 2(δ_{i−1}+δ_i) > δ_{i−1}+δ_i (off-diagonals) and identity end rows, so it is strictly diagonally dominant, hence nonsingular (Lecture 8 theorem). The c_i, then d_i, b_i are unique, and the system can be solved in O(n).
+
+C7. Let S be the natural spline, g any C² interpolant, h = g − S (h = 0 at nodes). ∫(g″)² = ∫(S″)² + 2∫S″h″ + ∫(h″)². Integrating by parts, ∫S″h″ = [S″h′] − ∫S‴h′. The boundary term vanishes since S″ = 0 at the ends; S‴ is constant on each piece, so ∫S‴h′ = Σ S‴i[h]{x_i}^{x_{i+1}} = 0 because h vanishes at nodes. Thus ∫(g″)² ≥ ∫(S″)², with equality only if h″ ≡ 0, i.e. h linear and zero at nodes, so h ≡ 0.
+Part D: Numerical Integration
+
+D1. Trapezoid: ∫_{x₀}^{x₁}(x−x₁)/(x₀−x₁)dx, with w = x₁ − x, equals ∫₀^h (w/h)dw = h/2; same for the other basis function, giving (h/2)(y₀+y₁). Simpson: put x = x₁ + sh, s ∈ [−1,1]. l₀ = s(s−1)/2, l₁ = 1−s², l₂ = s(s+1)/2, and h∫l₀ = h/3, h∫l₁ = 4h/3, h∫l₂ = h/3.
+
+D2. Taylor about m: f = f(m) + (x−m)f′(m) + ½(x−m)²f″(c(x)). The exact integral I = hf(m) + (h³/24)f″(c) because g = (x−m)²/2 ≥ 0 has constant sign, so the weighted mean value theorem ∫f″g = f″(c)∫g applies, with ∫g = h³/24. The trapezoid value is hf(m) + (h³/16)(f″(c₊)+f″(c₋)) = hf(m) + (h³/8)f″(c′) by the intermediate value theorem. So I − S = (h³/24)f″(c) − (h³/8)f″(c′). The two c's differ, so the step to −(h³/12)f″(c″) is not literally a single application of the theorem. It is justified because the combination lies between −2·min f″ and −2·max f″, so by IVT it equals −2f″(c″)·(h³/24). The cleaner route: error = ∫½f″(ξ(x))(x−x₀)(x−x₁)dx, where (x−x₀)(x−x₁) ≤ 0 has constant sign, and the weighted MVT gives −(h³/12)f″(c) directly.
+
+D3. Degree of precision = largest k such that all polynomials of degree ≤ k are integrated exactly. Trapezoid: error ∝ f″, zero for degree ≤ 1; for x², f″ = 2 so the error is −h³/6 ≠ 0. DoP = 1. Simpson: error ∝ f⁗, zero for degree ≤ 3. The bonus comes from symmetry: with x = x₁ + sh, ∫s³ = 0 and Simpson's symmetric weights give (h/3)[(−1)³ + 0 + 1³] = 0, so cubics are exact. For x⁴ the error is −4h⁵/15 = −(h⁵/90)·24, matching the formula.
+
+D4. Trapezoid: m panels, h = (b−a)/m; sum of −(h³/12)f″(c_i) = −(mh³/12)·avg f″ = −(b−a)h²/12·f″(c), using mh = b−a and the IVT (f″ continuous) to replace the average by f″(c). If f″ is only bounded, use the bound (b−a)h² sup|f″|/12; the single-c form needs f″ continuous (or at least Darboux). Simpson: each panel has width 2h and error −h⁵f⁗/90; there are (b−a)/(2h) panels, so total = −(b−a)h⁴/180 f⁗(c). Simpson needs an even number of subintervals because each panel uses three nodes (two subintervals): odd nodes get weight 4, interior even nodes 2.
+
+D5. Midpoint: I − M = (h³/24)f″(c) (from D2). Trapezoid: I − T = −(h³/12)f″(c). The midpoint error is half the size and of opposite sign, so for convex f, M ≤ I ≤ T; also Simpson = (2M+T)/3. It uses only one value, at the centre of the panel. Endpoint singularities: no endpoint is ever evaluated. sin x/x at 0 is removable (f → 1, but 0/0 is undefined in code), f is smooth, and the error formula holds. ∫₀¹ x^(−1/2)dx has a genuine singularity: f″ ~ x^(−5/2) is unbounded, the formula is invalid, and the midpoint error decays only like O(h^(1/2)).
+Part E: Gaussian Quadrature
+
+E1. n nodes + n weights = 2n unknowns; exactness on 1, x, …, x^(2n−1) gives 2n equations, so degree 2n−1 is the natural maximum. Degree 2n is impossible: ∏(x−x_i)² is positive with positive integral, but the rule returns Σc_i·0 = 0. For n = 2: c₁+c₂ = 2, c₁x₁+c₂x₂ = 0, c₁x₁²+c₂x₂² = 2/3, c₁x₁³+c₂x₂³ = 0. The symmetric solution x₂ = −x₁, c₁ = c₂ = 1, x₁² = 1/3 solves them (and it is the unique solution). P₂ = (3x²−1)/2 has roots ±1/√3.
+
+E2. (i) If Σc_ip_i = 0, multiply by p_k and integrate: c_k∫p_k² = 0, so c_k = 0. That is n+1 independent vectors in an (n+1)-dimensional space (the slide's sum should run over i = 0…n). (ii) p_n ⟂ p₀,…,p_{n−1}, which span all polynomials of degree ≤ n−1. (iii) Suppose p_n changes sign at only m < n points z_j in (−1,1). With q = ∏(x−z_j) (degree m < n), p_n q has constant sign, so ∫p_n q ≠ 0, contradicting (ii). So p_n has n sign changes, hence n simple real roots in (−1,1).
+
+E3. Divide: P = S p_n + R with deg S, R ≤ n−1. Exact integral: ∫P = ∫Sp_n + ∫R = ∫R, since S is a combination of p₀…p_{n−1}. Quadrature: Σc_iP(x_i) = Σc_iS(x_i)p_n(x_i) + Σc_iR(x_i) = 0 + Σc_iR(x_i) because p_n(x_i) = 0 at the nodes (the step the lecture omits). Finally R equals its own interpolant (uniqueness, degree ≤ n−1), so ∫R = ∫ΣR(x_i)l_i = Σc_iR(x_i) with c_i = ∫l_i. Hence quadrature = ∫P.
+
+E4. l_i² has degree 2n−2 ≤ 2n−1, so the rule is exact on it: ∫l_i² = Σ_k c_k l_i(x_k)² = c_i (as l_i(x_k) = δ_ik). So c_i = ∫l_i² > 0. With positive weights, |Σc_i f̃_i − Σc_i f_i| ≤ (Σc_i)·max|f̃−f| = (b−a)·max|δf|: the rule has condition number b−a with no cancellation. Negative weights would make Σ|c_i| grow and amplify errors.
+
+E5. t = (2x−a−b)/(b−a) ⇒ x = ((b−a)t+b+a)/2, dx = (b−a)/2 dt, so ∫a^b f = (b−a)/2 ∫{−1}^1 f(x(t))dt. The map is affine, so it preserves polynomial degree, and the degree of precision is unchanged. For f = e^(−x²/2), f⁗ = (x⁴−6x²+3)e^(−x²/2), max 3. Composite Simpson error ≲ 2h⁴·3/180 with h = 2/8000 = 2.5×10⁻⁴: about 10⁻¹⁶, i.e. at the round-off floor. The quoted 1.71129 is off by 4×10⁻⁵, which is what about 10 subintervals would give. So the slide's "8000 panels" is almost certainly a typo.
+Part F: Direct Methods for Ax = b
+
+F1. Swap is self-inverse; "add c·row j to row i" is undone by subtracting; scaling by s ≠ 0 is undone by 1/s. So E is invertible and EAx = Eb has the same solutions. Failure without pivoting: a zero pivot, even for a nonsingular matrix (e.g. [[0,1],[1,0]]). Unit-lower LU exists without swaps iff all leading principal minors are nonzero (for nonsingular A: the pivot at step k is det A_k / det A_{k−1}).
+
+F2. At elimination stage j (block of size j+1 incl. the RHS), each of j rows needs 1 division and (j+1) multiply-subtract pairs = 2(j+1)+1 flops. Σ_{j=1}^{n−1} Σ_{i=1}^{j}[2(j+1)+1] = Σ(2j²+3j) = (n−1)n(2n−1)/3 + 3(n−1)n/2 = (2/3)n³ + ½n² − (7/6)n. Back substitution needs about 2·Σ(n−i) ≈ n² flops. Total O(n³), dominated by elimination. Once L, U are known each extra right-hand side costs 2n² flops.
+
+F3. In double precision ε ≈ 2×10⁻¹⁶: 2 − 10²⁰ and 4 − 10²⁰ both round to −10²⁰. Row 2 then reads −10²⁰x₂ = −10²⁰, so x₂ = 1, and back substitution gives 10⁻²⁰x₁ = 0, x₁ = 0, versus the true ≈ [2, 1]. The multiplier 10²⁰ overwhelms row 2 with row 1. After swapping, the pivot is 1 and the multiplier 10⁻²⁰; row 2 becomes 1 − 2×10⁻²⁰ → 1, giving x₂ = 1, x₁ = 4 − 2 = 2. Partial pivoting guarantees every multiplier has |m| ≤ 1.
+
+F4. |l_ij| ≤ 1 does not bound the growth of U's entries; the growth factor ρ = max|a^(k)|/max|a| can reach 2^(n−1) (Wilkinson's matrix), though it is tiny in practice. Complete pivoting (search the whole remaining block) has a far smaller growth bound but costs O(n³) comparisons. Scaling counterexample: multiply row 1 of [[10⁻²⁰,1|1],[1,2|4]] by 10²⁰ to get [[1,10²⁰|10²⁰],[1,2|4]]. Partial pivoting sees a tie and keeps row 1, repeating the swamping. Scaled partial pivoting compares |a_ik|/s_i with s_i = max_j|a_ij|, picks row 2, and fixes it.
+
+F5. With E_ij = e_i e_jᵀ (i ≠ j), E_ij² = 0, so (I − cE_ij)(I + cE_ij) = I − c²E_ij² = I. For L₂₁(c₁)L₃₁(c₂)L₃₂(c₃), every cross term such as E₂₁E₃₁ = e₂(e₁ᵀe₃)e₁ᵀ = 0 vanishes, so the product is I + c₁E₂₁ + c₂E₃₁ + c₃E₃₂: the multipliers simply collect in their slots. Reverse order fails: E₃₂E₂₁ = e₃e₂ᵀe₂e₁ᵀ = E₃₁ ≠ 0, which gives a spurious extra c₃c₁ entry in position (3,1).
+
+F6. A later swap of two rows below column k commutes with the earlier eliminations if the multipliers already stored in those two rows are swapped as well, because P L_k P⁻¹ is again unit lower triangular. Collecting gives PA = LU, with L the permuted multipliers. P⁻¹ = Pᵀ because a permutation matrix has orthonormal columns. In the example the first swap makes the multipliers ½ and ¼ (rows 2, 3); the second swap exchanges them, giving ¼ in row 2 and ½ in row 3. Existence: if A is nonsingular, every stage has a nonzero entry in the current column (otherwise the columns would be dependent), so a swap always yields a nonzero pivot.
+
+F7. Suppose A = LU = L̃Ũ with A nonsingular (so U, Ũ are nonsingular since det L = 1). Then L̃⁻¹L = ŨU⁻¹. The left side is unit lower triangular, the right side is upper triangular, so both are diagonal with unit diagonal, hence I. So L = L̃, U = Ũ. (For singular A uniqueness can fail.)
+
+F8. Explicit inverses cost about n³ flops each and are less accurate; forward/back substitution costs n² total and preserves the triangular structure. In the notebook, swapping the entries of b together with the rows of a implements Pb, so LUx = Pb is equivalent to Ax = b. But P is never stored, so the factorisation cannot be reused for a new b′ without recording the pivot sequence. For A_ij V_j = ρ_i(t) with fixed A: one O(n³) factorisation, then O(n²) per time step; re-eliminating each step costs O(n³) again, and iterative methods need many sweeps.
+Part G: Iterative Methods
+
+G1. Split A = L + D + U (strictly lower, diagonal, strictly upper). Jacobi: Dx_{k+1} = b − (L+U)x_k. Gauss–Seidel: (D+L)x_{k+1} = b − Ux_k, i.e. component i uses the new values for j < i and old ones for j > i. Jacobi is fully parallel but stores two vectors; Gauss–Seidel is sequential and order-dependent, works in place, and typically converges about twice as fast.
+
+G2. Error e_k = M^k e₀. (⇐) If ρ < 1, pick ε with ρ + ε < 1; there is an induced norm with ‖M‖ ≤ ρ + ε, so ‖M^k‖ → 0 (Jordan blocks give k^s λ^k → 0). (⇒) If |λ| ≥ 1 with eigenvector v, take e₀ = v: M^k v = λ^k v does not → 0. The fixed point is (I−M)⁻¹c, which exists since 1 is not an eigenvalue. The lecture expands x₀ in eigenvectors of A, which assumes a full eigenbasis (M diagonalisable). It proves only sufficiency, not necessity, and not the defective case.
+
+G3. Let D⁻¹R v = λv with ‖v‖∞ = 1 = |v_m| (rescale v). Row m: Σ{j≠m} r_mj v_j = λ d_mm v_m ⇒ |λ||d_mm| ≤ Σ_{j≠m}|r_mj| < |d_mm|, so |λ| < 1. Strictness gives the strict inequality (otherwise only ρ ≤ 1). Nonsingularity: d_mm ≠ 0 for all m (dominance), and A = D(I + D⁻¹R) with det(I + D⁻¹R) = ∏(1+λ_i) ≠ 0 since |λ_i| < 1, so −1 is not an eigenvalue. The lecture's final step (convergence gives a solution for every b) also works.
+
+G4. Jacobi on u = 5−2v, v = 5−3u has M = [[0,−2],[−3,0]], λ² = 6, λ = ±√6 ≈ ±2.45: diverges. Not strictly diagonally dominant but convergent: A = [[1,2],[0.4,1]] has Jacobi ρ = √(2·0.4) = √0.8 ≈ 0.89 < 1. So dominance is sufficient, not necessary; convergence depends on ρ(M).
+
+G5. Both cost O(nnz) per sweep. For consistently ordered matrices (e.g. tridiagonal) ρ_GS = ρ_J², so GS needs about half the sweeps. GS depends on the ordering of the equations, Jacobi does not. Counterexample: A = [[1,2,−2],[1,1,1],[2,2,1]]: the Jacobi matrix is nilpotent (ρ = 0, converges in 3 steps) while GS has eigenvalues 0, 2, 2 (ρ = 2, diverges). For symmetric positive definite A, Gauss–Seidel always converges (Ostrowski–Reich); Jacobi converges only if 2D − A is also SPD.
+
+G6. x − x_k = A⁻¹r_k, so ‖e‖ ≤ ‖A⁻¹‖‖r‖ and ‖e‖/‖x‖ ≤ κ(A)‖r‖/‖b‖: a small residual means a small error only if κ is moderate. For linear convergence e_{k+1} ≈ ρe_k, so x_{k+1} − x_k = e_k − e_{k+1} ≈ (1−ρ)e_k and ‖e_{k+1}‖ ≈ ρ/(1−ρ)·‖x_{k+1}−x_k‖. If ρ ≈ 1 a tiny step hides a large error. Iterative methods are preferred for large sparse A (LU fill-in destroys sparsity), when moderate accuracy suffices, or with a good initial guess.
+Part H: Nonlinear Systems and Synthesis
+
+H1. F(x_k + s) ≈ F(x_k) + DF(x_k)s = 0 gives DF(x_k)s = −F(x_k) and x_{k+1} = x_k + s. Solving the system by elimination costs ≈ (2/3)n³ flops; forming DF⁻¹ costs about 2n³ and is less accurate. Each iteration also needs n² partial derivatives (or n extra F-evaluations by finite differences); sparse or banded structure cuts the cost.
+
+H2. Theorem: F ∈ C¹, F(r) = 0, DF(r) nonsingular, DF Lipschitz (constant L) near r. Then there is δ > 0 such that Newton converges for ‖x₀ − r‖ < δ and ‖e_{k+1}‖ ≤ (L/2)·sup‖DF⁻¹‖·‖e_k‖². Sketch: 0 = F(r) = F(x_k) − DF(x_k)e_k + ρ_k with ‖ρ_k‖ ≤ (L/2)‖e_k‖²; then e_{k+1} = e_k − DF⁻¹F(x_k) = DF(x_k)⁻¹ρ_k. ‖DF(x_k)⁻¹‖ stays bounded near r by continuity. If DF(r) is singular (multiple-root analogue), convergence is typically only linear, and DF(x_k) becomes ill-conditioned.
+
+H3. DF = [[−3x², 1],[2x, 2y]] (the notebook's a; func returns −F so the system is a·s = −F). The problem is the intersection of y = x³ with the unit circle: x² + x⁶ = 1, so t = x² satisfies t³ + t − 1 = 0 (the same cubic as in Lecture 1), t ≈ 0.6823, x ≈ ±0.826, y ≈ ±0.564. There are two solutions, symmetric under (x,y) → (−x,−y). The start (1,2) lies in the basin of the positive one; a negative x₀ would go to the other. At (0,0), DF = [[0,1],[0,0]] is singular (a zero pivot even with pivoting), so Newton cannot take a step.
+
+H4. (a) Σ|Δx_i| is the ℓ¹ norm of the step, a legitimate norm; it is absolute (not relative), and the factor n scales the tolerance with dimension. (b) For quadratic convergence the error after the last step is about C·(step)². The loop stops when the step is ≤ n·10⁻² = 0.02, so the final error is about 4×10⁻⁴·C, i.e. 3–4 correct decimals, not 8. For 8 decimals one needs a step of about 10⁻⁴ (error ≈ 10⁻⁸). For linear convergence the error is larger than the last step (≈ ρ/(1−ρ) × step). (c) The Jacobian depends on x, so it must be re-evaluated at every iterate; also the in-place elimination overwrites a and f.
+
+H5. (i) Chord: factor DF(x₀) once and reuse it; each step costs O(n²) but convergence is only linear, with rate ∝ ‖x₀ − r‖. Shamanskii refreshes DF every m steps for a per-cycle order of m+1. (ii) Broyden: B_{k+1} = B_k + (y − B_k s)sᵀ/(sᵀs) with s = x_{k+1}−x_k, y = F(x_{k+1})−F(x_k), enforcing the secant equation B_{k+1}s = y. In 1D this is exactly replacing f′ by the difference quotient, i.e. the secant method (order ≈ 1.618). In n dimensions Broyden is q-superlinear (not quadratic), needs no Jacobians, and costs O(n²) per update.
+
+H6 (synthesis).
+Method 	Rate / order 	Depends on
+Bisection 	linear, ratio ½ 	continuity and a sign-change bracket
+Newton, simple root 	quadratic 	f ∈ C², f′(r) ≠ 0, x₀ near r
+Newton, root of multiplicity m 	linear, S = (m−1)/m 	f = (x−r)^m Q
+Modified Newton 	quadratic 	m known
+Secant 	(1+√5)/2 ≈ 1.618 	simple root, two starts
+IQI 	≈ 1.84 	distinct function values, simple root
+Jacobi / Gauss–Seidel 	linear, ρ(M) < 1 	e.g. strict diagonal dominance; ρ_GS = ρ_J² if consistently ordered
+
+Choices: unknown derivative → secant (or a bracketed hybrid such as Brent if a bracket is available); unknown multiplicity → run Newton, estimate m from the ratio S, switch to Modified Newton (or apply Newton to f/f′, which needs f″); large sparse system → Gauss–Seidel or Jacobi (diagonally dominant or SPD); fixed matrix with many right-hand sides → PA = LU once (O(n³)), then O(n²) per right-hand side.

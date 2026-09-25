@@ -1,0 +1,121 @@
+Numerical Methods: Theory Questionnaire
+
+Covers Lectures 1–8 (root finding, interpolation, splines, integration, Gaussian quadrature, linear and nonlinear systems) plus the LU and Newton-system notebooks. ★★ = medium, ★★★ = hard. Prove or justify every claim; no numerical answers are wanted unless stated.
+Part A: Root Finding (Lectures 1–2)
+
+A1 ★★ Show that after n bisection steps the interval has length (b−a)/2ⁿ. Find the least n guaranteeing error < TOL. Why is this bound independent of f? The interval bound halves every step, but must the actual error |c_n − r| decrease monotonically? Explain. What does f(a)f(b) < 0 guarantee when the interval holds several roots?
+
+A2 ★★ Derive Newton–Raphson in two ways: from a truncated Taylor series and from tangent-line geometry. State precisely what is being approximated in each derivation.
+
+A3 ★★★ Using Taylor's theorem with Lagrange remainder, prove e_{i+1} = e_i² · f″(c_i)/(2f′(x_i)) and lim |e_{i+1}|/e_i² = |f″(r)/(2f′(r))|. List every hypothesis used silently (smoothness, f′(r) ≠ 0, closeness of x₀). Which one fails at a multiple root?
+
+A4 ★★★ Let f(x) = (x−r)^m Q(x) with Q(r) ≠ 0. Show this is equivalent to f(r) = … = f^(m−1)(r) = 0, f^(m)(r) ≠ 0. Write Newton's method as a fixed-point iteration g(x) = x − f/f′ and prove g′(r) = 1 − 1/m, so convergence is linear with S = (m−1)/m for every such f, not only f = x^m.
+
+A5 ★★★ Prove the Modified Newton method x_{i+1} = x_i − m f(x_i)/f′(x_i) converges quadratically at a root of multiplicity m. m is usually unknown; propose a way to estimate it from a run of ordinary Newton iterates, and discuss its reliability under round-off.
+
+A6 ★★ Describe two distinct failure mechanisms of Newton's method (e.g. f′(x_i) = 0, and the 2-cycle for f = 4x⁴ − 6x² − 11/4 from x₀ = ½). Explain each from the tangent-line picture and say why convergence is "initial-condition dependent".
+
+A7 ★★★ The margin note in Lecture 1 replaces f′ by the central difference [f(x+h) − f(x−h)]/2h, with O(h²) error. Analyse how this perturbs the order of Newton's method for (i) fixed h and (ii) h chosen as a function of the current error e_i. How should h scale to retain quadratic convergence, and what does round-off impose from below?
+
+A8 ★★★ Derive e_{i+1} ≈ C e_i e_{i−1}, C = f″(r)/(2f′(r)), for the secant method. Then, using the ansatz |e_{i+1}| ≈ K|e_i|^α, derive α² − α − 1 = 0. Explain the margin question "golden ratio??": show that log|e_i| obeys a Fibonacci-type recurrence.
+
+A9 ★★★ Compare Newton (order 2, two evaluations f and f′ per step) and secant (order ≈1.618, one evaluation per step) using the efficiency index p^(1/w). Which is cheaper per correct digit? Under what circumstances does the answer reverse?
+
+A10 ★★★ Inverse Quadratic Interpolation fits x = P(y) rather than y = P(x). Show the next iterate is P(0). Why does direct quadratic interpolation in x cause trouble (no real root, or two roots)? Give a configuration where IQI breaks down, and explain why practical solvers pair it with bisection.
+Part B: Polynomial Interpolation (Lecture 3)
+
+B1 ★★ Prove the Main Theorem of Polynomial Interpolation (existence and uniqueness of the degree ≤ n−1 polynomial through n points with distinct x_i). Use l_i(x_j) = δ_ij for existence. Where does the uniqueness proof break if two nodes coincide?
+
+B2 ★★ The monomial (Vandermonde), Lagrange, and Newton forms represent the same polynomial. Compare construction cost, evaluation cost, and the cost of adding one more node. Why is the Vandermonde system typically ill-conditioned?
+
+B3 ★★★ Prove Σᵢ l_i(x) ≡ 1, and more generally Σᵢ x_i^k l_i(x) = x^k for 0 ≤ k ≤ n−1. Interpret the identity as a statement about which functions the interpolation operator reproduces.
+
+B4 ★★★ Follow the P₁/P₂ argument in the notes to prove that f[x₁…x_k] is symmetric in its arguments and satisfies f[x₁…x_k] = (f[x₂…x_k] − f[x₁…x_{k−1}])/(x_k − x₁). Which step uses uniqueness?
+
+B5 ★★★ Prove f[x₁…x_n] is the coefficient of x^(n−1) in the interpolating polynomial. Combine this with the interpolation-error argument to show f[x₁…x_n] = f^(n−1)(c)/(n−1)! for some c. What does this suggest about divided differences when nodes coalesce, and how does it lead to Hermite interpolation?
+
+B6 ★★★ In the Rolle's-theorem proof of the error formula, justify: (i) h(t) has n+1 zeros, (ii) h^(n) has at least one zero, (iii) the nth derivative of P_{n−1} vanishes. Where is smoothness of f needed? What does the resulting bound say, and not say, about convergence as n → ∞?
+
+B7 ★★ Let f be a polynomial of degree ≤ n−1, interpolated at n distinct nodes. Give two independent arguments (uniqueness, and the error formula) that the error is zero.
+
+B8 ★★ A degree-d polynomial has d+1 free coefficients. Use this counting argument to decide: does a degree-6 polynomial exist that is 0 at x = 1,…,6, equals 10 at 7, and equals 70 at 8? What if the value at 8 were 71? Explain the structure of all degree-6 polynomials vanishing at 1,…,6.
+Part C: Runge Phenomenon, Chebyshev Nodes, Splines (Lecture 4)
+
+C1 ★★ Using the error formula, identify which factor causes the Runge phenomenon for equispaced nodes and explain why it is large near the endpoints. Is the failure due to the interpolation process, the function, or both? (Hint: consider the poles of 1/(1+12x²) in the complex plane.)
+
+C2 ★★★ State Chebyshev's min-max theorem for monic polynomials on [−1, 1]. Reproduce the proof: why is T_n/2^(n−1) monic, why does P_n − T_n/2^(n−1) change sign n times, why is its degree ≤ n−1, and where is the strict inequality used?
+
+C3 ★★ Show T_n(x) = cos(n cos⁻¹x) is a polynomial by deriving T_{n+1} = 2xT_n − T_{n−1}. Deduce the degree n, the leading coefficient 2^(n−1), the roots cos((2i−1)π/2n), and the n+1 alternating extrema. For a general interval [a, b], derive the shifted nodes and the value of max|∏(x − x_i)|.
+
+C4 ★★★ With Chebyshev nodes derive max|f − P_{n−1}| ≤ M_n/(2^(n−1) n!) on [−1, 1]. Does this bound alone prove uniform convergence for f = 1/(1+12x²)? Why or why not?
+
+C5 ★★ A cubic spline on n nodes has 3(n−1) unknowns once y_i is built into each piece. Reconcile this with the 3n−5 equations from Properties 1–3. What extra conditions close the system (natural, clamped, not-a-knot), and what does each mean physically?
+
+C6 ★★★ Derive b_i = Δ_i/δ_i − c_iδ_i − d_iδ_i² and d_i = (c_{i+1} − c_i)/(3δ_i), then the tridiagonal system for the c_i. Show the natural-spline matrix is strictly diagonally dominant, hence the spline exists and is unique (connect to Lecture 8).
+
+C7 ★★★ (extension) Show the natural cubic spline minimises ∫(f″)² among all C² interpolants of the same data. Use integration by parts. This is the sense in which it is the "smoothest" interpolant.
+Part D: Numerical Integration (Lecture 5 and Recap)
+
+D1 ★★ Derive the trapezoid and Simpson weights by integrating the Lagrange interpolants (h/2, h/2 and h/3, 4h/3, h/3), using the substitution w = −x + x₁ shown in the notes.
+
+D2 ★★★ Derive the single-panel trapezoid error via Taylor expansion about the midpoint: I = hf(m) + (h³/24)f″(c), S = hf(m) + (h³/8)f″(c′), so I − S = −(h³/12)f″(c). The two c's are generally different points. Which theorem justifies merging them into one? Explain why the sign-definiteness of (x−m)² is essential (weighted mean value theorem for integrals).
+
+D3 ★★ Define degree of precision. Prove it is 1 for trapezoid and 3 (not 2) for Simpson. Explain the "bonus" degree from symmetry, using ∫(x−x₁)³ over a symmetric interval.
+
+D4 ★★★ Derive the composite errors −(b−a)h²f″(c)/12 (trapezoid) and −(b−a)h⁴f⁗(c)/180 (Simpson). Track the panel counts, remembering a Simpson panel spans 2h. Why does Σ f″(c_i) = m·f″(c) for some c? What fails if f″ is discontinuous? Why must Simpson use an even number of subintervals?
+
+D5 ★★★ Derive the midpoint error (h³/24)f″(c). Why is the midpoint rule twice as accurate as the trapezoid using half the evaluations, and why is its error of opposite sign? The notes recommend it for endpoint singularities. Distinguish the removable singularity of sin x/x at 0 from ∫₀¹ x^(−1/2) dx. Does the error formula still hold in the second case, and what happens to the convergence rate?
+Part E: Gaussian Quadrature (Lecture 6)
+
+E1 ★★ Count parameters (n nodes + n weights = 2n) to motivate degree of precision 2n−1. Show degree 2n is impossible for an n-point rule by testing ∏(x − x_i)². Derive the n = 2 nodes ±1/√3 and weights 1 directly from the moment equations ∫x^k dx for k = 0,…,3, and confirm they are roots of P₂.
+
+E2 ★★★ Prove (i) an orthogonal set {p₀,…,p_n} with deg p_i = i is a basis for polynomials of degree ≤ n (check the index range in the slide's proof), (ii) p_n is orthogonal to every polynomial of lower degree, and (iii) p_n has n distinct real roots in (−1, 1). Hint for (iii): assume fewer than n sign changes and consider ∏(x − z_j) times p_n.
+
+E3 ★★★ Reproduce the proof that n-point Gauss–Legendre has degree of precision 2n−1 via P = S·p_n + R. The lecture argues exactness on R and orthogonality of S·p_n but skips one step: why does the quadrature sum of S·p_n also vanish? Fill the gap, and explain why exactness on R follows from c_i = ∫l_i.
+
+E4 ★★ Prove the weights c_i = ∫l_i are positive (hint: l_i² has degree 2n−2 ≤ 2n−1). Why does positivity matter for stability under perturbed function values?
+
+E5 ★★★ Derive the change of variables t = (2x−a−b)/(b−a) with Jacobian (b−a)/2, and verify the degree of precision is unchanged. For ∫₋₁¹ e^(−x²/2) dx the slides give exact value 1.71124878, Gauss n = 4 gives 1.71122450, and "composite Simpson with 8000 panels" gives 1.71129. Use the composite Simpson error formula to estimate the true error for 8000 panels. Is the quoted figure plausible?
+Part F: Direct Methods for Ax = b (Lecture 7 and LU notebooks)
+
+F1 ★★ Show each elementary row operation is invertible and preserves the solution set. When does elimination without pivoting fail? State the condition on leading principal minors for an LU factorisation to exist without row swaps.
+
+F2 ★★★ Derive the elimination cost Σⱼ Σᵢ (2(j+1)+1) = (2/3)n³ + ½n² − (7/6)n, and the O(n²) cost of back substitution. What is counted as an operation? Why is total cost O(n³), and what is the marginal cost of an additional right-hand side once L and U are known?
+
+F3 ★★ Explain "swamping" in the 10⁻²⁰ example in floating-point arithmetic: why is 2 − 10²⁰ stored as −10²⁰ and why does this give [0, 1] instead of ≈[2, 1]? Why does interchanging rows cure it? What size do multipliers have after pivoting?
+
+F4 ★★★ Partial pivoting forces |multipliers| ≤ 1, but does it bound element growth? Discuss the growth factor (worst case 2^(n−1)) and contrast with complete pivoting. Construct a scaling of the swamping example on which partial pivoting still picks a poor pivot, and describe scaled partial pivoting.
+
+F5 ★★ Prove L_ij(−c)⁻¹ = L_ij(c). Show that the product L₂₁(c₁)L₃₁(c₂)L₃₂(c₃) collects the multipliers into one unit lower-triangular matrix with no cross-terms, and explain how this depends on the multiplication order (what goes wrong with the reverse order?).
+
+F6 ★★★ For PA = LU, explain why row swaps can be pulled through the elimination provided earlier multipliers are also permuted. Prove P⁻¹ = Pᵀ. In the worked example, why do the multipliers ¼ and ½ appear in swapped rows of L? Argue that every nonsingular matrix has a PA = LU factorisation.
+
+F7 ★★★ Prove that when it exists, the LU factorisation with unit-diagonal L is unique. Hint: L₂⁻¹L₁ = U₂U₁⁻¹ is simultaneously unit lower and upper triangular.
+
+F8 ★★ In LU.ipynb the solution is obtained as x = U⁻¹(L⁻¹b) using explicit inverses. Compare with forward/back substitution in cost and accuracy. The code swaps entries of b while pivoting a: what permutation matrix P is being implemented, and is it consistent with PA = LU? Why is LU preferable when A is fixed but the source term changes at each time step (Aᵢⱼ Vⱼ = ρᵢ(t))?
+Part G: Iterative Methods (Lecture 8)
+
+G1 ★★ From A = L + D + U derive Jacobi, x_{k+1} = D⁻¹b − D⁻¹(L+U)x_k, and Gauss–Seidel, (D+L)x_{k+1} = b − Ux_k. State exactly how the two differ in using updated components, and the consequences for parallelism and storage.
+
+G2 ★★★ Prove that x_{k+1} = Mx_k + c converges for every x₀ if and only if ρ(M) < 1. The eigenvector-expansion argument in the lecture silently assumes something about M: what? How is the general (defective) case handled, e.g. through Jordan blocks or ‖Mᵏ‖ ≤ C(ρ+ε)ᵏ? Which direction of the theorem does the lecture actually prove?
+
+G3 ★★★ Reproduce the proof that strict diagonal dominance implies ρ(D⁻¹R) < 1, using an eigenvector normalised so ‖v‖_∞ = v_m = 1. Where is strictness used? Explain how ρ(D⁻¹R) < 1 gives nonsingularity of A = D(I + D⁻¹R) directly, without appealing to the iteration.
+
+G4 ★★ For the reversed system u + 2v = 5, 3u + v = 5, compute the Jacobi iteration matrix and its eigenvalues, and confirm divergence. Then give a matrix that is not strictly diagonally dominant for which Jacobi still converges. What does this say about the status of the theorem (sufficient, not necessary)?
+
+G5 ★★★ Compare Jacobi and Gauss–Seidel: cost per sweep, convergence rate (relation between the two spectral radii for consistently ordered matrices), and dependence on equation ordering. Give (or cite) a case where one converges and the other diverges. State the convergence guarantee of Gauss–Seidel for symmetric positive definite matrices.
+
+G6 ★★ Compare stopping on the step ‖x_{k+1} − x_k‖ versus on the residual ‖b − Ax_k‖. Relate error and residual through the condition number. For linear convergence with rate ρ show ‖e_k‖ ≈ ρ/(1−ρ)·‖x_{k+1} − x_k‖ and say when a small step is misleading. When is an iterative method preferred over LU?
+Part H: Nonlinear Systems and Synthesis
+
+H1 ★★ Derive multivariate Newton from the first-order Taylor expansion of F, in the form DF(x_k)s = −F(x_k), x_{k+1} = x_k + s. Why is DF⁻¹ never formed explicitly? Give the per-iteration cost and the role of the Jacobian's structure.
+
+H2 ★★★ State the local quadratic-convergence theorem in ℝⁿ: what conditions on DF(r) (nonsingular, Lipschitz) and x₀ are needed? Sketch why ‖e_{k+1}‖ = O(‖e_k‖²). What happens when DF(r) is singular (the multi-dimensional analogue of a multiple root)?
+
+H3 ★★ For F(x, y) = (y − x³, x² + y² − 1) in Newton_SOE, write DF and interpret the problem geometrically. How many solutions exist? Why does the output depend on the initial guess? What happens if you start at (0, 0)?
+
+H4 ★★★ Critique the stopping rule in Newton_SOE (loop while Σ|Δx| > n·10⁻²). (a) Is the ℓ¹ sum of step sizes a sensible measure? (b) For a quadratically convergent method, the true error after the last step is roughly the square of the previous step size: what does that imply about whether tol = n·10⁻² can deliver "8 correct decimals"? (c) Why must the Jacobian be rebuilt each iteration, given that elimination overwrites a?
+
+H5 ★★★ Compare Newton with LU solves at every step against (i) reusing one LU factorisation for several steps (chord/Shamanskii) and (ii) Broyden's method. Show that Broyden is the multi-dimensional analogue of the secant method, and predict the change in convergence order.
+
+H6 ★★★ Synthesis For each of bisection, Newton (simple root), Newton (double root), Modified Newton, secant, IQI, Jacobi and Gauss–Seidel, state the order/rate of convergence and the hypothesis on which it depends. Then choose which method you would use for: a function with unknown derivative, a root of unknown multiplicity, a large sparse system, and a fixed matrix with many right-hand sides, with justification.
