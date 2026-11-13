@@ -1,0 +1,35 @@
+import numpy as np
+
+# System: f1 = x1 - x0^3 = 0,  f2 = x0^2 + x1^2 - 1 = 0
+def func(x):
+    return np.array([
+        x[1] - x[0]**3,
+        x[0]**2 + x[1]**2 - 1.0
+    ])
+
+def jacobian(x):
+    return np.array([
+        [-3.0 * x[0]**2, 1.0],
+        [2.0 * x[0], 2.0 * x[1]]
+    ], dtype=float)
+
+# Initial guess
+x = np.array([1.0, 2.0])
+tol = 1e-8
+max_iter = 100
+
+for it in range(max_iter):
+    F = func(x)
+    J = jacobian(x)
+
+    # Check convergence
+    if np.linalg.norm(F) < tol:
+        print(f"Converged in {it} iterations.")
+        break
+
+    # Newton update step using direct inverse formula: x_{k+1} = x_k - J^{-1} F
+    step = np.linalg.inv(J) @ F
+    x = x - step
+
+print("Computed Root Vector x* =", x)
+print("Residual F(x*) =", func(x))

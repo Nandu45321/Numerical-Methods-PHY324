@@ -1,0 +1,122 @@
+Numerical Methods: Quiz 2 Theory Questionnaire
+
+Covers:
+- Finite Difference Schemes and Boundary Conditions
+- 1D and 2D Diffusion Equations (FTCS, BTCS, Fourier mode decay, Heterogeneous D(x))
+- 1D First-Order and Second-Order Wave Equations (Upwind, Leap-Frog, CFL condition, Exactness)
+- Stochastic Systems: 1D and 2D Random Walks, Realization vs. Ensemble Average, Langevin Dynamics
+- Fokker-Planck (Smoluchowski) Equation and Gibbs-Boltzmann Equilibrium
+- Advanced ODE Systems: Explicit vs. Implicit Euler (Nuclear Decay), Damped/Driven Oscillators (Euler, Euler-Cromer, RK4), Nonlinear Systems (Fixed Points & Phase Portraits), Multivariable Newton's Method.
+
+★★ = medium difficulty, ★★★ = hard / derivation intensive.
+Prove or justify every claim; no numerical answers are wanted unless stated.
+
+======================================================================
+Part A: Finite Differences and Boundary Conditions
+======================================================================
+
+A1 ★★ Using Taylor expansions of f(x + Δx) and f(x - Δx), derive the central difference approximations for f'(x) and f''(x). What are their respective leading-order truncation errors? Why is the central difference for the first derivative of order O(Δx^2) whereas forward and backward differences are only O(Δx)?
+
+A2 ★★ In class notes, the second derivative is alternatively discretized as nested differences:
+d^2f/dx^2 ≈ (1/Δx) [ (f(x_{i+1}) - f(x_i))/Δx - (f(x_i) - f(x_{i-1}))/Δx ].
+Show that this gives the exact same three-point stencil. Interpret this geometrically as the difference between adjacent slopes.
+
+A3 ★★ Define the three standard boundary condition types for PDEs on [0, L]:
+(i) Dirichlet B.C.
+(ii) Neumann (No-flux) B.C.
+(iii) Periodic B.C.
+For a diffusion process ∂ρ/∂t = D ∂^2ρ/∂x^2, use Fick's law J = -D ∂ρ/∂x and the continuity equation to show why Neumann boundary conditions (∂ρ/∂x = 0 at boundaries) guarantee strict conservation of the total number of particles N(t) = ∫_0^L ρ(x, t) dx. How are ghost points or boundary nodes implemented in discrete code?
+
+A4 ★★ What are physical symmetries in PDEs (e.g., translational invariance x -> x + a and parity reflection x -> -x)? How do boundary conditions break these symmetries, and what does this imply for the steady-state solution?
+
+======================================================================
+Part B: Diffusion Equations (Parabolic PDEs)
+======================================================================
+
+B1 ★★★ Formulate the Forward Time Centered Space (FTCS) explicit scheme for the 1D diffusion equation ∂ρ/∂t = D ∂^2ρ/∂x^2. Perform a complete, step-by-step von Neumann stability analysis by substituting a single spatial Fourier mode ρ_j^n = T^n e^{i k x_j}. Derive the amplification factor G(k) = 1 - 4C sin^2(k Δx / 2), where C = D Δt / Δx^2. Hence, prove that the scheme is stable if and only if C ≤ 1/2. What happens to the numerical solution when C > 1/2?
+
+B2 ★★★ Consider the diffusion equation in Fourier space: ∂\hat{ρ}(k, t)/∂t = -D k^2 \hat{ρ}(k, t).
+(i) Show that each mode decays as exp(-D k^2 t), with characteristic relaxation timescale τ_k = 1 / (D k^2) = λ^2 / (4 π^2 D).
+(ii) Explain physically why higher wavenumber modes (shorter wavelengths) equilibrate much faster than lower wavenumber modes.
+(iii) In Problem Set III Q6, compare the relaxation times of an initial profile with k_1 = 2π/L versus k_2 = 16π/L. By what exact factor does the second profile homogenize faster?
+
+B3 ★★★ Derive the Backward Time Centered Space (BTCS) implicit scheme for the 1D diffusion equation. Write down the resulting tridiagonal system A ρ^{n+1} = ρ^n. Using von Neumann stability analysis, derive the amplification factor G(k) for the BTCS scheme and prove that it is unconditionally stable for any Δt > 0, Δx > 0. Why is BTCS preferred over FTCS for long-time simulations despite requiring a matrix solve at every time step?
+
+B4 ★★★ Consider the two-dimensional diffusion equation ∂ρ/∂t = D (∂^2ρ/∂x^2 + ∂^2ρ/∂y^2) on a grid with uniform spacing Δx = Δy = δ.
+(i) Write down the FTCS discretization in 2D.
+(ii) Perform von Neumann stability analysis and prove that the stability condition is D Δt / δ^2 ≤ 1/4.
+(iii) Generalize this result to d spatial dimensions: prove that the stability criterion is D Δt / δ^2 ≤ 1 / (2d).
+
+B5 ★★★ In a heterogeneous medium with spatially varying diffusion coefficient D(x), the diffusion equation is ∂ρ/∂t = ∂/∂x [ D(x) ∂ρ/∂x ].
+(i) Why does naive expansion D(x) ∂^2ρ/∂x^2 + D'(x) ∂ρ/∂x fail to conserve particle flux numerically?
+(ii) Derive the conservative finite-difference scheme using half-grid diffusivities D_{i ± 1/2}.
+(iii) Analytically derive the steady-state concentration profile under no-flux and periodic boundary conditions.
+
+======================================================================
+Part C: Wave and Advection Equations (Hyperbolic PDEs)
+======================================================================
+
+C1 ★★★ Consider the 1D first-order wave (advection) equation ∂ψ/∂t + c ∂ψ/∂x = 0 with c > 0.
+(i) Show that the naive central difference in space with forward difference in time is unconditionally unstable for all Δt > 0.
+(ii) Formulate the upwind scheme for c > 0 using a backward difference in space.
+(iii) Perform von Neumann stability analysis on the upwind scheme and derive the Courant-Friedrichs-Lewy (CFL) condition: c Δt / Δx ≤ 1.
+(iv) If c < 0, which spatial difference must be chosen to maintain stability? Explain the physical meaning of "upwind".
+
+C2 ★★★ Using modified equation analysis (Taylor expansion of the discrete difference equations), show that the upwind scheme introduces an artificial numerical diffusion term D_num ∂^2ψ/∂x^2, where D_num = (c Δx / 2)(1 - c Δt / Δx). What happens when the Courant number c Δt / Δx = 1?
+
+C3 ★★★ Consider the 1D second-order wave equation ∂^2ψ/∂t^2 = c^2 ∂^2ψ/∂x^2.
+(i) Derive the explicit central-in-time, central-in-space discretization.
+(ii) Derive the CFL stability condition k = c Δt / Δx ≤ 1.
+(iii) Prove that at the "magic" time step k = 1, the discretization truncation error is identically zero, and the scheme propagates waves with zero numerical dispersion.
+(iv) The scheme is a three-time-level recurrence requiring ψ^0 and ψ^1. Given the initial position ψ(x, 0) = f(x) and initial velocity ∂ψ/∂t(x, 0) = v(x), derive the second-order accurate starting step for ψ^1 using Taylor expansion.
+(v) How do you specify the initial velocity to generate a pure leftward traveling wave without pulse splitting?
+
+======================================================================
+Part D: Stochastic Systems, Brownian Motion, and Fokker-Planck
+======================================================================
+
+D1 ★★ Consider a 1D discrete random walk x_n = x_{n-1} + η_n, where steps η_n are independent random variables taking values +1 and -1 with probabilities p_r and p_l (p_r + p_l = 1).
+(i) For an unbiased walk (p_r = p_l = 1/2), prove analytically that <x_n> = 0 and <x_n^2> = n.
+(ii) Show that the continuous limit yields the macroscopic diffusion relation <x(t)^2> = 2 D t, and identify D in terms of the step size Δx and time step Δt.
+(iii) For a biased walk (p_r ≠ p_l), derive expressions for the drift velocity <x_n>/t and the shifted variance <(x_n - <x_n>)^2>.
+(iv) Explain the fundamental difference between a single stochastic realization and an ensemble average over N_re trajectories.
+
+D2 ★★ For an isotropic 2D random walk where the displacement at step n is R_n = x_n î + y_n ĵ:
+(i) Analytically calculate <R_n> and <R_n^2>.
+(ii) Compare the result with 1D random walk and generalize to d dimensions.
+
+D3 ★★★ Write down the Langevin equation for a 1D Brownian particle: m dv/dt = -γ v + ξ(t).
+(i) State the statistical properties of the Gaussian white noise force ξ(t) (mean and autocorrelation).
+(ii) State the Einstein relation relating the diffusion coefficient D to temperature T and friction γ, and explain its origin in the fluctuation-dissipation theorem.
+(iii) Write down the Euler-Maruyama discretization algorithm used to numerically integrate the particle's velocity and position.
+
+D4 ★★★ Derive the Fokker-Planck (Smoluchowski) equation from the continuity equation ∂ρ/∂t + ∂J/∂x = 0.
+(i) State the physical origins of the two terms in the total flux J = J_diffusion + J_drift for a particle subject to an external potential U(x).
+(ii) Write down the resulting PDE for ρ(x, t).
+(iii) Prove that the stationary equilibrium solution (J = 0) is the Gibbs-Boltzmann distribution ρ_eq(x) ∝ exp(-U(x) / k_B T).
+(iv) Describe how periodic boundary conditions are implemented when discretizing the potential drift term.
+
+======================================================================
+Part E: Advanced ODE Systems and Nonlinear Solvers
+======================================================================
+
+E1 ★★ Consider the radioactive decay equation dy/dt = -λ y with initial condition y(0) = y_0.
+(i) Discretize the equation using explicit Forward Euler and implicit Backward Euler.
+(ii) Derive the stability conditions on Δt for both methods.
+(iii) Identify the three distinct behavioral regimes of explicit Euler (smooth decay, oscillatory decay, unbounded blowup).
+
+E2 ★★ For a damped harmonic oscillator m x'' + γ x' + k x = 0:
+(i) Convert the second-order equation into a system of two coupled first-order ODEs.
+(ii) Identify the characteristic timescales of the system (oscillation period, damping time).
+(iii) Explain why the simple Forward Euler method fails for undamped or lightly damped harmonic oscillators, whereas the Euler-Cromer (semi-implicit) method succeeds.
+(iv) In the strongly overdamped regime (m/(γ^2/k) << 1), justify dropping the second-order inertial term and reducing the system to a first-order ODE.
+
+E3 ★★ For a 2D linear autonomous system dX/dt = J X, where J is a 2x2 constant matrix with trace τ and determinant Δ:
+(i) State the eigenvalue equation in terms of τ and Δ.
+(ii) Classify the stability and geometric character of the fixed point (0, 0) in the (τ, Δ) plane (saddle, node, spiral, center).
+(iii) Which case exhibits a failure of the simple Forward Euler method even though the continuous system is stable? Explain why.
+
+E4 ★★★ State Newton's method for solving a system of coupled nonlinear equations F(x) = 0.
+(i) State the multidimensional Taylor expansion leading to the iteration formula x_{k+1} = x_k - [J(x_k)]^{-1} F(x_k).
+(ii) What is the theoretical order of convergence near a simple root?
+(iii) In practice, why do numerical linear algebra libraries solve J s_k = -F(x_k) via LU/Gaussian elimination instead of explicitly computing the matrix inverse? Why might the explicit inverse formula nevertheless be retained in coursework reference formulations?

@@ -1,0 +1,22 @@
+\contentsline {section}{\numberline {1}Finite Difference Fundamentals and Boundary Conditions}{2}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Grid Discretization and Derivative Approximations}{2}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Boundary Conditions and Physical Symmetries}{2}{subsection.1.2}%
+\contentsline {section}{\numberline {2}1D and 2D Diffusion Equations}{4}{section.2}%
+\contentsline {subsection}{\numberline {2.1}1D Diffusion Equation (FTCS Explicit Scheme)}{4}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Fourier Mode Decay and Spatial Wavelength Timescales}{6}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Implicit Diffusion Scheme (BTCS) and Tridiagonal Solvers}{7}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}2D Diffusion Equation and Multidimensional Stability}{9}{subsection.2.4}%
+\contentsline {subsection}{\numberline {2.5}Heterogeneous Diffusion with Spatially Varying $D(x)$}{10}{subsection.2.5}%
+\contentsline {section}{\numberline {3}Wave and Advection Equations}{11}{section.3}%
+\contentsline {subsection}{\numberline {3.1}1D First-Order Wave / Advection Equation (Upwind Scheme)}{11}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}1D Second-Order Wave Equation (Explicit Leap-Frog Scheme)}{13}{subsection.3.2}%
+\contentsline {section}{\numberline {4}Stochastic Systems, Brownian Motion, and Fokker-Planck}{15}{section.4}%
+\contentsline {subsection}{\numberline {4.1}1D Discrete Random Walk: Realization vs. Ensemble Average}{15}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}2D Random Walk and Multi-Dimensional Scaling}{17}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Brownian Motion and Langevin Dynamics}{17}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Fokker-Planck (Smoluchowski) Equation}{19}{subsection.4.4}%
+\contentsline {section}{\numberline {5}ODEs, Dynamical Systems, and Nonlinear Solvers}{21}{section.5}%
+\contentsline {subsection}{\numberline {5.1}First-Order ODEs: Explicit vs. Implicit Euler (Nuclear Decay)}{21}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Second-Order ODEs: Harmonic Oscillators (Euler, Euler-Cromer, RK4)}{22}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Nonlinear Systems: Fixed Points, Stability, and Phase Portraits}{24}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}Multivariable Newton-Raphson for Systems of Nonlinear Equations}{25}{subsection.5.4}%

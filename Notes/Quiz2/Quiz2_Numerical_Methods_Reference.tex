@@ -1,0 +1,1017 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{tcolorbox}
+\tcbuselibrary{listings}
+
+\definecolor{lightbg}{HTML}{F7F7F7}
+\definecolor{vscodeblue}{HTML}{0000FF}
+\definecolor{vscodered}{HTML}{A31515}
+\definecolor{vscodegreen}{HTML}{008000}
+\definecolor{vscodegray}{HTML}{808080}
+
+\newtcblisting{jupytercode}{
+  colback=lightbg,
+  colframe=gray!40,
+  listing only,
+  left=15pt,
+  top=0pt,
+  bottom=0pt,
+  boxrule=0.5pt,
+  arc=3pt,
+  listing options={
+    language=Python,
+    basicstyle=\ttfamily\footnotesize\color{black},
+    keywordstyle=\color{vscodeblue}\bfseries,
+    commentstyle=\color{vscodegreen}\itshape,
+    stringstyle=\color{vscodered},
+    numberstyle=\tiny\color{vscodegray},
+    numbers=left,
+    stepnumber=1,
+    showstringspaces=false,
+    breaklines=true,
+    tabsize=4
+  }
+}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  filecolor=magenta,      
+  urlcolor=cyan,
+}
+
+\title{\textbf{Numerical Methods: Quiz 2 Code and Theory Reference}\\\large PDEs, SDEs, Random Walks, and Advanced ODE Systems}
+\author{Comprehensive Coursework Revision \& Python Implementation Guide}
+\date{}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CHAPTER 1: FINITE DIFFERENCES & BOUNDARY CONDITIONS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Finite Difference Fundamentals and Boundary Conditions}
+
+\subsection{Grid Discretization and Derivative Approximations}
+\textbf{Theory:} A continuous spatial domain $[0, L]$ is discretized into $N$ intervals by $N+1$ grid points $x_i = i \Delta x$ for $i = 0, 1, \dots, N$ with spatial resolution $\Delta x = L/N$. Time is discretized into uniform intervals $t_n = n \Delta t$. The field value at $(x_i, t_n)$ is denoted by $\rho_i^n = \rho(x_i, t_n)$.
+
+Using Taylor series expansions:
+\begin{align*}
+f(x_i + \Delta x) &= f(x_i) + f'(x_i)\Delta x + \frac{1}{2} f''(x_i)\Delta x^2 + \frac{1}{6} f'''(x_i)\Delta x^3 + \mathcal{O}(\Delta x^4) \\
+f(x_i - \Delta x) &= f(x_i) - f'(x_i)\Delta x + \frac{1}{2} f''(x_i)\Delta x^2 - \frac{1}{6} f'''(x_i)\Delta x^3 + \mathcal{O}(\Delta x^4)
+\end{align*}
+
+We obtain the standard finite difference approximations for first and second derivatives:
+\begin{itemize}
+    \item \textbf{Forward Difference:} $\displaystyle \frac{df}{dx}\bigg|_{x_i} \approx \frac{f(x_{i+1}) - f(x_i)}{\Delta x}$, with truncation error $\mathcal{O}(\Delta x)$.
+    \item \textbf{Backward Difference:} $\displaystyle \frac{df}{dx}\bigg|_{x_i} \approx \frac{f(x_i) - f(x_{i-1})}{\Delta x}$, with truncation error $\mathcal{O}(\Delta x)$.
+    \item \textbf{Central Difference:} $\displaystyle \frac{df}{dx}\bigg|_{x_i} \approx \frac{f(x_{i+1}) - f(x_{i-1})}{2\Delta x}$, with truncation error $\mathcal{O}(\Delta x^2)$.
+    \item \textbf{Second Derivative (Central):} Subtracting and adding the Taylor series gives:
+    $$\frac{d^2 f}{dx^2}\bigg|_{x_i} \approx \frac{f(x_{i+1}) - 2f(x_i) + f(x_{i-1})}{\Delta x^2}, \quad \text{with truncation error } \mathcal{O}(\Delta x^2)$$
+    Alternatively, as derived in class notes, applying nested forward and backward differences yields the identical formula:
+    $$\frac{d^2 f}{dx^2} \approx \frac{1}{\Delta x}\left[ \frac{f(x_{i+1}) - f(x_i)}{\Delta x} - \frac{f(x_i) - f(x_{i-1})}{\Delta x} \right] = \frac{f(x_{i+1}) + f(x_{i-1}) - 2f(x_i)}{\Delta x^2}$$
+\end{itemize}
+
+\subsection{Boundary Conditions and Physical Symmetries}
+\textbf{Boundary Conditions:} Differential equations require boundary specifications to yield a unique solution:
+\begin{enumerate}
+    \item \textbf{Dirichlet Boundary Conditions (Fixed Values):} The field values at the domain boundaries are prescribed:
+    $$\rho(0, t) = \rho_{\text{left}}, \quad \rho(L, t) = \rho_{\text{right}}$$
+    In code: \texttt{rho[0] = rho\_left}, \texttt{rho[-1] = rho\_right}.
+    
+    \item \textbf{Neumann (No-Flux) Boundary Conditions (Zero Derivative):} The normal derivative (flux) across the boundaries vanishes. By Fick's law, flux $J = -D \frac{\partial \rho}{\partial x} = 0$:
+    $$\frac{\partial \rho}{\partial x}\bigg|_{x=0} = 0 \implies \frac{\rho_1 - \rho_0}{\Delta x} = 0 \implies \rho_0 = \rho_1$$
+    $$\frac{\partial \rho}{\partial x}\bigg|_{x=L} = 0 \implies \frac{\rho_N - \rho_{N-1}}{\Delta x} = 0 \implies \rho_N = \rho_{N-1}$$
+    In code: \texttt{rho[0] = rho[1]}, \texttt{rho[-1] = rho[-2]}. Neumann BCs preserve the total number of particles $N_{\text{total}} = \int \rho(x, t) dx = \text{constant}$.
+    
+    \item \textbf{Periodic Boundary Conditions (Ring Topology):} The system wraps around periodically:
+    $$\rho(x + L, t) = \rho(x, t) \implies \rho_0 = \rho_{N-1}, \quad \rho_N = \rho_1$$
+    In code: \texttt{rho[0] = rho[-2]}, \texttt{rho[-1] = rho[1]}.
+\end{enumerate}
+
+\textbf{Physical Symmetries \& Symmetry Breaking:} 
+The unconstrained diffusion equation $\partial_t \rho = D \partial_x^2 \rho$ is invariant under spatial translation ($x \to x + a$) and parity reflection ($x \to -x$). The steady-state profile reflects the fundamental symmetries of the equation unless broken by boundary conditions. For instance, asymmetric Dirichlet boundaries ($\rho(0) \neq \rho(L)$) break reflection symmetry and produce a constant non-zero gradient steady state $\rho(x) = \rho(0) + \frac{\rho(L) - \rho(0)}{L} x$.
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CHAPTER 2: DIFFUSION EQUATIONS (PDEs)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{1D and 2D Diffusion Equations}
+
+\subsection{1D Diffusion Equation (FTCS Explicit Scheme)}
+\textbf{Theory:} The one-dimensional diffusion (heat) equation describes the macroscopic evolution of concentration or temperature:
+$$\frac{\partial \rho}{\partial t} = D \frac{\partial^2 \rho}{\partial x^2}$$
+where $D > 0$ is the diffusion coefficient. Discretizing time with a forward difference and space with a central difference (Forward Time Centered Space, FTCS):
+$$\frac{\rho_i^{n+1} - \rho_i^n}{\Delta t} = D \left[ \frac{\rho_{i+1}^n - 2\rho_i^n + \rho_{i-1}^n}{\Delta x^2} \right]$$
+Rearranging for the explicit update rule at temporal step $n+1$:
+$$\rho_i^{n+1} = \rho_i^n + \frac{D \Delta t}{\Delta x^2} \left( \rho_{i+1}^n + \rho_{i-1}^n - 2\rho_i^n \right)$$
+Defining the dimensionless diffusion Courant parameter $C = \frac{D \Delta t}{\Delta x^2}$:
+$$\rho_i^{n+1} = (1 - 2C)\rho_i^n + C(\rho_{i+1}^n + \rho_{i-1}^n)$$
+
+\textbf{Step-by-Step von Neumann Stability Analysis:}
+Assume the numerical solution decomposes into spatial Fourier modes:
+$$\rho_i^n = T^n X_i, \quad \text{where } X_i = \sum_j \tilde{X}_j e^{i k_j x_i}$$
+For a single mode with wavenumber $k$, substitute $\rho_i^n = T^n e^{i k x_i}$ into the FTCS scheme:
+$$T^{n+1} e^{i k x_i} = T^n e^{i k x_i} + C T^n \left[ e^{i k(x_i + \Delta x)} + e^{i k(x_i - \Delta x)} - 2 e^{i k x_i} \right]$$
+Divide both sides by $e^{i k x_i}$ to isolate the temporal evolution:
+$$T^{n+1} = T^n \left[ 1 + C \left( e^{i k \Delta x} + e^{-i k \Delta x} - 2 \right) \right]$$
+Using Euler's identity $e^{i \theta} + e^{-i \theta} = 2 \cos(\theta)$ and $1 - \cos(\theta) = 2 \sin^2(\theta/2)$:
+$$T^{n+1} = T^n \left[ 1 + C(2\cos(k\Delta x) - 2) \right] = T^n \left[ 1 - 4 C \sin^2\left(\frac{k \Delta x}{2}\right) \right]$$
+The amplification factor $G(k) = \frac{T^{n+1}}{T^n}$ is:
+$$G(k) = 1 - 4C \sin^2\left(\frac{k \Delta x}{2}\right)$$
+For numerical stability (boundedness), the amplitude of any Fourier mode must not grow over time: $|G(k)| \le 1$.
+$$-1 \le 1 - 4C \sin^2\left(\frac{k \Delta x}{2}\right) \le 1$$
+\begin{itemize}
+    \item The upper bound $1 - 4C \sin^2(k\Delta x / 2) \le 1$ is automatically satisfied since $C > 0$ and $\sin^2 \ge 0$.
+    \item The lower bound gives $1 - 4C \sin^2(k\Delta x / 2) \ge -1 \implies 4C \sin^2(k\Delta x / 2) \le 2$.
+    \item Since the maximum value of $\sin^2\left(\frac{k \Delta x}{2}\right)$ is $1$ (occurring at the highest Nyquist frequency $k = \pi / \Delta x$):
+    $$4C \le 2 \implies C \le \frac{1}{2}$$
+\end{itemize}
+Thus, the \textbf{von Neumann Stability Condition} is:
+$$\frac{D \Delta t}{\Delta x^2} \le \frac{1}{2} \implies \Delta t \le \frac{\Delta x^2}{2D}$$
+Violating this condition leads to catastrophic numerical oscillation and exponential blowup. Truncation error is $\mathcal{O}(\Delta t + \Delta x^2)$.
+\newpage
+
+\begin{jupytercode}
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Parameters
+N = 100               # Number of grid points
+dx = 0.15             # Spatial resolution
+L = N * dx            # System size
+D = 0.05              # Diffusion coefficient
+dt = 0.1              # Temporal step (Check stability: D*dt/dx^2 = 0.222 <= 0.5)
+t_end = 200.0         # Final simulation time
+
+# Stability verification
+C = D * dt / (dx**2)
+print(f"Diffusion Courant number C = {C:.4f} (Must be <= 0.5 for stability)")
+assert C <= 0.5, "Stability condition violated: D*dt/dx^2 > 0.5!"
+
+# Spatial and temporal vectors
+x = np.linspace(0, L, N)
+t = np.arange(0, t_end + dt, dt)
+
+# Initial condition: centered Gaussian concentration pulse
+rho_0 = np.exp(-((x - L/2) / 1.5)**2)
+rho = rho_0.copy()
+rho_temp = np.zeros(N)
+
+# Storage for space-time evolution and particle conservation
+rho_history = [rho.copy()]
+total_particles = [np.sum(rho[1:-1]) * dx]
+
+# FTCS Time Stepping
+for n in range(1, len(t)):
+    # Interior update using FTCS
+    for i in range(1, N - 1):
+        rho_temp[i] = rho[i] + C * (rho[i+1] + rho[i-1] - 2 * rho[i])
+        
+    # Boundary Conditions (Choose one):
+    # (A) Neumann (No-Flux): rho[0] = rho[1], rho[-1] = rho[-2]
+    rho_temp[0] = rho_temp[1]
+    rho_temp[-1] = rho_temp[-2]
+    
+    # (B) Dirichlet: Uncomment for fixed boundary values
+    # rho_temp[0] = 1.0; rho_temp[-1] = 0.0
+
+    rho = rho_temp.copy()
+    rho_history.append(rho.copy())
+    total_particles.append(np.sum(rho[1:-1]) * dx)
+
+# Plotting
+plt.figure(figsize=(10, 4))
+plt.subplot(1, 2, 1)
+plt.plot(x, rho_0, 'r--', label='Initial t=0')
+plt.plot(x, rho_history[len(t)//4], label=f't = {t[len(t)//4]:.1f}')
+plt.plot(x, rho_history[len(t)//2], label=f't = {t[len(t)//2]:.1f}')
+plt.plot(x, rho, 'b-', label=f'Final t = {t_end:.1f}')
+plt.xlabel('x')
+plt.ylabel('Concentration rho(x, t)')
+plt.title('1D Diffusion Evolution (FTCS)')
+plt.legend()
+plt.grid(True)
+
+plt.subplot(1, 2, 2)
+plt.plot(t, total_particles, 'k-')
+plt.xlabel('Time t')
+plt.ylabel('Total Integrated Concentration')
+plt.title('Particle Conservation Check (No-Flux BC)')
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+\end{jupytercode}
+\newpage
+
+\subsection{Fourier Mode Decay and Spatial Wavelength Timescales}
+\textbf{Theory:} Consider the diffusion equation $\partial_t \rho = D \nabla^2 \rho$ in continuous Fourier space. Expanding the density profile in terms of spatial Fourier modes:
+$$\rho(x, t) = \int \hat{\rho}(k, t) e^{i k x} dk$$
+Substituting into the diffusion equation yields an uncoupled ODE for each spatial frequency mode $k$:
+$$\frac{\partial \hat{\rho}(k, t)}{\partial t} = -D k^2 \hat{\rho}(k, t) \implies \hat{\rho}(k, t) = \hat{\rho}(k, 0) e^{-D k^2 t}$$
+The characteristic relaxation time of spatial mode $k$ is:
+$$\tau_k = \frac{1}{D k^2} = \frac{\lambda^2}{4 \pi^2 D}$$
+where $\lambda = \frac{2\pi}{k}$ is the spatial wavelength.
+\begin{itemize}
+    \item \textbf{High-frequency modes ($k$ large, $\lambda$ small):} Decay exponentially faster because the diffusion flux $J = -D \nabla \rho$ is proportional to the gradient. Sharp, narrow features homogenize rapidly.
+    \item \textbf{Low-frequency modes ($k$ small, $\lambda$ large):} Decay much more slowly.
+    \item \textbf{Ratio Comparison (Problem Set III Q6):} A mode with $k_2 = 16\pi / L$ equilibrates $(k_2 / k_1)^2 = (16/2)^2 = 64$ times faster than a mode with $k_1 = 2\pi / L$.
+\end{itemize}
+
+\begin{jupytercode}
+import numpy as np
+import matplotlib.pyplot as plt
+
+L = 2.0 * np.pi
+N = 200
+dx = L / N
+x = np.linspace(0, L, N, endpoint=False)
+D = 0.1
+dt = 0.001
+C = D * dt / (dx**2)
+assert C <= 0.5
+
+# Two initial modes: low wavenumber k1=1, high wavenumber k2=4
+k1, k2 = 1.0, 4.0
+rho1 = np.sin(k1 * x)
+rho2 = np.sin(k2 * x)
+
+# Analytical decay rates: exp(-D * k^2 * t)
+t_target = 0.5
+nt = int(t_target / dt)
+
+for n in range(nt):
+    rho1_new = rho1 + C * (np.roll(rho1, -1) + np.roll(rho1, 1) - 2 * rho1)
+    rho2_new = rho2 + C * (np.roll(rho2, -1) + np.roll(rho2, 1) - 2 * rho2)
+    rho1, rho2 = rho1_new, rho2_new
+
+print(f"Mode k=1 amplitude ratio numerical: {np.max(rho1):.4f}, exact: {np.exp(-D*k1**2*t_target):.4f}")
+print(f"Mode k=4 amplitude ratio numerical: {np.max(rho2):.4f}, exact: {np.exp(-D*k2**2*t_target):.4f}")
+print(f"Theoretical decay rate ratio: (k2/k1)^2 = {(k2/k1)**2:.1f}x faster")
+\end{jupytercode}
+\newpage
+
+\subsection{Implicit Diffusion Scheme (BTCS) and Tridiagonal Solvers}
+\textbf{Theory:} To bypass the severe time-step restriction $\Delta t \le \frac{\Delta x^2}{2D}$ of explicit FTCS, the spatial derivative is evaluated at the future time step $t_{n+1}$ (Backward Time Centered Space, BTCS):
+$$\frac{\rho_i^{n+1} - \rho_i^n}{\Delta t} = D \left[ \frac{\rho_{i+1}^{n+1} - 2\rho_i^{n+1} + \rho_{i-1}^{n+1}}{\Delta x^2} \right]$$
+Setting $C = \frac{D \Delta t}{\Delta x^2}$ and grouping all terms at time step $n+1$ on the left:
+$$-C \rho_{i-1}^{n+1} + (1 + 2C) \rho_i^{n+1} - C \rho_{i+1}^{n+1} = \rho_i^n$$
+This forms a linear tridiagonal system $\mathbf{A} \boldsymbol{\rho}^{n+1} = \boldsymbol{\rho}^n$, where the main diagonal entries are $(1 + 2C)$ and off-diagonals are $-C$.
+
+\textbf{von Neumann Stability Analysis for BTCS:}
+Substituting $\rho_i^n = T^n e^{i k x_i}$:
+$$-C T^{n+1} e^{i k(x_i - \Delta x)} + (1 + 2C) T^{n+1} e^{i k x_i} - C T^{n+1} e^{i k(x_i + \Delta x)} = T^n e^{i k x_i}$$
+Dividing by $T^{n+1} e^{i k x_i}$:
+$$1 + 2C - C(e^{i k \Delta x} + e^{-i k \Delta x}) = \frac{T^n}{T^{n+1}} \implies 1 + 4C \sin^2\left(\frac{k \Delta x}{2}\right) = \frac{1}{G(k)}$$
+$$G(k) = \frac{1}{1 + 4C \sin^2\left(\frac{k \Delta x}{2}\right)}$$
+Since $C > 0$ and $\sin^2 \ge 0$, the denominator is strictly $\ge 1$ for all wavenumbers $k$ and any $\Delta t > 0$. Therefore:
+$$|G(k)| \le 1 \quad \forall \Delta t, \Delta x$$
+The BTCS scheme is \textbf{unconditionally stable}. Arbitrarily large time steps may be taken without numerical explosion (though accuracy remains $\mathcal{O}(\Delta t + \Delta x^2)$).
+
+\begin{jupytercode}
+import numpy as np
+import scipy.linalg as la
+import matplotlib.pyplot as plt
+
+N = 100
+dx = 0.15
+L = N * dx
+D = 0.05
+dt = 1.0              # Deliberately large time step (C = 2.22 >> 0.5, FTCS would blow up!)
+C = D * dt / (dx**2)
+print(f"Implicit BTCS Courant number C = {C:.3f} (Unconditionally stable)")
+
+x = np.linspace(0, L, N)
+rho = np.exp(-((x - L/2) / 1.5)**2)
+
+# Build Tridiagonal Matrix A
+main_diag = (1 + 2 * C) * np.ones(N)
+off_diag = -C * np.ones(N - 1)
+A = np.diag(main_diag) + np.diag(off_diag, -1) + np.diag(off_diag, 1)
+
+# Apply Dirichlet BCs on matrix A: rho[0] = 0, rho[N-1] = 0
+A[0, :] = 0; A[0, 0] = 1.0
+A[-1, :] = 0; A[-1, -1] = 1.0
+
+# Time integration
+for step in range(50):
+    rhs = rho.copy()
+    rhs[0] = 0.0
+    rhs[-1] = 0.0
+    rho = la.solve(A, rhs)
+
+plt.plot(x, rho, label=f'BTCS Solution at t = {50*dt:.1f} (C={C:.2f})')
+plt.title('Unconditionally Stable BTCS Diffusion')
+plt.xlabel('x'); plt.ylabel('rho'); plt.legend(); plt.grid(True); plt.show()
+\end{jupytercode}
+\newpage
+
+\subsection{2D Diffusion Equation and Multidimensional Stability}
+\textbf{Theory:} The two-dimensional diffusion equation is $\frac{\partial \rho}{\partial t} = D \left( \frac{\partial^2 \rho}{\partial x^2} + \frac{\partial^2 \rho}{\partial y^2} \right)$.
+With $\Delta x = \Delta y = \delta$, explicit FTCS gives:
+$$\rho_{i, j}^{n+1} = \rho_{i, j}^n + \frac{D \Delta t}{\delta^2} \left( \rho_{i+1, j}^n + \rho_{i-1, j}^n + \rho_{i, j+1}^n + \rho_{i, j-1}^n - 4\rho_{i, j}^n \right)$$
+\textbf{Stability Analysis in $d$ Dimensions:} Expanding into Fourier modes yields amplification factor:
+$$G(k_x, k_y) = 1 - 4 \frac{D \Delta t}{\delta^2} \left[ \sin^2\left(\frac{k_x \delta}{2}\right) + \sin^2\left(\frac{k_y \delta}{2}\right) \right] \implies G_{\min} = 1 - 8 \frac{D \Delta t}{\delta^2} \ge -1 \implies \frac{D \Delta t}{\delta^2} \le \frac{1}{4}$$
+In general $d$-dimensional space, the FTCS stability criterion generalizes to: $\frac{D \Delta t}{\delta^2} \le \frac{1}{2d}$.
+
+\begin{jupytercode}
+import numpy as np
+import matplotlib.pyplot as plt
+
+Nx, Ny = 50, 50
+delta, D, dt = 0.1, 0.05, 0.01   # C = D*dt/delta^2 = 0.05 <= 0.25 (Stable)
+C = D * dt / (delta**2)
+assert C <= 0.25, "2D Stability violated!"
+
+x = np.linspace(-2.5, 2.5, Nx)
+y = np.linspace(-2.5, 2.5, Ny)
+X, Y = np.meshgrid(x, y)
+
+# Initial 2D Gaussian pulse & snapshots (t = 0.0, 1.0, 3.0)
+rho = np.exp(-(X**2 + Y**2) / 0.5)
+snapshots = {0.0: rho.copy()}
+record = {100: 1.0, 300: 3.0}
+
+# FTCS 2D Integration
+for n in range(1, 301):
+    rho[1:-1, 1:-1] += C * (
+        rho[2:, 1:-1] + rho[:-2, 1:-1] + 
+        rho[1:-1, 2:] + rho[1:-1, :-2] - 4 * rho[1:-1, 1:-1]
+    )
+    if n in record:
+        snapshots[record[n]] = rho.copy()
+
+# Plot temporal evolution across 3 timestamps (2D Heatmaps)
+fig, axes = plt.subplots(1, 3, figsize=(12, 3.5), sharey=True)
+for ax, (t_val, data) in zip(axes, snapshots.items()):
+    im = ax.imshow(data, extent=[-2.5, 2.5, -2.5, 2.5], origin='lower', cmap='hot', vmin=0, vmax=1)
+    ax.set_title(f't = {t_val:.1f}'); ax.set_xlabel('x')
+axes[0].set_ylabel('y')
+fig.colorbar(im, ax=axes.ravel().tolist(), label='Concentration', fraction=0.046, pad=0.04)
+plt.show()
+
+# 1D Cross-section along y=0 showing peak decay & flattening
+plt.figure(figsize=(6, 3))
+for t_val, data in snapshots.items():
+    plt.plot(x, data[Ny//2, :], label=f't = {t_val:.1f}')
+plt.xlabel('x'); plt.ylabel('rho(x, y=0)'); plt.title('1D Slice Evolution along y=0')
+plt.legend(); plt.grid(True); plt.show()
+\end{jupytercode}
+\newpage
+
+\subsection{Heterogeneous Diffusion with Spatially Varying \texorpdfstring{$D(x)$}{D(x)}}
+\textbf{Theory:} In non-uniform media, the diffusion coefficient varies with position, $D = D(x)$. The governing equation is:
+$$\frac{\partial \rho}{\partial t} = \frac{\partial}{\partial x} \left( D(x) \frac{\partial \rho}{\partial x} \right)$$
+To preserve conservative particle flux $J(x) = -D(x) \frac{\partial \rho}{\partial x}$, the fluxes must be discretized at the half-integer grid faces $x_{i+1/2}$:
+$$\frac{\partial}{\partial x}\left( D(x) \frac{\partial \rho}{\partial x} \right)\bigg|_i \approx \frac{J_{i-1/2} - J_{i+1/2}}{\Delta x} = \frac{1}{\Delta x} \left[ D_{i+1/2} \frac{\rho_{i+1} - \rho_i}{\Delta x} - D_{i-1/2} \frac{\rho_i - \rho_{i-1}}{\Delta x} \right]$$
+where the face diffusivity is approximated by the midpoint value $D_{i \pm 1/2} \approx \frac{D_i + D_{i \pm 1}}{2}$.
+The explicit update equation is:
+$$\rho_i^{n+1} = \rho_i^n + \frac{\Delta t}{\Delta x^2} \left[ D_{i+1/2}(\rho_{i+1}^n - \rho_i^n) - D_{i-1/2}(\rho_i^n - \rho_{i-1}^n) \right]$$
+\textbf{Analytical Steady-State:} At steady state $\partial_t \rho = 0$, the flux must be spatially constant: $J = -D(x)\frac{d\rho}{dx} = J_0$. Integrating yields:
+$$\rho(x) = -J_0 \int \frac{dx}{D(x)} + C_2$$
+Under periodic boundary conditions, $J_0$ must equal zero, yielding a uniform concentration $\rho(x) = \text{constant}$.
+
+\begin{jupytercode}
+import numpy as np
+import matplotlib.pyplot as plt
+
+N = 100
+L = 1.0
+dx = L / N
+x = np.linspace(0, L, N, endpoint=False)
+dt = 0.0001
+
+# Spatially varying D(x) = 0.1 * (1 + 0.5 * cos(2*pi*x/L))
+D = 0.1 * (1.0 + 0.5 * np.cos(2 * np.pi * x / L))
+D_half = 0.5 * (D + np.roll(D, -1)) # D at i + 1/2
+
+# Check maximum stability limit: max(D) * dt / dx^2 <= 0.5
+assert np.max(D) * dt / (dx**2) <= 0.5
+
+rho = np.exp(-100 * (x - 0.5)**2)
+rho_0 = rho.copy()
+
+for step in range(5000):
+    flux = -D_half * (np.roll(rho, -1) - rho) / dx
+    # rho^{n+1} = rho^n - dt * (flux_i - flux_{i-1}) / dx
+    rho = rho - (dt / dx) * (flux - np.roll(flux, 1))
+
+plt.plot(x, rho_0, label='Initial t=0')
+plt.plot(x, rho, label=f'Evolved at step 5000')
+plt.plot(x, D / np.max(D), 'k--', label='Normalized D(x)')
+plt.title('Heterogeneous Diffusion with Spatially Varying D(x)')
+plt.xlabel('x'); plt.ylabel('rho'); plt.legend(); plt.grid(True); plt.show()
+\end{jupytercode}
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CHAPTER 3: WAVE EQUATIONS (PDEs)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Wave and Advection Equations}
+
+\subsection{1D First-Order Wave / Advection Equation (Upwind Scheme)}
+\textbf{Theory:} The linear first-order advection (one-way wave) equation represents directional transport at constant speed $c$:
+$$\frac{\partial \psi}{\partial t} + c \frac{\partial \psi}{\partial x} = 0$$
+Unlike diffusion (which is dissipative and parabolic), advection is purely conservative and hyperbolic. The exact continuous solution simply translates along characteristics: $\psi(x, t) = \psi(x - ct, 0)$.
+
+\textbf{Directional Upwind Discretization:}
+A central spatial difference with forward time is \textbf{unconditionally unstable}. The spatial difference must be taken in the "upwind" direction where information originates:
+\begin{itemize}
+    \item \textbf{For $c > 0$ (transport to the right):} Use backward difference in space:
+    $$\frac{\psi_i^{n+1} - \psi_i^n}{\Delta t} + c \frac{\psi_i^n - \psi_{i-1}^n}{\Delta x} = 0 \implies \psi_i^{n+1} = \psi_i^n - k (\psi_i^n - \psi_{i-1}^n)$$
+    where $k = \frac{c \Delta t}{\Delta x}$ is the Courant-Friedrichs-Lewy (CFL) number.
+    \item \textbf{For $c < 0$ (transport to the left):} Use forward difference in space:
+    $$\psi_i^{n+1} = \psi_i^n - k (\psi_{i+1}^n - \psi_i^n)$$
+\end{itemize}
+
+\textbf{Step-by-Step von Neumann Stability Analysis (for $c > 0$):}
+Let $\psi_i^n = T^n e^{i \kappa x_i}$. Substitute into the upwind update formula:
+$$T^{n+1} e^{i \kappa x_i} = T^n e^{i \kappa x_i} - k T^n \left( e^{i \kappa x_i} - e^{i \kappa (x_i - \Delta x)} \right)$$
+Divide by $T^n e^{i \kappa x_i}$ to find the amplification factor $G(\kappa)$:
+$$G(\kappa) = 1 - k \left( 1 - e^{-i \kappa \Delta x} \right) = (1 - k + k \cos(\kappa \Delta x)) - i k \sin(\kappa \Delta x)$$
+Compute the modulus squared $|G|^2$:
+\begin{align*}
+|G|^2 &= (1 - k + k \cos(\kappa \Delta x))^2 + k^2 \sin^2(\kappa \Delta x) \\
+&= (1 - k)^2 + 2k(1-k)\cos(\kappa \Delta x) + k^2(\cos^2(\kappa \Delta x) + \sin^2(\kappa \Delta x)) \\
+&= 1 - 2k + k^2 + 2k(1-k)\cos(\kappa \Delta x) + k^2 \\
+&= 1 - 2k(1-k) [1 - \cos(\kappa \Delta x)]
+\end{align*}
+For stability, we require $|G|^2 \le 1$:
+$$1 - 2k(1-k) [1 - \cos(\kappa \Delta x)] \le 1 \implies 2k(1-k) [1 - \cos(\kappa \Delta x)] \ge 0$$
+Since $1 - \cos(\kappa \Delta x) \ge 0$, stability requires $k(1-k) \ge 0 \implies 0 \le k \le 1$.
+$$\textbf{CFL Condition:} \quad \frac{c \Delta t}{\Delta x} \le 1 \implies c \le \frac{\Delta x}{\Delta t}$$
+\textbf{Numerical Dispersion \& Diffusion:}
+Expanding the upwind scheme using modified equation analysis reveals that the scheme actually solves:
+$$\frac{\partial \psi}{\partial t} + c \frac{\partial \psi}{\partial x} = D_{\text{num}} \frac{\partial^2 \psi}{\partial x^2}, \quad \text{where } D_{\text{num}} = \frac{c \Delta x}{2}(1 - k)$$
+When $k = 1$, $D_{\text{num}} = 0$, giving the exact solution with zero numerical dissipation. For $k < 1$, numerical diffusion artificially dampens high frequencies.
+\newpage
+
+\begin{jupytercode}
+import numpy as np 
+import matplotlib.pyplot as plt
+
+# Parameters
+N = 200
+L = 1.0
+dx = L / N
+x = np.linspace(0, L, N, endpoint=False)
+v = 1.0                 # Wave propagation speed c
+k = 0.5                 # Courant number CFL = v*dt/dx (Must satisfy 0 <= k <= 1)
+dt = k * dx / v
+t_end = 0.5
+nt = int(round(t_end / dt))
+
+# Initial Conditions: Gaussian wave packet
+psi = np.exp(-200 * (x - 0.25)**2)
+psi_0 = psi.copy()
+psi_T = [psi.copy()]
+
+# Exact analytical translation on periodic domain
+def exact(x, t):
+    return np.exp(-200 * (((x - v * t) % L) - 0.25)**2)
+
+# Time integration using Upwind Scheme (Periodic Boundary Conditions)
+for n in range(nt):
+    psi_new = np.zeros(N)
+    for i in range(1, N):
+        psi_new[i] = psi[i] - k * (psi[i] - psi[i-1])
+        
+    # Periodic boundary wrap-around at x = 0
+    psi_new[0] = psi[0] - k * (psi[0] - psi[-1])
+    
+    psi = psi_new
+    psi_T.append(psi.copy())
+
+# Plotting Comparison and Space-Time Heatmap
+plt.figure(figsize=(10, 4))
+plt.subplot(1, 2, 1)
+plt.plot(x, psi_0, 'r--', label='Initial (t = 0)')
+plt.plot(x, psi, 'b-', label=f'Numerical (t = {t_end})')
+plt.plot(x, exact(x, t_end), 'k:', label=f'Exact (t = {t_end})')
+plt.xlabel('x'); plt.ylabel('psi'); plt.title('1st-Order Advection Wave (Upwind)')
+plt.legend(); plt.grid(True)
+
+plt.subplot(1, 2, 2)
+psi_T = np.array(psi_T)
+plt.imshow(psi_T, aspect='auto', origin='lower',
+           extent=[0, L, 0, t_end], cmap='viridis')
+plt.colorbar(label='psi')
+plt.xlabel('x'); plt.ylabel('t')
+plt.title('Space-Time Trajectory')
+plt.tight_layout()
+plt.show()
+\end{jupytercode}
+\newpage
+
+\subsection{1D Second-Order Wave Equation (Explicit Leap-Frog Scheme)}
+\textbf{Theory:} The classical 2nd-order wave equation models non-dissipative bi-directional wave propagation:
+$$\frac{\partial^2 \psi}{\partial t^2} = c^2 \frac{\partial^2 \psi}{\partial x^2}$$
+Applying central differences in both time and space:
+$$\frac{\psi_i^{n+1} - 2\psi_i^n + \psi_i^{n-1}}{\Delta t^2} = c^2 \left[ \frac{\psi_{i+1}^n - 2\psi_i^n + \psi_{i-1}^n}{\Delta x^2} \right]$$
+Setting $k = \frac{c \Delta t}{\Delta x}$, we isolate the explicit update at time step $n+1$:
+$$\psi_i^{n+1} = k^2(\psi_{i+1}^n + \psi_{i-1}^n) + 2(1 - k^2)\psi_i^n - \psi_i^{n-1}$$
+\textbf{Stability Condition (CFL):} $k = \frac{c \Delta t}{\Delta x} \le 1$.
+\begin{itemize}
+    \item \textbf{The "Magic" Time Step ($k = 1$):} When $k = \frac{c\Delta t}{\Delta x} = 1$, the coefficient $2(1 - k^2) = 0$, giving:
+    $$\psi_i^{n+1} = \psi_{i+1}^n + \psi_{i-1}^n - \psi_i^{n-1}$$
+    The discretization truncation error is \textbf{identically zero}! The numerical solution matches the continuous d'Alembert wave solution exactly at every mesh point.
+    \item \textbf{For $k > 1$:} Unstable; numerical oscillations grow exponentially.
+\end{itemize}
+
+\textbf{First-Step Initialization (Handling Initial Velocity $\dot{\psi}(x, 0) = v(x)$):}
+The three-level scheme requires values at $t_0$ ($\psi^0$) and $t_1$ ($\psi^1$) to calculate $\psi^2$. Using Taylor expansion at $t = 0$:
+$$\psi(x_i, \Delta t) = \psi(x_i, 0) + \Delta t \frac{\partial \psi}{\partial t}\bigg|_0 + \frac{\Delta t^2}{2} \frac{\partial^2 \psi}{\partial t^2}\bigg|_0 + \mathcal{O}(\Delta t^3)$$
+Substituting $\frac{\partial^2 \psi}{\partial t^2} = c^2 \frac{\partial^2 \psi}{\partial x^2} \approx c^2 \frac{\psi_{i+1}^0 - 2\psi_i^0 + \psi_{i-1}^0}{\Delta x^2}$:
+$$\psi_i^1 = \psi_i^0 + \Delta t \, v(x_i) + \frac{k^2}{2} (\psi_{i+1}^0 - 2\psi_i^0 + \psi_{i-1}^0) = \frac{k^2}{2}(\psi_{i+1}^0 + \psi_{i-1}^0) + (1 - k^2)\psi_i^0 + \Delta t \, v(x_i)$$
+\begin{itemize}
+    \item \textbf{Standing / Splitting Wave ($v(x) = 0$):} An initial displacement splits symmetrically into two pulses of half amplitude traveling at $\pm c$.
+    \item \textbf{Unidirectional Leftward Traveling Wave ($v(x) = -c f'(x)$ or $+c f'(x)$):} Preserves single-pulse shape moving leftward without split.
+    \item \textbf{Fixed Boundaries $\psi(0) = \psi(L) = 0$:} Waves reflect at the ends with an inverted sign (phase flip of $\pi$).
+\end{itemize}
+
+\begin{jupytercode}
+import numpy as np 
+import matplotlib.pyplot as plt
+
+# Parameters
+N = 100
+dx = 0.01
+L = N * dx
+c = 100.0             # Wave speed
+dt = 1e-4             # Time step
+k = c * dt / dx       # CFL = 1.0 (Exact discretization!)
+assert k <= 1.0, f"CFL condition violated: k = {k} > 1!"
+
+x = np.linspace(0, L, N)
+t_end = 0.02
+nt = int(round(t_end / dt))
+
+# Initial Conditions: Gaussian packet at center
+psi_0 = np.exp(-1000 * (x - L/2)**2)
+psi_prev = psi_0.copy()
+psi = np.zeros(N)
+
+# First Step (Initial velocity v0 = 0)
+v0 = np.zeros(N)
+for i in range(1, N - 1):
+    psi[i] = (k**2 / 2) * (psi_0[i+1] + psi_0[i-1]) + (1 - k**2) * psi_0[i] + dt * v0[i]
+
+# Dirichlet boundary conditions
+psi[0] = 0; psi[-1] = 0
+psi_history = [psi_0.copy(), psi.copy()]
+
+# Time stepping loop
+for j in range(2, nt):
+    psi_next = np.zeros(N)
+    for i in range(1, N - 1):
+        psi_next[i] = (k**2) * (psi[i+1] + psi[i-1]) + 2 * (1 - k**2) * psi[i] - psi_prev[i]
+    psi_next[0] = 0; psi_next[-1] = 0
+    psi_prev = psi.copy()
+    psi = psi_next.copy()
+    psi_history.append(psi.copy())
+
+# Space-Time Heatmap
+plt.figure(figsize=(8, 5))
+plt.imshow(np.array(psi_history), aspect='auto', origin='lower',
+           extent=[0, L, 0, t_end], cmap='RdBu_r', interpolation='nearest')
+plt.colorbar(label='psi')
+plt.xlabel('Position x'); plt.ylabel('Time t')
+plt.title('2nd-Order Wave Equation: Pulse Splitting & Inverted Reflection')
+plt.show()
+\end{jupytercode}
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CHAPTER 4: STOCHASTIC SYSTEMS & RANDOM WALKS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Stochastic Systems, Brownian Motion, and Fokker-Planck}
+
+\subsection{1D Discrete Random Walk: Realization vs. Ensemble Average}
+\textbf{Theory:} A discrete 1D random walk describes the position $x_n$ of a particle undergoing sequential random displacements $\eta_n$ at each discrete time step:
+$$x_n = x_{n-1} + \eta_n = x_0 + \sum_{j=1}^n \eta_j$$
+where the steps $\eta_n \in \{+1, -1\}$ are independent, identically distributed random variables with probabilities $p_r$ (step right) and $p_l$ (step left), with $p_r + p_l = 1$.
+\begin{itemize}
+    \item Single step statistics: $\langle \eta_n \rangle = (+1)p_r + (-1)p_l = p_r - p_l$.
+    \item Step second moment: $\langle \eta_n^2 \rangle = (+1)^2 p_r + (-1)^2 p_l = 1$.
+    \item Step uncorrelatedness: $\langle \eta_n \eta_m \rangle = \delta_{nm} + (1 - \delta_{nm})(p_r - p_l)^2$.
+\end{itemize}
+
+\textbf{Unbiased Random Walk ($p_r = p_l = 1/2$):}
+\begin{enumerate}
+    \item \textbf{Mean Displacement:} $\langle x_n \rangle = 0$.
+    \item \textbf{Mean Squared Displacement (MSD):}
+    $$\langle x_n^2 \rangle = \left\langle \left( \sum_{j=1}^n \eta_j \right)^2 \right\rangle = \sum_{j=1}^n \langle \eta_j^2 \rangle + 2 \sum_{j < m} \langle \eta_j \eta_m \rangle = n(1) + 0 = n$$
+    Thus $\text{MSD} \propto n$. In terms of physical time $t = n \Delta t$ and step length $\Delta x$:
+    $$\langle x(t)^2 \rangle = \frac{\Delta x^2}{\Delta t} t = 2 D t, \quad \text{where } D = \frac{\Delta x^2}{2 \Delta t}$$
+    \item \textbf{Diffusion Envelope:} The standard deviation (spread) grows as $\sigma_x = \sqrt{\langle x_n^2 \rangle} = \sqrt{n} \propto \sqrt{t}$.
+\end{enumerate}
+
+\textbf{Biased Random Walk ($p_r \neq p_l$):}
+\begin{enumerate}
+    \item Mean displacement (Drift): $\langle x_n \rangle = n(p_r - p_l) = v_{\text{drift}} t$.
+    \item Shifted MSD (True Variance around the drift):
+    $$\sigma_x^2 = \langle (x_n - \langle x_n \rangle)^2 \rangle = \langle x_n^2 \rangle - \langle x_n \rangle^2 = 4 p_r p_l n$$
+\end{enumerate}
+
+\textbf{Realization vs. Ensemble Average:}
+\begin{itemize}
+    \item A \textbf{single realization} is an individual trajectory $x(t)$. It is stochastic, noisy, non-reproducible, and does NOT equal $0$.
+    \item An \textbf{ensemble average} $\langle \cdot \rangle$ is an average taken over $N_{\text{re}}$ independent trajectories (walkers). As $N_{\text{re}} \to \infty$, the ensemble average converges smoothly to theoretical predictions: $\langle x_n \rangle \to 0$ and $\langle x_n^2 \rangle \to n$.
+\end{itemize}
+\newpage
+
+\begin{jupytercode}
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Parameters
+N = 10000          # Number of steps
+Nre = 1000         # Number of realizations (ensemble size)
+
+# Initialize arrays
+msd = np.zeros((N, Nre))
+X = np.zeros((N, Nre))
+
+# Simulation Loop over realizations
+for ire in range(Nre):
+    # Vectorized step generation: +1 with p=0.5, -1 with p=0.5
+    steps = np.where(np.random.rand(N) >= 0.5, 1, -1)
+    steps[0] = 0  # Initial position x_0 = 0
+    x = np.cumsum(steps)
+    
+    X[:, ire] = x
+    msd[:, ire] = x**2
+
+# Ensemble averages across realizations
+avgX = np.mean(X, axis=1)
+avgMSD = np.mean(msd, axis=1)
+steps_axis = np.arange(N)
+
+# Plotting
+plt.figure(figsize=(10, 4))
+plt.subplot(1, 2, 1)
+for i in range(10): # Plot first 10 individual realizations
+    plt.plot(steps_axis, X[:, i], lw=0.7, alpha=0.6)
+plt.plot(steps_axis, avgX, 'k-', lw=2.5, label='Ensemble Mean <x>')
+plt.plot(steps_axis, np.sqrt(steps_axis), 'r--', label='+/- sqrt(n) envelope')
+plt.plot(steps_axis, -np.sqrt(steps_axis), 'r--')
+plt.xlabel('Step n'); plt.ylabel('Displacement x')
+plt.title('Individual Realizations vs. Ensemble Mean')
+plt.legend(); plt.grid(True)
+
+plt.subplot(1, 2, 2)
+plt.plot(steps_axis, avgMSD, 'b-', label='Observed MSD <x^2>')
+plt.plot(steps_axis, steps_axis, 'k--', label='Theoretical MSD = n')
+plt.xlabel('Step n'); plt.ylabel('Mean Squared Displacement')
+plt.title('MSD Linear Growth (Diffusive Scaling)')
+plt.legend(); plt.grid(True)
+plt.tight_layout()
+plt.show()
+\end{jupytercode}
+\newpage
+
+\subsection{2D Random Walk and Multi-Dimensional Scaling}
+\textbf{Theory:} In two dimensions, the displacement vector of the walker at step $n$ is $\mathbf{R}_n = x_n \hat{\mathbf{i}} + y_n \hat{\mathbf{j}}$. If motions in $x$ and $y$ are independent unbiased walks:
+$$\langle \mathbf{R}_n \rangle = \langle x_n \rangle \hat{\mathbf{i}} + \langle y_n \rangle \hat{\mathbf{j}} = \mathbf{0}$$
+$$\langle |\mathbf{R}_n|^2 \rangle = \langle x_n^2 + y_n^2 \rangle = \langle x_n^2 \rangle + \langle y_n^2 \rangle = n + n = 2n$$
+In $d$-dimensional isotropic random walk, $\langle |\mathbf{R}_n|^2 \rangle = d \cdot n$.
+
+\begin{jupytercode}
+import numpy as np
+import matplotlib.pyplot as plt
+
+N = 5000
+Nre = 500
+
+R_sq = np.zeros((N, Nre))
+
+for ire in range(Nre):
+    step_x = np.where(np.random.rand(N) >= 0.5, 1, -1); step_x[0] = 0
+    step_y = np.where(np.random.rand(N) >= 0.5, 1, -1); step_y[0] = 0
+    x = np.cumsum(step_x)
+    y = np.cumsum(step_y)
+    R_sq[:, ire] = x**2 + y**2
+
+avg_R_sq = np.mean(R_sq, axis=1)
+steps = np.arange(N)
+
+plt.plot(steps, avg_R_sq, 'b-', label='Numerical 2D MSD <R^2>')
+plt.plot(steps, 2 * steps, 'r--', label='Theoretical 2D MSD = 2n')
+plt.xlabel('Steps n'); plt.ylabel('<R^2>'); plt.title('2D Random Walk MSD'); plt.legend(); plt.grid(True); plt.show()
+\end{jupytercode}
+
+\subsection{Brownian Motion and Langevin Dynamics}
+\textbf{Theory:} A microscopic Brownian particle immersed in a fluid experiences two forces: a macroscopic viscous drag force and a fluctuating stochastic force from molecular collisions:
+$$m \frac{dv}{dt} = F_{\text{drag}} + F_{\text{collision}} = -\gamma v + \xi(t)$$
+where $\gamma$ is the friction coefficient and $\xi(t)$ is Gaussian white noise satisfying:
+$$\langle \xi(t) \rangle = 0, \quad \langle \xi(t) \xi(t') \rangle = 2 \gamma k_B T \, \delta(t - t')$$
+The \textbf{Einstein Relation} connects microscopic thermal fluctuations to macroscopic diffusion:
+$$D = \frac{k_B T}{\gamma}$$
+Discretizing with the Euler-Maruyama algorithm over time step $\Delta t$:
+$$v_{n+1} = v_n - \frac{\gamma}{m} v_n \Delta t + \sqrt{\frac{2 \gamma k_B T \Delta t}{m^2}} \, W_n, \quad W_n \sim \mathcal{N}(0, 1)$$
+$$x_{n+1} = x_n + v_n \Delta t$$
+
+\begin{jupytercode}
+import numpy as np
+import matplotlib.pyplot as plt
+
+m = 1.0; gamma = 1.0; kB_T = 1.0; dt = 0.01; t_end = 50.0
+nt = int(t_end / dt)
+noise_std = np.sqrt(2 * gamma * kB_T * dt / (m**2))
+
+v = np.zeros(nt); x = np.zeros(nt)
+for i in range(nt - 1):
+    v[i+1] = v[i] - (gamma / m) * v[i] * dt + noise_std * np.random.randn()
+    x[i+1] = x[i] + v[i] * dt
+
+t = np.arange(nt) * dt
+plt.plot(t, x, label='Brownian Trajectory x(t)')
+plt.xlabel('Time'); plt.ylabel('Position'); plt.title('1D Langevin Dynamics'); plt.grid(True); plt.show()
+\end{jupytercode}
+\newpage
+
+\subsection{Fokker-Planck (Smoluchowski) Equation}
+\textbf{Derivation from Continuity Equation:}
+Let $\rho(x, t)$ denote the probability density of a particle in an external potential $U(x)$. Conservation of probability implies the continuity equation:
+$$\frac{\partial \rho}{\partial t} + \frac{\partial J}{\partial x} = 0$$
+The total probability current $J$ consists of two distinct physical contributions:
+\begin{enumerate}
+    \item \textbf{Diffusion Current (Fick's law):} $J_{\text{diff}} = -D \frac{\partial \rho}{\partial x}$ (directed down concentration gradients).
+    \item \textbf{Drift Current (Potential force):} $J_{\text{drift}} = v_{\text{drift}} \rho = -\mu \frac{dU}{dx} \rho = -\rho \frac{dU}{dx}$ (assuming mobility $\mu = 1$).
+\end{enumerate}
+Total current: $J = J_{\text{diff}} + J_{\text{drift}} = -D \frac{\partial \rho}{\partial x} - \rho \frac{dU}{dx}$.
+Substituting $J$ into the continuity equation yields the \textbf{Fokker-Planck Equation}:
+$$\frac{\partial \rho}{\partial t} = -\frac{\partial}{\partial x} \left[ -D \frac{\partial \rho}{\partial x} - \rho \frac{dU}{dx} \right] = D \frac{\partial^2 \rho}{\partial x^2} + \frac{\partial}{\partial x} \left( \rho \frac{dU}{dx} \right)$$
+\textbf{Equilibrium Steady-State:}
+At steady state ($\partial_t \rho = 0$), net flux vanishes $J = 0$:
+$$-D \frac{d\rho}{dx} - \rho \frac{dU}{dx} = 0 \implies \frac{1}{\rho}\frac{d\rho}{dx} = -\frac{1}{D}\frac{dU}{dx} \implies \rho_{\text{eq}}(x) = \frac{1}{Z} e^{-U(x)/D}$$
+Since $D = k_B T / \gamma$, this exactly recovers the \textbf{Gibbs-Boltzmann distribution} $\rho_{\text{eq}}(x) \propto e^{-U(x)/k_B T}$!
+
+\textbf{FTCS Numerical Discretization:}
+Evaluating the drift derivative $\frac{\partial}{\partial x}(\rho U')$ with central difference:
+$$\rho_i^{n+1} = \rho_i^n + \Delta t \left[ \frac{D}{\Delta x^2}(\rho_{i+1}^n + \rho_{i-1}^n - 2\rho_i^n) + \frac{(\rho U')_{i+1}^n - (\rho U')_{i-1}^n}{2 \Delta x} \right]$$
+
+\begin{jupytercode}
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Parameters
+dt = 0.01; dx = 0.05; D = 0.02; t_end = 100.0
+N = 100; L = N * dx
+t = np.arange(dt, t_end + dt, dt)
+x = np.arange(1, N + 1) * dx
+
+# Harmonic Potential U(x) = (k/2)*(x - L/2)^2
+k_pot = 0.1
+U = (k_pot / 2.0) * (x - L / 2.0)**2
+Up = k_pot * (x - L / 2.0)
+Up[0] = Up[-1] # Periodic boundary condition on force
+
+# Initial concentration: displaced off-center Gaussian
+rho = np.exp(-((x - L/4) / 1.0)**2)
+rho_temp = np.zeros(N)
+
+# Time Evolution
+for step in range(len(t)):
+    # Periodic boundary conditions
+    rho[-1] = rho[1]
+    rho[0] = rho[-2]
+    
+    rU = rho * Up
+    for p in range(1, N - 1):
+        diff_term = (D / (dx**2)) * (rho[p+1] + rho[p-1] - 2 * rho[p])
+        drift_term = (rU[p+1] - rU[p-1]) / (2.0 * dx)
+        rho_temp[p] = rho[p] + dt * (diff_term + drift_term)
+        
+    rho = rho_temp.copy()
+
+# Plot relaxed steady state vs potential
+plt.plot(x, rho / np.max(rho), 'b-', label='Normalized Concentration rho(x)')
+plt.plot(x, U / np.max(U), 'r--', label='Normalized Potential U(x)')
+plt.xlabel('x'); plt.ylabel('Profile'); plt.title('Fokker-Planck Relaxation to Potential Minimum')
+plt.legend(); plt.grid(True); plt.show()
+\end{jupytercode}
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CHAPTER 5: ADVANCED ODES & NONLINEAR SYSTEMS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{ODEs, Dynamical Systems, and Nonlinear Solvers}
+
+\subsection{First-Order ODEs: Explicit vs. Implicit Euler (Nuclear Decay)}
+\textbf{Theory:} The linear radioactive decay problem is governed by $\frac{dN}{dt} = -\lambda N$, with exact solution $N(t) = N_0 e^{-\lambda t}$. The natural characteristic timescale is $\tau = 1/\lambda$.
+\begin{itemize}
+    \item \textbf{Forward (Explicit) Euler:}
+    $$\frac{N_{n+1} - N_n}{\Delta t} = -\lambda N_n \implies N_{n+1} = (1 - \lambda \Delta t) N_n$$
+    Stability requires $|1 - \lambda \Delta t| \le 1 \implies \Delta t \le \frac{2}{\lambda}$.
+    \begin{itemize}
+        \item If $\Delta t < 1/\lambda$: Smooth monotonic exponential decay.
+        \item If $1/\lambda < \Delta t \le 2/\lambda$: Stable, but unphysical alternating oscillations occur.
+        \item If $\Delta t > 2/\lambda$: Completely unstable; solution oscillates with exponentially growing amplitude.
+    \end{itemize}
+    \item \textbf{Backward (Implicit) Euler:}
+    $$\frac{N_{n+1} - N_n}{\Delta t} = -\lambda N_{n+1} \implies N_{n+1} = \frac{N_n}{1 + \lambda \Delta t}$$
+    Amplification factor $G = \frac{1}{1 + \lambda \Delta t}$. Since $\lambda > 0$ and $\Delta t > 0$, $|G| < 1$ for all $\Delta t$.
+    The implicit Euler method is \textbf{unconditionally stable}.
+\end{itemize}
+
+\begin{jupytercode}
+import numpy as np
+import matplotlib.pyplot as plt
+
+N0 = 1000.0; lamb = 0.1; t_end = 50.0
+# Characteristic timescale tau = 1/lamb = 10.0
+# Stability limit for explicit Euler: dt <= 2/lamb = 20.0
+
+dt_unstable = 22.0  # Exceeds explicit stability limit!
+t_unstable = np.arange(0, t_end + dt_unstable, dt_unstable)
+
+N_exp = np.zeros(len(t_unstable)); N_exp[0] = N0
+N_imp = np.zeros(len(t_unstable)); N_imp[0] = N0
+
+for i in range(len(t_unstable) - 1):
+    N_exp[i+1] = N_exp[i] * (1.0 - lamb * dt_unstable)
+    N_imp[i+1] = N_imp[i] / (1.0 + lamb * dt_unstable)
+
+t_fine = np.linspace(0, t_end, 200)
+plt.plot(t_fine, N0 * np.exp(-lamb * t_fine), 'k-', label='Exact Analytical')
+plt.plot(t_unstable, N_imp, 'go-', label='Implicit Euler (Stable)')
+plt.plot(t_unstable, N_exp, 'rx--', label='Explicit Euler (Unstable Blowup)')
+plt.xlabel('Time'); plt.ylabel('Particles N(t)'); plt.ylim(-500, 1500)
+plt.title(f'Explicit vs. Implicit Euler (dt = {dt_unstable} > 2/lambda)')
+plt.legend(); plt.grid(True); plt.show()
+\end{jupytercode}
+\newpage
+
+\subsection{Second-Order ODEs: Harmonic Oscillators (Euler, Euler-Cromer, RK4)}
+\textbf{Theory:} The damped, driven harmonic oscillator is governed by Newton's second law:
+$$m \ddot{x} + \gamma \dot{x} + kx = F_{\text{drive}}(t)$$
+Converting to a coupled system of two first-order ODEs with state vector $\mathbf{y} = [x, v]^T$:
+$$\dot{x} = v, \quad \dot{v} = -\frac{k}{m} x - \frac{\gamma}{m} v + \frac{F_{\text{drive}}(t)}{m}$$
+\textbf{Characteristic Timescales:}
+\begin{itemize}
+    \item Oscillation period: $\tau_{\text{osc}} = 2\pi \sqrt{m/k} = 2\pi / \omega_0$.
+    \item Damping dissipation time: $\tau_{\text{damp}} = m / \gamma$.
+    \item Driving period: $\tau_{\text{drive}} = 2\pi / \omega_{\text{drive}}$.
+    \item \textbf{Overdamped Limit:} When inertia is negligible ($\frac{m^2 g}{b^2 r} \ll 1$ or $\tau_{\text{damp}} \ll \tau_{\text{osc}}$), $\ddot{x}$ can be set to zero, reducing the system to a 1st-order equation $\gamma \dot{x} + kx = F(t)$.
+\end{itemize}
+
+\textbf{Comparison of Numerical Integration Schemes:}
+\begin{itemize}
+    \item \textbf{Simple Forward Euler:} Fails for oscillatory systems. It is non-symplectic, causing artificial energy injection and causing phase-space trajectories to spiral outward indefinitely.
+    \item \textbf{Euler-Cromer (Semi-Implicit):} Evaluates velocity first and uses the updated velocity for position:
+    $$v_{n+1} = v_n + \Delta t \, a(x_n, v_n), \quad x_{n+1} = x_n + \Delta t \, v_{n+1}$$
+    Symplectic (area-preserving in phase space); oscillates stably without artificial energy growth.
+    \item \textbf{Classical Runge-Kutta 4th-Order (RK4):} Evaluates four slope stages:
+    $$\mathbf{k}_1 = \mathbf{f}(t_n, \mathbf{y}_n), \quad \mathbf{k}_2 = \mathbf{f}\left(t_n + \frac{\Delta t}{2}, \mathbf{y}_n + \frac{\Delta t}{2}\mathbf{k}_1\right)$$
+    $$\mathbf{k}_3 = \mathbf{f}\left(t_n + \frac{\Delta t}{2}, \mathbf{y}_n + \frac{\Delta t}{2}\mathbf{k}_2\right), \quad \mathbf{k}_4 = \mathbf{f}(t_n + \Delta t, \mathbf{y}_n + \Delta t \mathbf{k}_3)$$
+    $$\mathbf{y}_{n+1} = \mathbf{y}_n + \frac{\Delta t}{6}(\mathbf{k}_1 + 2\mathbf{k}_2 + 2\mathbf{k}_3 + \mathbf{k}_4)$$
+    Local truncation error is $\mathcal{O}(\Delta t^5)$; global error is $\mathcal{O}(\Delta t^4)$.
+\end{itemize}
+
+\begin{jupytercode}
+import numpy as np
+import matplotlib.pyplot as plt
+
+k = 1.0; m = 1.0; gamma = 0.1; dt = 0.1; t_end = 100.0
+t = np.arange(0, t_end + dt, dt)
+n = len(t)
+
+# Solution array: row 0 = position x, row 1 = velocity v
+y = np.zeros((2, n))
+y[:, 0] = [1.0, 0.0] # Initial condition: x=1, v=0
+
+for i in range(n - 1):
+    k1 = np.array([
+        y[1, i],
+        -(gamma / m * y[1, i] + k / m * y[0, i])
+    ])
+    k2 = np.array([
+        y[1, i] + 0.5 * dt * k1[1],
+        -k / m * (y[0, i] + 0.5 * dt * k1[0]) - gamma / m * (y[1, i] + 0.5 * dt * k1[1])
+    ])
+    k3 = np.array([
+        y[1, i] + 0.5 * dt * k2[1],
+        -k / m * (y[0, i] + 0.5 * dt * k2[0]) - gamma / m * (y[1, i] + 0.5 * dt * k2[1])
+    ])
+    k4 = np.array([
+        y[1, i] + dt * k3[1],
+        -k / m * (y[0, i] + dt * k3[0]) - gamma / m * (y[1, i] + dt * k3[1])
+    ])
+    y[:, i + 1] = y[:, i] + dt * (k1 + 2*k2 + 2*k3 + k4) / 6.0
+
+plt.figure(figsize=(10, 4))
+plt.subplot(1, 2, 1)
+plt.plot(t, y[0, :], 'b-'); plt.xlabel('Time'); plt.ylabel('Displacement x'); plt.title('RK4 Damped Oscillator')
+plt.subplot(1, 2, 2)
+plt.plot(y[0, :], y[1, :], 'purple'); plt.xlabel('Position x'); plt.ylabel('Velocity v'); plt.title('Phase Space Trajectory')
+plt.tight_layout(); plt.show()
+\end{jupytercode}
+\newpage
+
+\subsection{Nonlinear Systems: Fixed Points, Stability, and Phase Portraits}
+\textbf{1D Dynamical Systems ($\dot{x} = f(x)$):}
+\begin{itemize}
+    \item Fixed points $x^*$ satisfy $f(x^*) = 0$.
+    \item Linear stability: evaluate $f'(x^*)$.
+    \begin{itemize}
+        \item $f'(x^*) < 0$: \textbf{Linearly Stable (Attractor / Sink)}.
+        \item $f'(x^*) > 0$: \textbf{Linearly Unstable (Repeller / Source)}.
+    \end{itemize}
+\end{itemize}
+
+\textbf{2D Linear Systems ($\dot{\mathbf{X}} = \mathbf{J} \mathbf{X}$):}
+For $\mathbf{J} = \begin{bmatrix} a & b \\ c & d \end{bmatrix}$, let trace $\tau = \text{tr}(\mathbf{J}) = a + d$ and determinant $\Delta = \det(\mathbf{J}) = ad - bc$. The eigenvalues satisfy $\lambda^2 - \tau \lambda + \Delta = 0$:
+$$\lambda_{1, 2} = \frac{\tau \pm \sqrt{\tau^2 - 4\Delta}}{2}$$
+\begin{itemize}
+    \item $\Delta < 0$: \textbf{Saddle Point} (unstable, real eigenvalues of opposite sign).
+    \item $\Delta > 0, \tau^2 - 4\Delta > 0$: \textbf{Node} (stable if $\tau < 0$, unstable if $\tau > 0$).
+    \item $\Delta > 0, \tau^2 - 4\Delta < 0$: \textbf{Spiral / Focus} (stable if $\tau < 0$, unstable if $\tau > 0$).
+    \item $\Delta > 0, \tau = 0$: \textbf{Center} (neutrally stable, pure imaginary eigenvalues $\pm i \omega$).
+\end{itemize}
+
+\begin{jupytercode}
+import numpy as np
+import matplotlib.pyplot as plt
+
+# 2D Competing Species: dx/dt = x(3 - x - 2y), dy/dt = y(2 - y - x)
+def f(X):
+    x, y = X
+    return np.array([x * (3 - x - 2*y), y * (2 - y - x)])
+
+# Vector Field and Trajectory Simulation
+dt = 0.01; steps = 2000
+trajectory = np.zeros((2, steps))
+trajectory[:, 0] = [0.5, 0.5] # Initial condition
+
+for i in range(steps - 1):
+    trajectory[:, i+1] = trajectory[:, i] + dt * f(trajectory[:, i])
+
+X_grid, Y_grid = np.meshgrid(np.linspace(0, 3.5, 20), np.linspace(0, 2.5, 20))
+U = X_grid * (3 - X_grid - 2*Y_grid)
+V = Y_grid * (2 - Y_grid - X_grid)
+
+plt.streamplot(X_grid, Y_grid, U, V, color='gray')
+plt.plot(trajectory[0, :], trajectory[1, :], 'r-', lw=2, label='Trajectory')
+plt.scatter([0, 3, 0, 1], [0, 0, 2, 1], color='blue', zorder=5, label='Fixed Points')
+plt.xlabel('x'); plt.ylabel('y'); plt.title('2D Nonlinear System Phase Portrait'); plt.legend(); plt.show()
+\end{jupytercode}
+\newpage
+
+\subsection{Multivariable Newton-Raphson for Systems of Nonlinear Equations}
+\textbf{Theory:} Given a system of $n$ coupled nonlinear equations in $n$ unknowns:
+$$\mathbf{F}(\mathbf{x}) = \mathbf{0}, \quad \text{where } \mathbf{x} = [x_1, x_2, \dots, x_n]^T, \quad \mathbf{F} = [f_1(\mathbf{x}), f_2(\mathbf{x}), \dots, f_n(\mathbf{x})]^T$$
+Expanding around the current approximation $\mathbf{x}_k$ via first-order Taylor series:
+$$\mathbf{F}(\mathbf{x}_{k+1}) \approx \mathbf{F}(\mathbf{x}_k) + \mathbf{J}(\mathbf{x}_k)(\mathbf{x}_{k+1} - \mathbf{x}_k) = \mathbf{0}$$
+where the Jacobian matrix $\mathbf{J} \in \mathbb{R}^{n \times n}$ has elements $J_{ij} = \frac{\partial f_i}{\partial x_j}$.
+The explicit iteration formula used for coursework revision is:
+$$\mathbf{x}_{k+1} = \mathbf{x}_k - [\mathbf{J}(\mathbf{x}_k)]^{-1} \mathbf{F}(\mathbf{x}_k)$$
+Equivalently, in terms of the step increment $\mathbf{s}_k = \mathbf{x}_{k+1} - \mathbf{x}_k$, one solves the linear system $\mathbf{J}(\mathbf{x}_k) \mathbf{s}_k = -\mathbf{F}(\mathbf{x}_k)$ via Gaussian elimination with partial pivoting.
+The convergence is \textbf{quadratic} ($\|\mathbf{e}_{k+1}\| \le C \|\mathbf{e}_k\|^2$) near a non-singular root.
+
+\begin{jupytercode}
+import numpy as np
+
+# System: f1 = x1 - x0^3 = 0,  f2 = x0^2 + x1^2 - 1 = 0
+def func(x):
+    return np.array([
+        x[1] - x[0]**3,
+        x[0]**2 + x[1]**2 - 1.0
+    ])
+
+def jacobian(x):
+    return np.array([
+        [-3.0 * x[0]**2, 1.0],
+        [2.0 * x[0], 2.0 * x[1]]
+    ], dtype=float)
+
+# Initial guess
+x = np.array([1.0, 2.0])
+tol = 1e-8
+max_iter = 100
+
+for it in range(max_iter):
+    F = func(x)
+    J = jacobian(x)
+    
+    # Check convergence
+    if np.linalg.norm(F) < tol:
+        print(f"Converged in {it} iterations.")
+        break
+        
+    # Newton update step using direct inverse formula: x_{k+1} = x_k - J^{-1} F
+    step = np.linalg.inv(J) @ F
+    x = x - step
+
+print("Computed Root Vector x* =", x)
+print("Residual F(x*) =", func(x))
+\end{jupytercode}
+
+\end{document}

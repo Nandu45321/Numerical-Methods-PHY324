@@ -1,0 +1,234 @@
+Numerical Methods: Quiz 2 Answer Key
+
+Condensed model answers, proof sketches, and complete derivations.
+Notation: C = D Δt / Δx^2 (diffusion Courant number), k = c Δt / Δx (advection CFL number).
+
+======================================================================
+Part A: Finite Differences and Boundary Conditions
+======================================================================
+
+A1. Taylor expansions:
+f(x + Δx) = f(x) + f'(x)Δx + (1/2)f''(x)Δx^2 + (1/6)f'''(x)Δx^3 + O(Δx^4)
+f(x - Δx) = f(x) - f'(x)Δx + (1/2)f''(x)Δx^2 - (1/6)f'''(x)Δx^3 + O(Δx^4)
+Subtracting: f(x+Δx) - f(x-Δx) = 2 f'(x)Δx + (1/3)f'''(x)Δx^3 + O(Δx^5)
+=> f'(x) = [f(x+Δx) - f(x-Δx)] / (2Δx) - (1/6)f'''(x)Δx^2 + O(Δx^4). Truncation error is O(Δx^2).
+In forward/backward differences, the Δx^2 terms don't cancel, leaving an O(Δx) leading error. Central difference achieves O(Δx^2) because odd-order symmetric terms cancel exactly.
+Adding the expansions: f(x+Δx) + f(x-Δx) = 2f(x) + f''(x)Δx^2 + (1/12)f^{(4)}(x)Δx^4 + O(Δx^6)
+=> f''(x) = [f(x+Δx) - 2f(x) + f(x-Δx)] / Δx^2 + O(Δx^2).
+
+A2. Nested difference:
+(1/Δx) [ (f_{i+1} - f_i)/Δx - (f_i - f_{i-1})/Δx ] = [f_{i+1} - 2f_i + f_{i-1}] / Δx^2.
+Geometric interpretation: (f_{i+1} - f_i)/Δx is the forward chord slope at the right interval [x_i, x_{i+1}]; (f_i - f_{i-1})/Δx is the backward chord slope at the left interval [x_{i-1}, x_i]. The second derivative is the rate of change of the first derivative; dividing the change in adjacent slopes by Δx gives the curvature.
+
+A3. Boundary Conditions:
+(i) Dirichlet: Field values specified: ρ(0, t) = a, ρ(L, t) = b.
+(ii) Neumann (No-flux): Normal gradient specified. By Fick's law, flux J = -D ∂ρ/∂x. No particles enter or leave through the walls if J(0) = J(L) = 0 => ∂ρ/∂x = 0 at x = 0 and x = L.
+Conservation proof:
+d/dt [ ∫_0^L ρ(x, t) dx ] = ∫_0^L (∂ρ/∂t) dx = ∫_0^L (-∂J/∂x) dx = - [ J(L) - J(0) ] = 0 - 0 = 0.
+Thus N(t) = constant.
+Code implementation: Use ghost points x_{-1} and x_{N+1}. Central difference (ρ_1 - ρ_{-1})/(2Δx) = 0 => ρ_{-1} = ρ_1. Or directly at half-faces: (ρ_1 - ρ_0)/Δx = 0 => ρ_0 = ρ_1, and (ρ_N - ρ_{N-1})/Δx = 0 => ρ_N = ρ_{N-1}.
+(iii) Periodic: Ring topology ρ(x + L) = ρ(x) => ρ_0 = ρ_{N-1}, ρ_N = ρ_1.
+
+A4. Unconstrained diffusion ∂_t ρ = D ∂_x^2 ρ is invariant under translation x -> x + a and parity reflection x -> -x. Boundary conditions restrict the solution space. If Dirichlet values are asymmetric (ρ(0) = 1, ρ(L) = 0), reflection symmetry is broken; the steady state becomes the asymmetric ramp ρ(x) = 1 - x/L. If Neumann no-flux boundaries are imposed, reflection symmetry is preserved and the steady state is a uniform plateau ρ(x) = N_total / L.
+
+======================================================================
+Part B: Diffusion Equations (Parabolic PDEs)
+======================================================================
+
+B1. FTCS Discretization:
+(ρ_i^{n+1} - ρ_i^n)/Δt = D (ρ_{i+1}^n - 2ρ_i^n + ρ_{i-1}^n)/Δx^2
+=> ρ_i^{n+1} = ρ_i^n + C (ρ_{i+1}^n - 2ρ_i^n + ρ_{i-1}^n), where C = D Δt / Δx^2.
+von Neumann analysis:
+Substitute ρ_j^n = T^n e^{i k x_j}:
+T^{n+1} e^{i k x_j} = T^n e^{i k x_j} + C T^n [ e^{i k(x_j + Δx)} + e^{i k(x_j - Δx)} - 2 e^{i k x_j} ].
+Divide by T^n e^{i k x_j}:
+G(k) = T^{n+1} / T^n = 1 + C [ e^{i k Δx} + e^{-i k Δx} - 2 ] = 1 + 2C [ cos(k Δx) - 1 ].
+Using 1 - cos(θ) = 2 sin^2(θ/2):
+G(k) = 1 - 4C sin^2(k Δx / 2).
+Stability condition |G(k)| ≤ 1 for all k:
+-1 ≤ 1 - 4C sin^2(k Δx / 2) ≤ 1.
+Upper bound is trivial since C > 0, sin^2 ≥ 0.
+Lower bound: 1 - 4C sin^2(k Δx / 2) ≥ -1 => 4C sin^2(k Δx / 2) ≤ 2.
+Worst-case mode is Nyquist frequency k = π / Δx where sin^2 = 1:
+4C ≤ 2 => C ≤ 1/2 => D Δt / Δx^2 ≤ 1/2.
+If C > 1/2, |G| > 1 at the highest spatial frequencies, causing unphysical high-frequency checkerboard oscillations that grow exponentially with each time step (numerical blowup).
+
+B2. (i) In Fourier space: ∂\hat{ρ}/∂t = -D k^2 \hat{ρ} => \hat{ρ}(k, t) = \hat{ρ}(k, 0) exp(-D k^2 t).
+Amplitude decays exponentially with timescale τ_k = 1 / (D k^2). Since k = 2π / λ, τ_k = λ^2 / (4 π^2 D).
+(ii) Physical reason: Diffusion is driven by concentration gradients (Fick's law J = -D ∇ρ). A profile with short wavelength λ (high k) has steep spatial gradients, driving strong diffusive flux J and causing rapid redistribution and homogenization. Smooth profiles with large λ have shallow gradients, resulting in slow relaxation.
+(iii) Timescale ratio: τ_1 / τ_2 = (k_2 / k_1)^2 = (16π/L / 2π/L)^2 = (8)^2 = 64.
+The profile with k_2 = 16π/L equilibrates 64 times faster than k_1 = 2π/L.
+
+B3. BTCS Scheme:
+(ρ_i^{n+1} - ρ_i^n)/Δt = D (ρ_{i+1}^{n+1} - 2ρ_i^{n+1} + ρ_{i-1}^{n+1})/Δx^2.
+With C = D Δt / Δx^2:
+-C ρ_{i-1}^{n+1} + (1 + 2C) ρ_i^{n+1} - C ρ_{i+1}^{n+1} = ρ_i^n.
+Tridiagonal system A ρ^{n+1} = ρ^n, where A has diagonal (1 + 2C) and sub/super-diagonals -C.
+von Neumann analysis:
+Substitute ρ_j^n = T^n e^{i k x_j}:
+T^{n+1} [ -C e^{-i k Δx} + (1 + 2C) - C e^{i k Δx} ] = T^n
+T^{n+1} [ 1 + 2C - 2C cos(k Δx) ] = T^n
+T^{n+1} [ 1 + 4C sin^2(k Δx / 2) ] = T^n
+G(k) = T^{n+1} / T^n = 1 / [ 1 + 4C sin^2(k Δx / 2) ].
+Since C > 0 and sin^2 ≥ 0, denominator ≥ 1 for all k and any Δt > 0 => |G(k)| ≤ 1 unconditionally.
+BTCS is preferred for long-time evolution because Δt is not constrained by spatial grid refinement (no Δt ≤ Δx^2 / 2D bottleneck), saving immense computation when tracking slow equilibrium dynamics.
+
+B4. (i) 2D FTCS:
+ρ_{i,j}^{n+1} = ρ_{i,j}^n + (D Δt / δ^2) [ ρ_{i+1,j}^n + ρ_{i-1,j}^n + ρ_{i,j+1}^n + ρ_{i,j-1}^n - 4 ρ_{i,j}^n ].
+(ii) Let ρ_{i,j}^n = T^n e^{i(k_x x_i + k_y y_j)}.
+T^{n+1} / T^n = 1 + (D Δt / δ^2) [ 2 cos(k_x δ) + 2 cos(k_y δ) - 4 ]
+= 1 - 4 (D Δt / δ^2) [ sin^2(k_x δ / 2) + sin^2(k_y δ / 2) ].
+Worst case occurs when both sin^2 = 1 (k_x = k_y = π/δ):
+G_min = 1 - 4 (D Δt / δ^2)(1 + 1) = 1 - 8 (D Δt / δ^2) ≥ -1 => 8 (D Δt / δ^2) ≤ 2 => D Δt / δ^2 ≤ 1/4.
+(iii) In d dimensions, there are d independent spatial directions, each contributing 4 sin^2(k_m δ / 2). The worst case is when all d terms equal 1, giving G_min = 1 - 4d (D Δt / δ^2) ≥ -1 => D Δt / δ^2 ≤ 1 / (2d).
+
+B5. (i) Naive product rule D(x) ρ'' + D'(x) ρ' evaluates derivatives independently. Discrete truncation errors break strict flux cancellation between neighboring cells, creating artificial particle sources/sinks that violate conservation of mass.
+(ii) Conservative form enforces flux balance J_{i+1/2} = -D_{i+1/2} (ρ_{i+1} - ρ_i)/Δx:
+ρ_i^{n+1} = ρ_i^n - (Δt / Δx) [ J_{i+1/2}^n - J_{i-1/2}^n ]
+= ρ_i^n + (Δt / Δx^2) [ D_{i+1/2} (ρ_{i+1}^n - ρ_i^n) - D_{i-1/2} (ρ_i^n - ρ_{i-1}^n) ]
+where D_{i \pm 1/2} = (D_i + D_{i \pm 1}) / 2.
+(iii) Steady state: ∂_t ρ = 0 => J(x) = -D(x) dρ/dx = J_0 (constant).
+dρ/dx = -J_0 / D(x) => ρ(x) = -J_0 ∫ [1/D(x)] dx + C_2.
+Under no-flux or periodic boundary conditions, net flux J_0 must be zero, yielding a uniform steady state ρ(x) = constant.
+
+======================================================================
+Part C: Wave and Advection Equations (Hyperbolic PDEs)
+======================================================================
+
+C1. (i) Forward time, central space (FTCS) for advection:
+(ψ_i^{n+1} - ψ_i^n)/Δt + c (ψ_{i+1}^n - ψ_{i-1}^n)/(2Δx) = 0
+=> ψ_i^{n+1} = ψ_i^n - (k/2)(ψ_{i+1}^n - ψ_{i-1}^n), where k = c Δt / Δx.
+von Neumann: G(κ) = 1 - (k/2)[ e^{i κ Δx} - e^{-i κ Δx} ] = 1 - i k sin(κ Δx).
+Modulus: |G|^2 = 1 + k^2 sin^2(κ Δx).
+For any k > 0 and κ ≠ 0, |G| > 1. Hence FTCS is unconditionally unstable for advection!
+(ii) Upwind scheme for c > 0 uses backward difference (information arrives from the left):
+ψ_i^{n+1} = ψ_i^n - k (ψ_i^n - ψ_{i-1}^n).
+(iii) von Neumann analysis:
+G(κ) = 1 - k (1 - e^{-i κ Δx}) = (1 - k + k cos(κ Δx)) - i k sin(κ Δx).
+|G|^2 = (1 - k)^2 + 2k(1-k) cos(κ Δx) + k^2 = 1 - 2k(1-k)[1 - cos(κ Δx)].
+Since 1 - cos ≥ 0, |G|^2 ≤ 1 requires 2k(1-k) ≥ 0 => 0 ≤ k ≤ 1.
+CFL Condition: c Δt / Δx ≤ 1 => c ≤ Δx / Δt.
+(iv) If c < 0 (transport to the left), upwind requires the forward difference ψ_{i+1}^n - ψ_i^n because physical characteristics travel leftward. "Upwind" means the spatial stencil must always sample in the direction from which the wave propagates.
+
+C2. Modified Equation:
+Expand discrete operators around (x_i, t_n):
+(ψ^{n+1} - ψ^n)/Δt = ∂_t ψ + (Δt/2) ∂_t^2 ψ + O(Δt^2)
+(ψ_i - ψ_{i-1})/Δx = ∂_x ψ - (Δx/2) ∂_x^2 ψ + O(Δx^2)
+Substitute into upwind scheme:
+∂_t ψ + c ∂_x ψ = -(Δt/2) ∂_t^2 ψ + (c Δx / 2) ∂_x^2 ψ.
+Since ∂_t ψ ≈ -c ∂_x ψ => ∂_t^2 ψ ≈ c^2 ∂_x^2 ψ:
+∂_t ψ + c ∂_x ψ = [ (c Δx / 2) - (c^2 Δt / 2) ] ∂_x^2 ψ = [ (c Δx / 2)(1 - k) ] ∂_x^2 ψ.
+This is an effective diffusion with D_num = (c Δx / 2)(1 - k).
+When k = c Δt / Δx = 1, D_num = 0! Truncation error vanishes, and the pulse translates with zero dissipation and zero dispersion.
+
+C3. (i) Central leap-frog for ∂_t^2 ψ = c^2 ∂_x^2 ψ:
+[ψ_i^{n+1} - 2ψ_i^n + ψ_i^{n-1}] / Δt^2 = c^2 [ψ_{i+1}^n - 2ψ_i^n + ψ_{i-1}^n] / Δx^2.
+With k = c Δt / Δx:
+ψ_i^{n+1} = 2(1 - k^2) ψ_i^n + k^2 (ψ_{i+1}^n + ψ_{i-1}^n) - ψ_i^{n-1}.
+(ii) von Neumann analysis leads to quadratic equation in G: G^2 - 2[1 - 2k^2 sin^2(κ Δx / 2)] G + 1 = 0.
+Roots are complex conjugates on the unit circle (|G| = 1) if discriminant ≤ 0 => k^2 sin^2(κ Δx / 2) ≤ 1 => k = c Δt / Δx ≤ 1 (CFL condition).
+(iii) At k = 1: ψ_i^{n+1} = ψ_{i+1}^n + ψ_{i-1}^n - ψ_i^{n-1}.
+Exact d'Alembert solution: ψ(x_i, t_{n+1}) = f(x_i - c t_{n+1}) + g(x_i + c t_{n+1}).
+Because c Δt = Δx, the characteristics land precisely on grid nodes x_{i \pm 1}. Discrete algebraic evaluation matches continuous d'Alembert identically (zero numerical error).
+(iv) First step initialization:
+ψ(x_i, Δt) = ψ(x_i, 0) + Δt ψ_t(x_i, 0) + (Δt^2/2) ψ_{tt}(x_i, 0) + O(Δt^3).
+Using ψ_{tt} = c^2 ψ_{xx} ≈ c^2 [ψ_{i+1}^0 - 2ψ_i^0 + ψ_{i-1}^0] / Δx^2:
+ψ_i^1 = ψ_i^0 + Δt v(x_i) + (k^2 / 2)[ ψ_{i+1}^0 - 2ψ_i^0 + ψ_{i-1}^0 ]
+= (1 - k^2) ψ_i^0 + (k^2 / 2)(ψ_{i+1}^0 + ψ_{i-1}^0) + Δt v(x_i).
+(v) d'Alembert: ψ(x, t) = F(x - ct) + G(x + ct).
+For a pure leftward traveling wave, F ≡ 0 => ψ(x, t) = G(x + ct).
+At t = 0: ψ(x, 0) = G(x) = f(x).
+Velocity: ∂ψ/∂t(x, 0) = c G'(x) = c f'(x).
+Thus, choosing v(x) = c f'(x) generates a pure leftward traveling wave without splitting into two pulses.
+
+======================================================================
+Part D: Stochastic Systems, Brownian Motion, and Fokker-Planck
+======================================================================
+
+D1. (i) Unbiased walk (p_r = p_l = 1/2):
+<η_j> = (+1)(1/2) + (-1)(1/2) = 0.
+<η_j^2> = (+1)^2(1/2) + (-1)^2(1/2) = 1.
+For j ≠ m, steps are independent: <η_j η_m> = <η_j><η_m> = 0 => <η_j η_m> = δ_{jm}.
+Displacement x_n = Σ_{j=1}^n η_j:
+<x_n> = Σ <η_j> = 0.
+<x_n^2> = <(Σ η_j)(Σ η_m)> = Σ_j <η_j^2> + Σ_{j ≠ m} <η_j η_m> = n(1) + 0 = n.
+(ii) In physical units x = x_n Δx, t = n Δt:
+<x(t)^2> = <x_n^2> Δx^2 = n Δx^2 = (t / Δt) Δx^2 = (Δx^2 / Δt) t.
+Comparing with macroscopic diffusion <x^2> = 2 D t gives:
+D = Δx^2 / (2 Δt).
+(iii) Biased walk: <η_j> = p_r - p_l.
+Drift velocity v_drift = <x_n> / t = n (p_r - p_l) / (n Δt) = (p_r - p_l) / Δt.
+Variance / shifted MSD:
+< (x_n - <x_n>)^2 > = <x_n^2> - <x_n>^2.
+<x_n^2> = n(1) + n(n-1)(p_r - p_l)^2.
+< (x_n - <x_n>)^2 > = n [ 1 - (p_r - p_l)^2 ] = n [ 1 - (2p_r - 1)^2 ] = n [ 4p_r - 4p_r^2 ] = 4 p_r p_l n.
+(iv) A single realization is an individual noisy, non-reproducible path. It does NOT equal zero; its magnitude fluctuates on order O(√n). An ensemble average is an arithmetic mean over N_re independent realizations. By the law of large numbers, as N_re -> ∞, the ensemble average converges smoothly to deterministic macroscopic laws (<x_n> -> 0, <x_n^2> -> n).
+
+D2. (i) 2D walk R_n = x_n î + y_n ĵ:
+<R_n> = <x_n> î + <y_n> ĵ = 0 î + 0 ĵ = 0.
+<R_n^2> = <x_n^2 + y_n^2> = <x_n^2> + <y_n^2> = n + n = 2n.
+(ii) In 1D, MSD = n. In 2D, MSD = 2n. In general d dimensions, each orthogonal spatial coordinate undergoes an independent random walk: <|R_n|^2> = d · n.
+
+D3. (i) Langevin: m dv/dt = -γ v + ξ(t).
+Noise properties:
+Mean: <ξ(t)> = 0.
+Autocorrelation: <ξ(t) ξ(t')> = 2 γ k_B T δ(t - t').
+The Dirac delta δ(t - t') signifies that molecular collisions are memoryless (white noise).
+(ii) Einstein relation: D = k_B T / γ.
+Origin: Fluctuation-Dissipation Theorem. Dissipation (friction -γ v) removes energy from the particle, while fluctuations (random collisions ξ(t)) inject thermal energy. At thermodynamic equilibrium, the two processes balance to maintain equipartition: (1/2)m <v^2> = (1/2) k_B T.
+(iii) Euler-Maruyama scheme:
+v_{n+1} = v_n - (γ/m) v_n Δt + sqrt(2 γ k_B T Δt / m^2) W_n, where W_n ~ N(0, 1).
+x_{n+1} = x_n + v_n Δt.
+
+D4. (i) Continuity: ∂ρ/∂t + ∂J/∂x = 0.
+Flux components:
+- J_diffusion = -D ∂ρ/∂x (random thermal motion down density gradients).
+- J_drift = v_drift ρ = -μ (dU/dx) ρ (systematic motion under external potential force -dU/dx). With mobility μ = 1, J_drift = -ρ dU/dx.
+(ii) Fokker-Planck equation:
+∂ρ/∂t = -∂/∂x [ -D ∂ρ/∂x - ρ dU/dx ] = D ∂^2ρ/∂x^2 + ∂/∂x [ ρ dU/dx ].
+(iii) Equilibrium: J = 0 => -D dρ/dx - ρ dU/dx = 0.
+(1/ρ) dρ/dx = -(1/D) dU/dx => ln ρ = -U(x)/D + const.
+ρ_eq(x) = (1/Z) exp(-U(x)/D).
+Since D = k_B T / γ (with γ = 1), ρ_eq(x) ∝ exp(-U(x) / k_B T), which is the Gibbs-Boltzmann canonical distribution.
+(iv) Periodic BCs: Set potential gradient derivative periodic Up[0] = Up[-1]. In FTCS update, apply wrap-around: ρ[0] = ρ[-2] and ρ[-1] = ρ[1].
+
+======================================================================
+Part E: Advanced ODE Systems and Nonlinear Solvers
+======================================================================
+
+E1. (i) Nuclear decay dy/dt = -λ y:
+Explicit Euler: (y_{n+1} - y_n)/Δt = -λ y_n => y_{n+1} = (1 - λ Δt) y_n.
+Implicit Euler: (y_{n+1} - y_n)/Δt = -λ y_{n+1} => y_{n+1} = y_n / (1 + λ Δt).
+(ii) Stability conditions:
+Explicit: |1 - λ Δt| ≤ 1 => -1 ≤ 1 - λ Δt ≤ 1 => λ Δt ≤ 2 => Δt ≤ 2/λ.
+Implicit: G = 1 / (1 + λ Δt). For any λ > 0 and Δt > 0, denominator > 1, so |G| < 1 unconditionally.
+(iii) Explicit Euler regimes:
+- Δt < 1/λ: Smooth monotonic decay (physical).
+- 1/λ < Δt ≤ 2/λ: Stable, but unphysical alternating sign oscillations occur (1 - λ Δt < 0).
+- Δt > 2/λ: Catastrophic unbounded oscillation; amplitude blows up exponentially.
+
+E2. (i) m x'' + γ x' + k x = 0. Let y = [x, v]^T:
+dx/dt = v
+dv/dt = -(k/m) x - (γ/m) v.
+(ii) Timescales: Natural oscillation period τ_osc = 2π sqrt(m/k) = 2π / ω_0. Damping dissipation timescale τ_damp = m / γ.
+(iii) Simple Forward Euler: x_{n+1} = x_n + Δt v_n, v_{n+1} = v_n - Δt (k/m) x_n.
+Evaluating total energy E = (1/2)k x^2 + (1/2)m v^2 reveals that each step amplifies energy by E_{n+1} = E_n (1 + ω_0^2 Δt^2). Forward Euler artificially pumps energy into the system, spiraling outward into instability.
+Euler-Cromer uses the updated velocity: v_{n+1} = v_n - Δt (k/m) x_n, x_{n+1} = x_n + Δt v_{n+1}.
+Euler-Cromer is symplectic (preserves phase-space area det(Jacobian) = 1), bounding energy error and producing stable closed orbits.
+(iv) Overdamped regime: When damping dominates inertia (m / γ << sqrt(m/k) => m k / γ^2 << 1), the acceleration term m x'' relaxes on timescale τ_damp = m/γ. Beyond this rapid initial transient, m x'' ≈ 0, yielding the reduced first-order ODE γ x' + k x = 0.
+
+E3. (i) dX/dt = J X. Characteristic equation: det(J - λ I) = λ^2 - τ λ + Δ = 0.
+Eigenvalues: λ_{1,2} = [ τ ± sqrt(τ^2 - 4Δ) ] / 2.
+(ii) Classification:
+- Δ < 0: Saddle point (unstable, real eigenvalues of opposite sign).
+- Δ > 0, τ^2 - 4Δ > 0: Node (stable sink if τ < 0, unstable source if τ > 0).
+- Δ > 0, τ^2 - 4Δ < 0: Spiral / focus (stable if τ < 0, unstable if τ > 0).
+- Δ > 0, τ = 0: Center (neutrally stable, pure imaginary eigenvalues ± i sqrt(Δ)).
+(iii) Center (e.g., J = [[0, -1], [1, 0]], undamped oscillator): Continuous system has eigenvalues ± i, maintaining closed circular orbits. Forward Euler replaces eigenvalues by 1 ± i Δt, whose modulus is sqrt(1 + Δt^2) > 1. Forward Euler fails completely on centers, turning a stable closed orbit into an exponentially expanding spiral.
+
+E4. (i) Multivariable Taylor expansion:
+F(x_{k+1}) = F(x_k) + J(x_k)(x_{k+1} - x_k) + O(||x_{k+1} - x_k||^2) = 0.
+Neglecting higher orders gives: J(x_k)(x_{k+1} - x_k) = -F(x_k).
+Inverting J: x_{k+1} = x_k - [J(x_k)]^{-1} F(x_k).
+(ii) Quadratic convergence: ||e_{k+1}|| ≤ C ||e_k||^2 near a root where J(x*) is non-singular.
+(iii) Solving the linear system J s_k = -F(x_k) via LU decomposition costs (2/3)n^3 operations and is numerically stable. Explicitly computing the inverse matrix J^{-1} requires 2n^3 operations and is prone to numerical round-off and loss of significance. The explicit inverse formula is retained in coursework revision documentation to provide an explicit, unambiguous single-line mathematical statement of the iteration step.
