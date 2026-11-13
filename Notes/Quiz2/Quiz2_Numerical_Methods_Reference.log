@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Arch Linux) (preloaded format=pdflatex 2026.10.23)  14 NOV 2026 01:51
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Arch Linux) (preloaded format=pdflatex 2026.10.23)  14 NOV 2026 02:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -603,33 +603,43 @@ Library (tcolorbox): 'tcblistingscore.code.tex' version '6.9.0'
 Library (tcolorbox): 'tcbprocessing.code.tex' version '6.9.0'
 )
 \c@tcblisting=\count342
-))
-Package hyperref Info: Option `colorlinks' set `true' on input line 45.
- (/usr/share/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+)) (/usr/share/texmf-dist/tex/latex/tcolorbox/tcbbreakable.code.tex
+Library (tcolorbox): 'tcbbreakable.code.tex' version '6.9.0'
+(/usr/share/texmf-dist/tex/latex/pdfcol/pdfcol.sty
+Package: pdfcol 2022-09-21 v1.7 Handle new color stacks for pdfTeX (HO)
+)
+Package pdfcol Info: New color stack `tcb@breakable' = 1 on input line 23.
+\tcb@testbox=\box77
+\tcb@totalupperbox=\box78
+\tcb@totallowerbox=\box79
+)
+Package hyperref Info: Option `colorlinks' set `true' on input line 46.
+
+(/usr/share/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count343
 )
 (./Quiz2_Numerical_Methods_Reference.aux)
 \openout1 = `Quiz2_Numerical_Methods_Reference.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 51.
-LaTeX Font Info:    ... okay on input line 51.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 51.
-LaTeX Font Info:    ... okay on input line 51.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 51.
-LaTeX Font Info:    ... okay on input line 51.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 51.
-LaTeX Font Info:    ... okay on input line 51.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 51.
-LaTeX Font Info:    ... okay on input line 51.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 51.
-LaTeX Font Info:    ... okay on input line 51.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 51.
-LaTeX Font Info:    ... okay on input line 51.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 51.
-LaTeX Font Info:    ... okay on input line 51.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 51.
-LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -670,7 +680,7 @@ LaTeX Font Info:    ... okay on input line 51.
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count345
 \scratchdimen=\dimen283
-\scratchbox=\box77
+\scratchbox=\box80
 \nofMPsegments=\count346
 \nofMParguments=\count347
 \everyMPshowfont=\toks39
@@ -688,20 +698,20 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-Package hyperref Info: Link coloring ON on input line 51.
+Package hyperref Info: Link coloring ON on input line 52.
 
 (./Quiz2_Numerical_Methods_Reference.out)
 (./Quiz2_Numerical_Methods_Reference.out)
 \@outlinefile=\write4
 \openout4 = `Quiz2_Numerical_Methods_Reference.out'.
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 54.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 55.
 
 
 (/usr/share/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 54.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 55.
 
 
 (/usr/share/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -724,22 +734,15 @@ File: lstlang1.sty 2025/11/14 1.11b listings language file
 (./Quiz2_Numerical_Methods_Reference.listing
 LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <8> not available
 (Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 1.
-)
-Overfull \vbox (14.2605pt too high) has occurred while \output is active []
-
-
-[5]
-\openout6 = `Quiz2_Numerical_Methods_Reference.listing'.
-
- (./Quiz2_Numerical_Methods_Reference.listing) [6]
+) [5] [6]
 \openout6 = `Quiz2_Numerical_Methods_Reference.listing'.
 
 
-(./Quiz2_Numerical_Methods_Reference.listing) [7] [8]
+(./Quiz2_Numerical_Methods_Reference.listing) [7]
 \openout6 = `Quiz2_Numerical_Methods_Reference.listing'.
 
 
-(./Quiz2_Numerical_Methods_Reference.listing) [9]
+(./Quiz2_Numerical_Methods_Reference.listing) [8] [9]
 \openout6 = `Quiz2_Numerical_Methods_Reference.listing'.
 
 
@@ -747,15 +750,19 @@ Overfull \vbox (14.2605pt too high) has occurred while \output is active []
 \openout6 = `Quiz2_Numerical_Methods_Reference.listing'.
 
 
-(./Quiz2_Numerical_Methods_Reference.listing) [12]
+(./Quiz2_Numerical_Methods_Reference.listing) [12] [13]
 \openout6 = `Quiz2_Numerical_Methods_Reference.listing'.
 
 
-(./Quiz2_Numerical_Methods_Reference.listing) [13] [14] [15]
+(./Quiz2_Numerical_Methods_Reference.listing) [14]
 \openout6 = `Quiz2_Numerical_Methods_Reference.listing'.
 
 
-(./Quiz2_Numerical_Methods_Reference.listing) [16]
+(./Quiz2_Numerical_Methods_Reference.listing) [15] [16] [17]
+\openout6 = `Quiz2_Numerical_Methods_Reference.listing'.
+
+
+(./Quiz2_Numerical_Methods_Reference.listing) [18]
 \openout6 = `Quiz2_Numerical_Methods_Reference.listing'.
 
 
@@ -763,27 +770,27 @@ Overfull \vbox (14.2605pt too high) has occurred while \output is active []
 \openout6 = `Quiz2_Numerical_Methods_Reference.listing'.
 
 
-(./Quiz2_Numerical_Methods_Reference.listing) [17] [18]
-\openout6 = `Quiz2_Numerical_Methods_Reference.listing'.
-
-
 (./Quiz2_Numerical_Methods_Reference.listing) [19] [20]
 \openout6 = `Quiz2_Numerical_Methods_Reference.listing'.
 
 
-(./Quiz2_Numerical_Methods_Reference.listing) [21]
+(./Quiz2_Numerical_Methods_Reference.listing) [21] [22]
 \openout6 = `Quiz2_Numerical_Methods_Reference.listing'.
 
 
-(./Quiz2_Numerical_Methods_Reference.listing) [22] [23]
+(./Quiz2_Numerical_Methods_Reference.listing) [23]
 \openout6 = `Quiz2_Numerical_Methods_Reference.listing'.
 
 
-(./Quiz2_Numerical_Methods_Reference.listing) [24]
+(./Quiz2_Numerical_Methods_Reference.listing) [24] [25]
 \openout6 = `Quiz2_Numerical_Methods_Reference.listing'.
 
 
-(./Quiz2_Numerical_Methods_Reference.listing) [25]
+(./Quiz2_Numerical_Methods_Reference.listing) [26]
+\openout6 = `Quiz2_Numerical_Methods_Reference.listing'.
+
+
+(./Quiz2_Numerical_Methods_Reference.listing) [27]
 (./Quiz2_Numerical_Methods_Reference.aux)
  ***********
 LaTeX2e <2025-11-01>
@@ -794,13 +801,13 @@ ot changed.
 (rerunfilecheck)             Checksum: F01330464E81C56239B8FC9BD3CB2836;7082.
  ) 
 Here is how much of TeX's memory you used:
- 25620 strings out of 469472
- 476787 string characters out of 5469745
- 1435292 words of memory out of 5000000
- 53260 multiletter control sequences out of 15000+600000
+ 25965 strings out of 469472
+ 485752 string characters out of 5469745
+ 1442051 words of memory out of 5000000
+ 53564 multiletter control sequences out of 15000+600000
  639800 words of font info for 86 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 116i,8n,121p,526b,1721s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 116i,8n,121p,526b,1718s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/
 texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-dist/fon
 ts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf-dist/fonts/type1/publi
@@ -818,11 +825,11 @@ y7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/s
 hare/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/share/texmf-dist
 /fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texmf-dist/fonts/ty
 pe1/public/cm-super/sfrm1000.pfb>
-Output written on Quiz2_Numerical_Methods_Reference.pdf (25 pages, 356360 bytes
+Output written on Quiz2_Numerical_Methods_Reference.pdf (27 pages, 361566 bytes
 ).
 PDF statistics:
- 1029 PDF objects out of 1200 (max. 8388607)
- 952 compressed objects within 10 object streams
- 615 named destinations out of 1000 (max. 500000)
+ 1077 PDF objects out of 1200 (max. 8388607)
+ 998 compressed objects within 10 object streams
+ 649 named destinations out of 1000 (max. 500000)
  189 words of extra memory for PDF output out of 10000 (max. 10000000)
 

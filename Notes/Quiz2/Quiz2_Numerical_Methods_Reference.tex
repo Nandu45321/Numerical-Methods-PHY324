@@ -5,7 +5,7 @@
 \usepackage{xcolor}
 \usepackage{hyperref}
 \usepackage{tcolorbox}
-\tcbuselibrary{listings}
+\tcbuselibrary{listings, breakable}
 
 \definecolor{lightbg}{HTML}{F7F7F7}
 \definecolor{vscodeblue}{HTML}{0000FF}
@@ -17,6 +17,7 @@
   colback=lightbg,
   colframe=gray!40,
   listing only,
+  breakable,
   left=15pt,
   top=0pt,
   bottom=0pt,
@@ -314,55 +315,84 @@ plt.xlabel('x'); plt.ylabel('rho'); plt.legend(); plt.grid(True); plt.show()
 \newpage
 
 \subsection{2D Diffusion Equation and Multidimensional Stability}
-\textbf{Theory:} The two-dimensional diffusion equation is $\frac{\partial \rho}{\partial t} = D \left( \frac{\partial^2 \rho}{\partial x^2} + \frac{\partial^2 \rho}{\partial y^2} \right)$.
-With $\Delta x = \Delta y = \delta$, explicit FTCS gives:
+\textbf{Theory:} With $\Delta x = \Delta y = \delta$, the 2D diffusion equation $\partial_t \rho = D (\partial_x^2 \rho + \partial_y^2 \rho)$ discretizes under explicit FTCS as:
 $$\rho_{i, j}^{n+1} = \rho_{i, j}^n + \frac{D \Delta t}{\delta^2} \left( \rho_{i+1, j}^n + \rho_{i-1, j}^n + \rho_{i, j+1}^n + \rho_{i, j-1}^n - 4\rho_{i, j}^n \right)$$
-\textbf{Stability Analysis in $d$ Dimensions:} Expanding into Fourier modes yields amplification factor:
-$$G(k_x, k_y) = 1 - 4 \frac{D \Delta t}{\delta^2} \left[ \sin^2\left(\frac{k_x \delta}{2}\right) + \sin^2\left(\frac{k_y \delta}{2}\right) \right] \implies G_{\min} = 1 - 8 \frac{D \Delta t}{\delta^2} \ge -1 \implies \frac{D \Delta t}{\delta^2} \le \frac{1}{4}$$
-In general $d$-dimensional space, the FTCS stability criterion generalizes to: $\frac{D \Delta t}{\delta^2} \le \frac{1}{2d}$.
+\textbf{Stability in $d$ Dimensions:} Fourier amplification factor $G(k_x, k_y) = 1 - 4 \frac{D \Delta t}{\delta^2} [\sin^2(\frac{k_x \delta}{2}) + \sin^2(\frac{k_y \delta}{2})]$. Minimum at Brillouin corner: $G_{\min} = 1 - 8 \frac{D \Delta t}{\delta^2} \ge -1 \implies \frac{D \Delta t}{\delta^2} \le \frac{1}{4}$. In $d$ dimensions, this generalizes to $\frac{D \Delta t}{\delta^2} \le \frac{1}{2d}$.
 
 \begin{jupytercode}
 import numpy as np
 import matplotlib.pyplot as plt
 
 Nx, Ny = 50, 50
-delta, D, dt = 0.1, 0.05, 0.01   # C = D*dt/delta^2 = 0.05 <= 0.25 (Stable)
+delta = 0.1
+D = 0.2
+dt = 0.01             # Check: D*dt/delta^2 = 0.2*0.01 / 0.01 = 0.20 <= 0.25 (Stable)
 C = D * dt / (delta**2)
-assert C <= 0.25, "2D Stability violated!"
+assert C <= 0.25, "Stability condition violated: D*dt/delta^2 must be <= 0.25"
 
 x = np.linspace(-2.5, 2.5, Nx)
 y = np.linspace(-2.5, 2.5, Ny)
 X, Y = np.meshgrid(x, y)
 
-# Initial 2D Gaussian pulse & snapshots (t = 0.0, 1.0, 3.0)
+# Initial 2D Gaussian pulse at t = 0
 rho = np.exp(-(X**2 + Y**2) / 0.5)
-snapshots = {0.0: rho.copy()}
-record = {100: 1.0, 300: 3.0}
+rho_0 = rho.copy()
 
-# FTCS 2D Integration
-for n in range(1, 301):
+# FTCS Integration to t = 1.0 (100 steps)
+for n in range(100):
     rho[1:-1, 1:-1] += C * (
         rho[2:, 1:-1] + rho[:-2, 1:-1] + 
         rho[1:-1, 2:] + rho[1:-1, :-2] - 4 * rho[1:-1, 1:-1]
     )
-    if n in record:
-        snapshots[record[n]] = rho.copy()
+rho_1 = rho.copy()
 
-# Plot temporal evolution across 3 timestamps (2D Heatmaps)
-fig, axes = plt.subplots(1, 3, figsize=(12, 3.5), sharey=True)
-for ax, (t_val, data) in zip(axes, snapshots.items()):
-    im = ax.imshow(data, extent=[-2.5, 2.5, -2.5, 2.5], origin='lower', cmap='hot', vmin=0, vmax=1)
-    ax.set_title(f't = {t_val:.1f}'); ax.set_xlabel('x')
-axes[0].set_ylabel('y')
-fig.colorbar(im, ax=axes.ravel().tolist(), label='Concentration', fraction=0.046, pad=0.04)
+# FTCS Integration to t = 3.0 (200 more steps)
+for n in range(200):
+    rho[1:-1, 1:-1] += C * (
+        rho[2:, 1:-1] + rho[:-2, 1:-1] + 
+        rho[1:-1, 2:] + rho[1:-1, :-2] - 4 * rho[1:-1, 1:-1]
+    )
+rho_2 = rho.copy()
+
+# Plot 2D heatmaps at 3 timestamps
+plt.figure(figsize=(12, 3.5))
+
+plt.subplot(1, 3, 1)
+plt.imshow(rho_0, extent=[-2.5, 2.5, -2.5, 2.5], origin='lower', cmap='hot', vmin=0, vmax=1)
+plt.colorbar(label='Concentration')
+plt.title('t = 0.0')
+plt.xlabel('x')
+plt.ylabel('y')
+
+plt.subplot(1, 3, 2)
+plt.imshow(rho_1, extent=[-2.5, 2.5, -2.5, 2.5], origin='lower', cmap='hot', vmin=0, vmax=1)
+plt.colorbar(label='Concentration')
+plt.title('t = 1.0')
+plt.xlabel('x')
+plt.ylabel('y')
+
+plt.subplot(1, 3, 3)
+plt.imshow(rho_2, extent=[-2.5, 2.5, -2.5, 2.5], origin='lower', cmap='hot', vmin=0, vmax=1)
+plt.colorbar(label='Concentration')
+plt.title('t = 3.0')
+plt.xlabel('x')
+plt.ylabel('y')
+
+plt.tight_layout()
 plt.show()
 
-# 1D Cross-section along y=0 showing peak decay & flattening
+# 1D Cross-section along y = 0 showing peak decay and broadening
 plt.figure(figsize=(6, 3))
-for t_val, data in snapshots.items():
-    plt.plot(x, data[Ny//2, :], label=f't = {t_val:.1f}')
-plt.xlabel('x'); plt.ylabel('rho(x, y=0)'); plt.title('1D Slice Evolution along y=0')
-plt.legend(); plt.grid(True); plt.show()
+mid = Ny // 2
+plt.plot(x, rho_0[mid, :], 'r--', label='t = 0.0 (Peak: 1.00)')
+plt.plot(x, rho_1[mid, :], 'g-', label='t = 1.0 (Peak: 0.37)')
+plt.plot(x, rho_2[mid, :], 'b-', label='t = 3.0 (Peak: 0.17)')
+plt.xlabel('x')
+plt.ylabel('Concentration')
+plt.title('1D Slice Evolution (y=0)')
+plt.legend()
+plt.grid(True)
+plt.show()
 \end{jupytercode}
 \newpage
 

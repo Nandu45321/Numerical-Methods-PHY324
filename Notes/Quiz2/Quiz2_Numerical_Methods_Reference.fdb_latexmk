@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1794601111.87771 "/home/nandu/Documents/IISER 5/Numerical Methods/Notes/Quiz2/Quiz2_Numerical_Methods_Reference.tex" "Quiz2_Numerical_Methods_Reference.pdf" "Quiz2_Numerical_Methods_Reference" 1794601112.77115 0
-  "/home/nandu/Documents/IISER 5/Numerical Methods/Notes/Quiz2/Quiz2_Numerical_Methods_Reference.tex" 1794601110.79795 49424 8785f0898480f15a9d68f9d57df0ad3f ""
+["pdflatex"] 1794604814.52665 "/home/nandu/Documents/IISER 5/Numerical Methods/Notes/Quiz2/Quiz2_Numerical_Methods_Reference.tex" "Quiz2_Numerical_Methods_Reference.pdf" "Quiz2_Numerical_Methods_Reference" 1794604815.37391 0
+  "/home/nandu/Documents/IISER 5/Numerical Methods/Notes/Quiz2/Quiz2_Numerical_Methods_Reference.tex" 1794604813.51815 49841 e59aab158e9d62b8c3414d07b132a43f ""
   "/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1775415801 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/share/texmf-dist/fonts/map/fontname/texfonts.map" 1775415801 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1775415801 1536 e07581a4bb3136ece9eeb4c3ffab8233 ""
@@ -163,6 +163,7 @@
   "/usr/share/texmf-dist/tex/latex/listings/lstlang1.sty" 1775415801 206518 095934a0019dcba14af528744bf9b295 ""
   "/usr/share/texmf-dist/tex/latex/listings/lstmisc.sty" 1775415801 77105 002e983b638eadbf04e580642335f689 ""
   "/usr/share/texmf-dist/tex/latex/listings/lstpatch.sty" 1775415801 353 9024412f43e92cd5b21fe9ded82d0610 ""
+  "/usr/share/texmf-dist/tex/latex/pdfcol/pdfcol.sty" 1775415801 8086 ac143843b6ea88d172677dc3ed532925 ""
   "/usr/share/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty" 1775415801 1090 bae35ef70b3168089ef166db3e66f5b2 ""
   "/usr/share/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty" 1775415801 373 00b204b1d7d095b892ad31a7494b0373 ""
   "/usr/share/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-0-65.sty" 1775415801 21013 f4ff83d25bb56552493b030f27c075ae ""
@@ -175,6 +176,7 @@
   "/usr/share/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty" 1775415801 325 f9f16d12354225b7dd52a3321f085955 ""
   "/usr/share/texmf-dist/tex/latex/refcount/refcount.sty" 1775415801 9878 9e94e8fa600d95f9c7731bb21dfb67a4 ""
   "/usr/share/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty" 1775415801 9684 a33a14b82ce60d6e77cb9be689d79ee6 ""
+  "/usr/share/texmf-dist/tex/latex/tcolorbox/tcbbreakable.code.tex" 1775415801 34681 5f7ded8db74e73427361503c88aa1d95 ""
   "/usr/share/texmf-dist/tex/latex/tcolorbox/tcblistings.code.tex" 1775415801 3414 8d48b2178ca0b1c7afc7b72cb352e6dd ""
   "/usr/share/texmf-dist/tex/latex/tcolorbox/tcblistingscore.code.tex" 1775415801 16469 a79448549501662426a8dfc4d9c0b16d ""
   "/usr/share/texmf-dist/tex/latex/tcolorbox/tcbprocessing.code.tex" 1775415801 2349 256b322c52f0d43e97ec64bb9aecaaa0 ""
@@ -186,11 +188,11 @@
   "/usr/share/texmf-dist/web2c/texmf.cnf" 1775415801 43569 fd570f2fa160877d211e859f687312ba ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1792701015 5385779 47c0c393a77fd4a098bacfd57d66b88a ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1792700963 2378843 24b89f97a5140e27e05af7de95821374 ""
-  "Quiz2_Numerical_Methods_Reference.aux" 1794601112.71792 3582 9848ba3e6f7e5729b784aa3ed4616b83 "pdflatex"
-  "Quiz2_Numerical_Methods_Reference.listing" 1794601112.69599 753 7afad2b37309c665c12bceb14e94ee96 "pdflatex"
-  "Quiz2_Numerical_Methods_Reference.out" 1794601112.71792 7082 f01330464e81c56239b8fc9bd3cb2836 "pdflatex"
-  "Quiz2_Numerical_Methods_Reference.tex" 1794601110.79795 49424 8785f0898480f15a9d68f9d57df0ad3f ""
-  "Quiz2_Numerical_Methods_Reference.toc" 1794601112.72012 2517 d355c50c5188d3bc13211ff1b4af3b92 "pdflatex"
+  "Quiz2_Numerical_Methods_Reference.aux" 1794604815.3148 3583 39e68e5b17e51af40ed6c88625aae0a2 "pdflatex"
+  "Quiz2_Numerical_Methods_Reference.listing" 1794604815.29903 753 7afad2b37309c665c12bceb14e94ee96 "pdflatex"
+  "Quiz2_Numerical_Methods_Reference.out" 1794604815.3148 7082 f01330464e81c56239b8fc9bd3cb2836 "pdflatex"
+  "Quiz2_Numerical_Methods_Reference.tex" 1794604813.51815 49841 e59aab158e9d62b8c3414d07b132a43f ""
+  "Quiz2_Numerical_Methods_Reference.toc" 1794604815.31833 2518 e73a9201c19b25bf9bf0993761428a44 "pdflatex"
   (generated)
   "Quiz2_Numerical_Methods_Reference.aux"
   "Quiz2_Numerical_Methods_Reference.listing"
