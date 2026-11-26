@@ -27,7 +27,7 @@ This repository contains lecture notes, problem sets, Python implementations, an
 - **End-Semester Examination Syllabus Sections & Mapped Materials:**
 
 #### 1. Linear Ordinary Differential Equations
-- **Directory:** [`Linear Ordinary Differential Equations/`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Linear%20Ordinary%20Differential%20Equations/)
+- **Directory:** [`Linear Ordinary Differential Equations/`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/End/Linear%20Ordinary%20Differential%20Equations/)
 - **Primary Topics & Mathematical Concepts:**
   - First-order linear ODEs: radioactive decay $\dot{N} = -\lambda N$, truncation error (local $\mathcal{O}(h^2)$ vs global $\mathcal{O}(h)$), stability bounds for explicit Euler ($h \le 1/\lambda$ for monotonicity, $h \le 2/\lambda$ for boundedness).
   - Explicit Euler vs. Implicit Euler (backward Euler, unconditionally stable).
@@ -49,14 +49,14 @@ This repository contains lecture notes, problem sets, Python implementations, an
   - [`Simple Harmonic Ocilator.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/n/Simple%20Harmonic%20Ocilator.ipynb): Student damped oscillator simulation.
   - [`SHM_rk4.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/SHM_rk4.ipynb): Professor's RK4 harmonic oscillator code.
   - [`08_ODE_Systems_and_Nonlinear_Solvers.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Quiz2/08_ODE_Systems_and_Nonlinear_Solvers.ipynb): Nuclear decay explicit vs. implicit Euler, SHM RK4 implementation.
-- **Created Executable Notebooks (`Notes/Linear Ordinary Differential Equations/`):**
-  1. [`01_First_Order_ODEs_and_Euler_Methods.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Linear%20Ordinary%20Differential%20Equations/01_First_Order_ODEs_and_Euler_Methods.ipynb): Simple Euler, Improved Euler, and Implicit Euler comparison, stability check, plus exact class code from `Nuclear-decay.ipynb`.
-  2. [`02_Second_Order_ODEs_SHM_and_RK4.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Linear%20Ordinary%20Differential%20Equations/02_Second_Order_ODEs_SHM_and_RK4.ipynb): 1st-order system conversion, Simple Euler vs. Euler-Cromer, professor's exact `SHM_rk4.ipynb` code, and class SHM code.
-  3. [`03_2D_Linear_Autonomous_Systems.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Linear%20Ordinary%20Differential%20Equations/03_2D_Linear_Autonomous_Systems.ipynb): Eigenvalue stability rules and direct RK4/Euler phase plots (stable spiral vs. center blowup).
-  4. [`04_Linear_ODE_Problem_Set_Solutions.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Linear%20Ordinary%20Differential%20Equations/04_Linear_ODE_Problem_Set_Solutions.ipynb): Step-by-step solutions grouped by type for Problem Set III Q1 (Type 1), Problem Set II Q1 (Type 2), and Problem Set II Q3 (Type 3).
+- **Created Executable Notebooks (`Notes/End/Linear Ordinary Differential Equations/`):**
+  1. [`01_First_Order_ODEs_and_Euler_Methods.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/End/Linear%20Ordinary%20Differential%20Equations/01_First_Order_ODEs_and_Euler_Methods.ipynb): Simple Euler, Improved Euler, and Implicit Euler comparison, stability check, plus exact class code from `Nuclear-decay.ipynb`.
+  2. [`02_Second_Order_ODEs_SHM_and_RK4.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/End/Linear%20Ordinary%20Differential%20Equations/02_Second_Order_ODEs_SHM_and_RK4.ipynb): 1st-order system conversion, Simple Euler vs. Euler-Cromer, professor's exact `SHM_rk4.ipynb` code, and class SHM code.
+  3. [`03_2D_Linear_Autonomous_Systems.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/End/Linear%20Ordinary%20Differential%20Equations/03_2D_Linear_Autonomous_Systems.ipynb): Eigenvalue stability rules and direct RK4/Euler phase plots (stable spiral vs. center blowup).
+  4. [`04_Linear_ODE_Problem_Set_Solutions.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/End/Linear%20Ordinary%20Differential%20Equations/04_Linear_ODE_Problem_Set_Solutions.ipynb): Step-by-step solutions grouped by type for Problem Set III Q1 (Type 1), Problem Set II Q1 (Type 2), and Problem Set II Q3 (Type 3).
 
 #### 2. Nonlinear Ordinary Differential Equations
-- **Directory:** [`Nonlinear Ordinary Differential Equations/`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Nonlinear%20Ordinary%20Differential%20Equations/)
+- **Directory:** [`Nonlinear Ordinary Differential Equations/`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/End/Nonlinear%20Ordinary%20Differential%20Equations/)
 - **Primary Topics & Mathematical Concepts:**
   - 1D Nonlinear dynamical systems $\dot{x} = f(x)$: fixed points $f(x^*) = 0$, linear stability criterion $f'(x^*) < 0$ (stable) vs $f'(x^*) > 0$ (unstable).
   - Bifurcations in 1D:
@@ -77,14 +77,14 @@ This repository contains lecture notes, problem sets, Python implementations, an
 - **Relevant Code Notebooks:**
   - [`Newton_SOE.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Newton_SOE.ipynb) / [`Newton_Systems.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/4/Newton_Systems.ipynb): Multivariable Newton-Raphson system solver with analytical Jacobian.
   - [`08_ODE_Systems_and_Nonlinear_Solvers.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Quiz2/08_ODE_Systems_and_Nonlinear_Solvers.ipynb) (Section 3): Multivariable Newton solver with numerical finite-difference Jacobian.
-- **Created Executable Notebooks (`Notes/Nonlinear Ordinary Differential Equations/`):**
-  1. [`01_1D_Nonlinear_Flows_and_Bifurcations.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Nonlinear%20Ordinary%20Differential%20Equations/01_1D_Nonlinear_Flows_and_Bifurcations.ipynb): Fixed points, derivative stability test, bifurcation plot of $f(x)$, and Simple Euler trajectories.
-  2. [`02_2D_Nonlinear_Systems_and_Phase_Plane.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Nonlinear%20Ordinary%20Differential%20Equations/02_2D_Nonlinear_Systems_and_Phase_Plane.ipynb): Fixed points, Jacobian eigenvalues, and direct RK4 Lotka-Volterra phase portrait.
-  3. [`03_Nonlinear_System_Solvers_Newton_Method.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Nonlinear%20Ordinary%20Differential%20Equations/03_Nonlinear_System_Solvers_Newton_Method.ipynb): Clean `np.linalg.solve` Newton solver plus professor's exact `Newton_SOE.ipynb` Gaussian elimination code.
-  4. [`04_Nonlinear_ODE_Problem_Set_Solutions.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Nonlinear%20Ordinary%20Differential%20Equations/04_Nonlinear_ODE_Problem_Set_Solutions.ipynb): Individual sub-question solutions grouped by type for Problem Set II Q2 (Type 1), Q4 (Type 2), and Q5 (Type 3).
+- **Created Executable Notebooks (`Notes/End/Nonlinear Ordinary Differential Equations/`):**
+  1. [`01_1D_Nonlinear_Flows_and_Bifurcations.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/End/Nonlinear%20Ordinary%20Differential%20Equations/01_1D_Nonlinear_Flows_and_Bifurcations.ipynb): Fixed points, derivative stability test, bifurcation plot of $f(x)$, and Simple Euler trajectories.
+  2. [`02_2D_Nonlinear_Systems_and_Phase_Plane.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/End/Nonlinear%20Ordinary%20Differential%20Equations/02_2D_Nonlinear_Systems_and_Phase_Plane.ipynb): Fixed points, Jacobian eigenvalues, and direct RK4 Lotka-Volterra phase portrait.
+  3. [`03_Nonlinear_System_Solvers_Newton_Method.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/End/Nonlinear%20Ordinary%20Differential%20Equations/03_Nonlinear_System_Solvers_Newton_Method.ipynb): Clean `np.linalg.solve` Newton solver plus professor's exact `Newton_SOE.ipynb` Gaussian elimination code.
+  4. [`04_Nonlinear_ODE_Problem_Set_Solutions.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/End/Nonlinear%20Ordinary%20Differential%20Equations/04_Nonlinear_ODE_Problem_Set_Solutions.ipynb): Individual sub-question solutions grouped by type for Problem Set II Q2 (Type 1), Q4 (Type 2), and Q5 (Type 3).
 
 #### 3. Linear Partial Differential Equations
-- **Directory:** [`Linear Partial Differential Equations/`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Linear%20Partial%20Differential%20Equations/)
+- **Directory:** [`Linear Partial Differential Equations/`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/End/Linear%20Partial%20Differential%20Equations/)
 - **Primary Topics & Mathematical Concepts:**
   - Physical symmetries: continuous translational symmetry ($x \to x+a$), parity / spatial inversion symmetry ($x \to -x$), and symmetry breaking via physical boundaries.
   - Boundary conditions: Dirichlet (fixed boundary values), Neumann (no-flux $J = -D \partial_x \rho = 0$), Periodic (toroidal wrap-around).
@@ -126,16 +126,16 @@ This repository contains lecture notes, problem sets, Python implementations, an
   - [`03_2D_and_Heterogeneous_Diffusion.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Quiz2/03_2D_and_Heterogeneous_Diffusion.ipynb): 2D diffusion evolution & heterogeneous diffusion.
   - [`04_1st_Order_Wave_Advection.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Quiz2/04_1st_Order_Wave_Advection.ipynb): 1st-order advection upwind scheme & CFL stability.
   - [`05_2nd_Order_Wave_Equation.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Quiz2/05_2nd_Order_Wave_Equation.ipynb): 2nd-order wave equation leap-frog scheme & magic time step.
-- **Created Executable Notebooks (`Notes/Linear Partial Differential Equations/`):**
-  1. [`01_1D_Diffusion_Explicit_FTCS.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Linear%20Partial%20Differential%20Equations/01_1D_Diffusion_Explicit_FTCS.ipynb): Simple FTCS 1D diffusion with Neumann BC, instability blowup demo, plus professor's exact `1D_diffusion.ipynb` code.
-  2. [`02_1D_Diffusion_Implicit_BTCS.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Linear%20Partial%20Differential%20Equations/02_1D_Diffusion_Implicit_BTCS.ipynb): Implicit BTCS tridiagonal solver (`scipy.linalg.solve`) showing unconditional stability at $C = 2.22$.
-  3. [`03_2D_and_Heterogeneous_Diffusion.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Linear%20Partial%20Differential%20Equations/03_2D_and_Heterogeneous_Diffusion.ipynb): 2D diffusion evolution across 3 timestamps plus heterogeneous $D(x)$ half-grid flux diffusion.
-  4. [`04_1st_Order_Wave_Advection.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Linear%20Partial%20Differential%20Equations/04_1st_Order_Wave_Advection.ipynb): Upwind scheme with periodic BC, central-difference instability demo, plus exact `1storderwaveeqn.ipynb` class code.
-  5. [`05_2nd_Order_Wave_Equation.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Linear%20Partial%20Differential%20Equations/05_2nd_Order_Wave_Equation.ipynb): Leap-frog scheme with magic time step ($k=1$) and fixed-end reflections, plus exact `2ndorderwaveeqn.ipynb` class code.
-  6. [`06_Linear_PDE_Problem_Set_Solutions.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Linear%20Partial%20Differential%20Equations/06_Linear_PDE_Problem_Set_Solutions.ipynb): Simple step-by-step solutions for `problem_set_III.pdf` Q2–Q6 grouped by type (Type 1: Q2 & Q3; Type 2: Q5 & Q6; Type 3: Q4).
+- **Created Executable Notebooks (`Notes/End/Linear Partial Differential Equations/`):**
+  1. [`01_1D_Diffusion_Explicit_FTCS.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/End/Linear%20Partial%20Differential%20Equations/01_1D_Diffusion_Explicit_FTCS.ipynb): Simple FTCS 1D diffusion with Neumann BC, instability blowup demo, plus professor's exact `1D_diffusion.ipynb` code.
+  2. [`02_1D_Diffusion_Implicit_BTCS.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/End/Linear%20Partial%20Differential%20Equations/02_1D_Diffusion_Implicit_BTCS.ipynb): Implicit BTCS tridiagonal solver (`scipy.linalg.solve`) showing unconditional stability at $C = 2.22$.
+  3. [`03_2D_and_Heterogeneous_Diffusion.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/End/Linear%20Partial%20Differential%20Equations/03_2D_and_Heterogeneous_Diffusion.ipynb): 2D diffusion evolution across 3 timestamps plus heterogeneous $D(x)$ half-grid flux diffusion.
+  4. [`04_1st_Order_Wave_Advection.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/End/Linear%20Partial%20Differential%20Equations/04_1st_Order_Wave_Advection.ipynb): Upwind scheme with periodic BC, central-difference instability demo, plus exact `1storderwaveeqn.ipynb` class code.
+  5. [`05_2nd_Order_Wave_Equation.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/End/Linear%20Partial%20Differential%20Equations/05_2nd_Order_Wave_Equation.ipynb): Leap-frog scheme with magic time step ($k=1$) and fixed-end reflections, plus exact `2ndorderwaveeqn.ipynb` class code.
+  6. [`06_Linear_PDE_Problem_Set_Solutions.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/End/Linear%20Partial%20Differential%20Equations/06_Linear_PDE_Problem_Set_Solutions.ipynb): Simple step-by-step solutions for `problem_set_III.pdf` Q2–Q6 grouped by type (Type 1: Q2 & Q3; Type 2: Q5 & Q6; Type 3: Q4).
 
 #### 4. Stochastic System
-- **Directory:** [`Stochastic System/`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Stochastic%20System/)
+- **Directory:** [`Stochastic System/`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/End/Stochastic%20System/)
 - **Primary Topics & Mathematical Concepts:**
   - 1D Discrete Random Walk:
     - Step statistics: independent identically distributed (i.i.d.) jumps $\eta_n = \pm 1$ with probability $p$ and $q = 1-p$.
@@ -166,11 +166,11 @@ This repository contains lecture notes, problem sets, Python implementations, an
   - [`FokkerPlanck.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/FokkerPlanck.ipynb): Professor's Fokker-Planck drift-diffusion code with harmonic potential $U(x) = \frac{1}{2} k (x - L/2)^2$.
   - [`06_Random_Walks_1D_and_2D.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Quiz2/06_Random_Walks_1D_and_2D.ipynb): 1D unbiased/biased walks, MSD verification, 2D isotropic walks.
   - [`07_Fokker_Planck_and_Langevin.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Quiz2/07_Fokker_Planck_and_Langevin.ipynb): Fokker-Planck simulation & Langevin dynamics via Euler-Maruyama.
-- **Created Executable Notebooks (`Notes/Stochastic System/`):**
-  1. [`01_1D_and_2D_Random_Walks.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Stochastic%20System/01_1D_and_2D_Random_Walks.ipynb): 1D & 2D random walk MSD checks plus professor's exact `randomwalk_1D.ipynb` code.
-  2. [`02_Langevin_Dynamics_and_Brownian_Motion.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Stochastic%20System/02_Langevin_Dynamics_and_Brownian_Motion.ipynb): 1D Langevin trajectory and overdamped Brownian $\langle x^2 \rangle = 2Dt$ verification via Euler-Maruyama.
-  3. [`03_Fokker_Planck_Equation.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Stochastic%20System/03_Fokker_Planck_Equation.ipynb): Drift-diffusion relaxation in harmonic potential plus professor's exact `FokkerPlanck.ipynb` code.
-  4. [`04_Stochastic_Problem_Set_Solutions.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Stochastic%20System/04_Stochastic_Problem_Set_Solutions.ipynb): Step-by-step solutions for `lec_sde.pdf` Exercises 1 & 2 grouped by type (Type 1: 2D vs 1D walk; Type 2: 1D biased walk).
+- **Created Executable Notebooks (`Notes/End/Stochastic System/`):**
+  1. [`01_1D_and_2D_Random_Walks.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/End/Stochastic%20System/01_1D_and_2D_Random_Walks.ipynb): 1D & 2D random walk MSD checks plus professor's exact `randomwalk_1D.ipynb` code.
+  2. [`02_Langevin_Dynamics_and_Brownian_Motion.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/End/Stochastic%20System/02_Langevin_Dynamics_and_Brownian_Motion.ipynb): 1D Langevin trajectory and overdamped Brownian $\langle x^2 \rangle = 2Dt$ verification via Euler-Maruyama.
+  3. [`03_Fokker_Planck_Equation.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/End/Stochastic%20System/03_Fokker_Planck_Equation.ipynb): Drift-diffusion relaxation in harmonic potential plus professor's exact `FokkerPlanck.ipynb` code.
+  4. [`04_Stochastic_Problem_Set_Solutions.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/End/Stochastic%20System/04_Stochastic_Problem_Set_Solutions.ipynb): Step-by-step solutions for `lec_sde.pdf` Exercises 1 & 2 grouped by type (Type 1: 2D vs 1D walk; Type 2: 1D biased walk).
 
 #### Individual Executable Jupyter Notebooks in `Notes/Quiz2/`:
 1. [`01_1D_Diffusion_FTCS.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Quiz2/01_1D_Diffusion_FTCS.ipynb): 1D Diffusion FTCS scheme, professor's Dirichlet and Neumann boundary conditions, particle conservation check, stable vs. unstable step demonstration, and Fourier mode decay comparison ($k=16\pi/L$ vs $k=2\pi/L$).
