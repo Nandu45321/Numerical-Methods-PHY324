@@ -23,6 +23,7 @@ This repository contains lecture notes, problem sets, Python implementations, an
 - **Model Answer Key:** [`Notes/Quiz2/quiz2_answers.txt`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Quiz2/quiz2_answers.txt)
 
 ### 3. End-Semester Organization
+- **Packaged Zip Archive:** [`Endsem_Numerical_Methods.zip`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Endsem_Numerical_Methods.zip) (contains all 4 End-Semester directories with all 18 executed `.ipynb` notebooks).
 - **End-Semester Examination Syllabus Sections & Mapped Materials:**
 
 #### 1. Linear Ordinary Differential Equations
@@ -158,12 +159,18 @@ This repository contains lecture notes, problem sets, Python implementations, an
   - [`lec_sde.pdf`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/lec_sde.pdf): Brownian motion, Langevin equation, 1D and 2D random walks, syllabus overview.
   - [`lec_pde.pdf`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/lec_pde.pdf) (Slides 7-9): Fokker-Planck continuity equation derivation and Gibbs-Boltzmann distribution.
 - **Problem Sets & Exercises:**
-  - Problem set questions covering random walk statistics and diffusion limit.
+  - [`lec_sde.pdf`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/lec_sde.pdf) Exercise 1: 2D unbiased random walk ($\langle \mathbf{R}_n \rangle = 0$, $\langle R_n^2 \rangle = 2n$) vs. 1D walk.
+  - [`lec_sde.pdf`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/lec_sde.pdf) Exercise 2: 1D biased random walk ($p=2/3, q=1/3$): $\langle x_n \rangle$, $\langle x_n^2 \rangle$, and shifted MSD.
 - **Relevant Code Notebooks:**
-  - [`randomwalk_1D.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/randomwalk_1D.ipynb): Professor's 1D random walk code ($5000$ realizations, ensemble averaging).
-  - [`FokkerPlanck.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/FokkerPlanck.ipynb): Professor's Fokker-Planck drift-diffusion code with harmonic potential $U(x) = \frac{1}{2} k x^2$.
+  - [`randomwalk_1D.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/randomwalk_1D.ipynb): Professor's 1D random walk code ($1000$ realizations, $20000$ steps).
+  - [`FokkerPlanck.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/FokkerPlanck.ipynb): Professor's Fokker-Planck drift-diffusion code with harmonic potential $U(x) = \frac{1}{2} k (x - L/2)^2$.
   - [`06_Random_Walks_1D_and_2D.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Quiz2/06_Random_Walks_1D_and_2D.ipynb): 1D unbiased/biased walks, MSD verification, 2D isotropic walks.
   - [`07_Fokker_Planck_and_Langevin.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Quiz2/07_Fokker_Planck_and_Langevin.ipynb): Fokker-Planck simulation & Langevin dynamics via Euler-Maruyama.
+- **Created Executable Notebooks (`Notes/Stochastic System/`):**
+  1. [`01_1D_and_2D_Random_Walks.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Stochastic%20System/01_1D_and_2D_Random_Walks.ipynb): 1D & 2D random walk MSD checks plus professor's exact `randomwalk_1D.ipynb` code.
+  2. [`02_Langevin_Dynamics_and_Brownian_Motion.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Stochastic%20System/02_Langevin_Dynamics_and_Brownian_Motion.ipynb): 1D Langevin trajectory and overdamped Brownian $\langle x^2 \rangle = 2Dt$ verification via Euler-Maruyama.
+  3. [`03_Fokker_Planck_Equation.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Stochastic%20System/03_Fokker_Planck_Equation.ipynb): Drift-diffusion relaxation in harmonic potential plus professor's exact `FokkerPlanck.ipynb` code.
+  4. [`04_Stochastic_Problem_Set_Solutions.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Stochastic%20System/04_Stochastic_Problem_Set_Solutions.ipynb): Step-by-step solutions for `lec_sde.pdf` Exercises 1 & 2 grouped by type (Type 1: 2D vs 1D walk; Type 2: 1D biased walk).
 
 #### Individual Executable Jupyter Notebooks in `Notes/Quiz2/`:
 1. [`01_1D_Diffusion_FTCS.ipynb`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Quiz2/01_1D_Diffusion_FTCS.ipynb): 1D Diffusion FTCS scheme, professor's Dirichlet and Neumann boundary conditions, particle conservation check, stable vs. unstable step demonstration, and Fourier mode decay comparison ($k=16\pi/L$ vs $k=2\pi/L$).
