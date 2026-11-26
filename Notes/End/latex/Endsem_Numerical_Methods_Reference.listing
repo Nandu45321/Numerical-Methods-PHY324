@@ -1,0 +1,19 @@
+dt = 0.01; dx = 0.05; D = 0.02; t_end = 100; N = 100; L = N * dx
+t = np.arange(dt, t_end + dt, dt); x = np.arange(1, N + 1) * dx
+k = 0.1
+rho_0 = np.exp(-((x - L / 4) / 1)**2); rho = rho_0.copy(); rho_temp = np.zeros(N)
+U = (k / 2) * (x - L / 2)**2
+Up = k * (x - L / 2)
+Up[0] = Up[-1]       # Periodic BC on derivative
+
+rho_T = np.zeros((N, len(t)))
+for i in range(len(t)):
+    rho[-1] = rho[1]; rho[0] = rho[-2]     # Periodic BCs
+    rU = rho * Up
+    for p in range(1, N - 1):
+        rho_temp[p] = rho[p] + dt * (
+            D / dx**2 * (rho[p + 1] + rho[p - 1] - 2 * rho[p]) +
+            (rU[p + 1] - rU[p - 1]) / (2 * dx)
+        )
+    rho = rho_temp.copy()
+    rho_T[:, i] = rho

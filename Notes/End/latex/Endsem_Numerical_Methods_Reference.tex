@@ -1,0 +1,950 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[a4paper,top=1.85cm,bottom=1.85cm,left=1.75cm,right=1.75cm]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[table]{xcolor}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{listings,breakable}
+\usepackage{lastpage}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{navy}{HTML}{1F3A5F}
+\definecolor{teal}{HTML}{0F6E6E}
+\definecolor{violet}{HTML}{5B3A8E}
+\definecolor{rust}{HTML}{B45309}
+\definecolor{lightbg}{HTML}{F7F8FA}
+\definecolor{codeblue}{HTML}{0033B3}
+\definecolor{codered}{HTML}{A31515}
+\definecolor{codegreen}{HTML}{007020}
+\definecolor{codegray}{HTML}{7A7A7A}
+\colorlet{accent}{navy}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{black!65}Numerical Methods --- End-Sem Complete Reference}
+\fancyhead[R]{\small\color{black!65}\leftmark}
+\fancyfoot[C]{\small\color{black!65}\thepage\ / \pageref{LastPage}}
+\setlength{\headheight}{20pt}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{accent!40}\leaders\hrule height \headrulewidth\hfill}}
+
+\titleformat{\section}
+  {\Large\bfseries\color{accent}}
+  {\thesection}{0.6em}{}
+  [{\vspace{-0.2em}\color{accent}\rule{\linewidth}{0.9pt}}]
+\titleformat{\subsection}
+  {\large\bfseries\color{accent!90!black}}
+  {\thesubsection}{0.5em}{}
+\titlespacing*{\section}{0pt}{10pt}{5pt}
+\titlespacing*{\subsection}{0pt}{7pt}{3pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3.5pt}
+\setlength{\abovedisplayskip}{4pt}
+\setlength{\belowdisplayskip}{4pt}
+\setlist[itemize]{leftmargin=1.2em,itemsep=1pt,topsep=2pt}
+\setlist[enumerate]{leftmargin=1.5em,itemsep=1pt,topsep=2pt}
+\renewcommand{\arraystretch}{1.18}
+
+\newtcolorbox{keybox}[1][Key result]{
+  enhanced, breakable,
+  colback=accent!4, colframe=accent!80!black,
+  boxrule=0.7pt, arc=1.4mm,
+  left=5pt,right=5pt,top=3pt,bottom=3pt,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=accent!80!black
+}
+\newtcolorbox{derivbox}[1][Derivation]{
+  enhanced, breakable,
+  colback=black!3, colframe=black!38,
+  boxrule=0.5pt, arc=1mm,
+  left=5pt,right=5pt,top=3pt,bottom=3pt,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=black, colbacktitle=black!9
+}
+\newtcolorbox{warnbox}[1][Watch out]{
+  enhanced, breakable,
+  colback=rust!5, colframe=rust!75!black,
+  boxrule=0.6pt, arc=1mm,
+  left=5pt,right=5pt,top=3pt,bottom=3pt,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=rust!80!black
+}
+\newtcolorbox{overviewbox}[2][]{
+  enhanced, colback=#1!5, colframe=#1!80!black,
+  boxrule=0.6pt, arc=1.2mm,
+  left=5pt,right=5pt,top=3pt,bottom=3pt,
+  title={#2}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=#1!80!black
+}
+
+\newtcblisting{jupytercode}[1][Python Reference Code]{
+  colback=lightbg,
+  colframe=accent!45,
+  listing only,
+  breakable,
+  title={\small\bfseries #1},
+  coltitle=white,
+  colbacktitle=accent!75!black,
+  left=12pt,
+  right=4pt,
+  top=2pt,
+  bottom=2pt,
+  boxrule=0.5pt,
+  arc=1.2mm,
+  listing options={
+    language=Python,
+    basicstyle=\ttfamily\footnotesize\color{black},
+    keywordstyle=\color{codeblue}\bfseries,
+    commentstyle=\color{codegreen}\itshape,
+    stringstyle=\color{codered},
+    numberstyle=\tiny\color{codegray},
+    numbers=left,
+    stepnumber=1,
+    numbersep=6pt,
+    showstringspaces=false,
+    breaklines=true,
+    tabsize=4
+  }
+}
+
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\avg}[1]{\left\langle #1 \right\rangle}
+
+\begin{document}
+
+%============================================================
+% TITLE + COURSE MAP + TOC
+%============================================================
+\begin{center}
+{\color{navy}\rule{\linewidth}{2pt}}\\[0.5em]
+{\Huge\bfseries Numerical Methods}\\[10pt]
+{\LARGE End-Semester Complete Notes \& Code Reference}\\[6pt]
+{\large Linear ODEs \quad$\cdot$\quad Nonlinear ODEs \quad$\cdot$\quad Linear PDEs \quad$\cdot$\quad Stochastic Systems}\\[3pt]
+{\small Phy 324 --- Theory, Derivations, Problem Set Solutions \& Exact Class Python Code}\\[0.4em]
+{\color{navy}\rule{\linewidth}{2pt}}
+\end{center}
+
+\vspace{0.2em}
+{\color{navy}\Large\bfseries The Whole Syllabus on One Page}
+
+\vspace{0.25em}
+\noindent
+\begin{minipage}[t]{0.487\textwidth}
+\begin{overviewbox}[navy]{1. Linear ODEs}
+\begin{itemize}
+\item Explicit, Improved (Heun) \& Implicit Euler
+\item Stability: $\Delta t \le 2/\lambda$ (Explicit), unconditional (Implicit)
+\item Damped/Driven SHM $\to$ 1st-order vector system
+\item Euler-Cromer vs Simple Euler energy blowup; RK4 ($O(h^4)$)
+\item 2D linear $\dot{\mathbf{x}}=J\mathbf{x}$: eigenvalues, $\tau$-$\Delta$ plane
+\end{itemize}
+\end{overviewbox}
+\vspace{0.2em}
+\begin{overviewbox}[teal]{2. Nonlinear ODEs}
+\begin{itemize}
+\item Fixed points $f(x^*)=0$, linear test $f'(x^*)<0$
+\item 1D bifurcations: Saddle-Node, Transcritical, Pitchfork
+\item Rotating hoop ($\Omega_c^2=g/R$) \& overdamped reduction
+\item 2D nonlinear phase plane: nullclines \& Jacobian $J$
+\item Multivariable Newton-Raphson ($J\Delta x = -F$)
+\end{itemize}
+\end{overviewbox}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.487\textwidth}
+\begin{overviewbox}[violet]{3. Linear PDEs}
+\begin{itemize}
+\item Symmetries, Dirichlet / Neumann (no-flux) / Periodic BCs
+\item 1D Diffusion: FTCS ($C\le 1/2$), BTCS (unconditional)
+\item 2D Diffusion ($C\le 1/4$), $d$-D ($1/2d$), Heterogeneous $D(x)$
+\item Fourier mode decay: $\tau_k = 1/(Dk^2) = \lambda^2/(4\pi^2 D)$
+\item Advection Upwind ($K\le 1$) \& 2nd-Order Wave Leap-Frog ($K=1$)
+\end{itemize}
+\end{overviewbox}
+\vspace{0.2em}
+\begin{overviewbox}[rust]{4. Stochastic Systems}
+\begin{itemize}
+\item 1D/2D Random walks: $\avg{x_n^2}=n$, $\avg{R_n^2}=2n$
+\item Biased walk: $\avg{x_n}=n(p-q)$, $\text{Var}(x_n)=4npq$
+\item Langevin ($m\dot v=-\gamma v+\xi$), Einstein $D=k_B T/\gamma$
+\item Euler-Maruyama: $\sqrt{2D\Delta t}\,\eta_n$ noise scaling
+\item Fokker-Planck $\to$ Gibbs-Boltzmann $\rho_{\text{eq}}\propto e^{-U/D}$
+\end{itemize}
+\end{overviewbox}
+\end{minipage}
+
+\vspace{0.35em}
+\begin{keybox}[Notation and the Core Idea]
+\[
+t_n = t_0 + n\Delta t,\qquad y_n \approx y(t_n),\qquad x_i = i\Delta x,\qquad L = N\Delta x.
+\]
+Replace derivatives with finite differences to turn differential equations into algebraic updates. Every exam question asks: \textbf{(1) How accurate is it?} (order/truncation error) and \textbf{(2) Does error blow up?} (stability condition).
+\end{keybox}
+
+\vspace{0.3em}
+\tableofcontents
+
+%============================================================
+\clearpage
+\colorlet{accent}{navy}
+\section{Linear Ordinary Differential Equations}
+{\small\emph{Sources: \texttt{lec9.pdf}, \texttt{lec10.pdf}, \texttt{lec11.pdf}, \texttt{tutorial\_10\_10\_26.pdf}, \texttt{Problem Set II.pdf} (Q1, Q3), \texttt{problem\_set\_III.pdf} (Q1), \texttt{SHM\_rk4.ipynb}, \texttt{Nuclear-decay.ipynb}, \texttt{Simple Harmonic Ocilator.ipynb}.}}
+
+\subsection{First-Order Linear ODEs \& Decay Model}
+A first-order linear ODE has the form $y'+p(t)y=q(t)$ with integrating factor $\mu(t)=e^{\int p(t)\dd t}$, giving $y(t)=\frac{1}{\mu(t)}(C+\int \mu(t)q(t)\dd t)$. The standard model and stability test equation is radioactive decay:
+\[
+\boxed{\;\frac{\dd N}{\dd t}=-\lambda N \quad\Longrightarrow\quad N(t)=N_0e^{-\lambda t},\qquad \tau=\frac{1}{\lambda},\qquad t_{1/2}=\frac{\ln 2}{\lambda}\;}
+\]
+Here $\tau = 1/\lambda$ is the characteristic decay timescale (time for $N$ to drop by a factor of $e$).
+
+\subsection{Explicit, Improved, and Implicit Euler Methods}
+
+\begin{derivbox}[Euler Error \& Stability on $y' = -\lambda y$ ($\lambda > 0$, step $\Delta t = h$)]
+Taylor expand $y(t+h)=y(t)+h y'(t)+\frac{h^2}{2}y''(c)$. Dropping $\frac{h^2}{2}y''(c)$ gives:
+\begin{itemize}
+\item \textbf{Simple (Explicit) Euler:} $y_{n+1} = y_n + h f(t_n, y_n)$. Local error $O(h^2)$; over $N=T/h$ steps, global error $= N\cdot O(h^2) = O(h)$ (1st order).
+On $y'=-\lambda y$: $y_{n+1} = (1 - \lambda h)y_n \implies y_n = (1-\lambda h)^n y_0$. Boundedness requires $|1-\lambda h| \le 1 \implies \mathbf{h \le \frac{2}{\lambda}}$.
+\item \textbf{Improved Euler (Heun):} $y_p = y_n + h f(t_n,y_n)$, then $y_{n+1} = y_n + \frac{h}{2}[f(t_n,y_n)+f(t_{n+1},y_p)]$. Local error $O(h^3)$, global error $O(h^2)$ (2nd order). For $y'=-\lambda y$: $y_{n+1} = (1 - \lambda h + \frac{1}{2}(\lambda h)^2)y_n$, stable for $0 \le \lambda h \le 2$.
+\item \textbf{Implicit (Backward) Euler (Problem Set III Q1):} Evaluates slope at future step $y_{n+1} = y_n + h f(t_{n+1}, y_{n+1})$.
+On $y'=-\lambda y$: $y_{n+1} = y_n - \lambda h y_{n+1} \implies \mathbf{y_{n+1} = \frac{y_n}{1+\lambda h}}$. Since $|\frac{1}{1+\lambda h}| < 1$ for all $h > 0$, it is \textbf{unconditionally stable}.
+\end{itemize}
+\end{derivbox}
+
+\begin{keybox}[Explicit vs Implicit Stability Summary]
+\begin{itemize}
+\item $h < 1/\lambda$: smooth monotone decay (positivity-preserving).
+\item $1/\lambda < h < 2/\lambda$: decays, but flips sign every step (unphysical oscillations).
+\item $h > 2/\lambda$: Explicit Euler blows up; Implicit Euler remains stable for \textbf{all} $h > 0$.
+\end{itemize}
+\end{keybox}
+
+\begin{jupytercode}[1st-Order Decay: Simple, Improved, Implicit Euler + General ODE]
+import numpy as np
+import matplotlib.pyplot as plt
+
+# 1. Nuclear decay comparison (Problem Set III Q1 & Quiz 2)
+lam = 0.5; N0 = 100.0; dt = 0.5   # 2/lam = 4.0 -> stable
+t = np.arange(0, 10 + dt, dt)
+n = len(t)
+N_eu = np.zeros(n); N_imp = np.zeros(n); N_back = np.zeros(n)
+N_eu[0] = N_imp[0] = N_back[0] = N0
+
+for i in range(n - 1):
+    N_eu[i + 1]   = N_eu[i] * (1 - lam * dt)
+    N_imp[i + 1]  = N_imp[i] * (1 - lam * dt + 0.5 * (lam * dt)**2)
+    N_back[i + 1] = N_back[i] / (1 + lam * dt)  # Unconditionally stable
+
+# 2. General ODE dy/dt = f(t, y) using Improved Euler (Heun)
+def f_ode(t_val, y_val):
+    return -2.0 * y_val + np.sin(t_val)
+
+dt_g = 0.05; t_g = np.arange(0, 5 + dt_g, dt_g); y_g = np.zeros(len(t_g)); y_g[0] = 1.0
+for i in range(len(t_g) - 1):
+    y_p = y_g[i] + dt_g * f_ode(t_g[i], y_g[i])
+    y_g[i + 1] = y_g[i] + 0.5 * dt_g * (f_ode(t_g[i], y_g[i]) + f_ode(t_g[i] + dt_g, y_p))
+\end{jupytercode}
+
+\begin{jupytercode}[Class Code: Nuclear Decay (n/Nuclear-decay.ipynb)]
+def decay(init_particles, lamb, time):
+    return init_particles * np.exp(-lamb * time)
+
+def simple_euler(N0, lamb, dt, n):
+    N = np.zeros(n); N[0] = N0
+    for i in range(n - 1):
+        N[i + 1] = N[i] * (1 - lamb * dt)
+    return N
+
+def improved_euler(N0, lamb, dt, n):
+    N = np.zeros(n); N[0] = N0
+    for i in range(n - 1):
+        N[i + 1] = N[i] * (1 - lamb * dt * (1 - lamb * dt * 0.5))
+    return N
+\end{jupytercode}
+
+\subsection{Second-Order ODEs: Harmonic Oscillator, Timescales \& RK4}
+For a damped oscillator $m\ddot x + \gamma\dot x + kx = 0$, define $b = \frac{\gamma}{2m}$, $\omega_0 = \sqrt{\frac{k}{m}}$, and damping ratio $\zeta = \frac{b}{\omega_0} = \frac{\gamma}{2\sqrt{km}}$. Substituting $x = e^{rt}$ gives $r^2 + 2br + \omega_0^2 = 0 \implies r = -b \pm \sqrt{b^2 - \omega_0^2}$.
+
+\begin{center}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.20\linewidth}
+  >{\centering\arraybackslash}p{0.18\linewidth}
+  >{\raggedright\arraybackslash}X@{}}
+\toprule
+\rowcolor{accent!10}
+\textbf{Regime} & \textbf{Condition} & \textbf{Solution \& Behaviour} \\
+\midrule
+Underdamped & $b^2 < \omega_0^2$ ($\zeta < 1$) & $x = e^{-bt}(A\cos\omega_d t + B\sin\omega_d t)$, $\omega_d=\sqrt{\omega_0^2-b^2}$ (oscillates \& decays) \\
+Critically damped & $b^2 = \omega_0^2$ ($\zeta = 1$) & $x = (A + Bt)e^{-bt}$ (fastest decay without oscillation) \\
+Overdamped & $b^2 > \omega_0^2$ ($\zeta > 1$) & $x = Ae^{r_1 t} + Be^{r_2 t}$, $r_{1,2} = -b \pm \sqrt{b^2-\omega_0^2}$ (slow, non-oscillatory) \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{center}
+\begin{tikzpicture}[x=0.72cm,y=1.45cm,>=Stealth]
+  \draw[->] (0,0)--(9.2,0) node[right] {\small $t$};
+  \draw[->] (0,-1.15)--(0,1.25) node[above] {\small $x$};
+  \draw[thick,navy,domain=0:8.8,samples=160]
+    plot (\x,{exp(-0.22*\x)*cos(2*\x r)});
+  \draw[thick,teal,domain=0:8.8,samples=80]
+    plot (\x,{(1+0.7*\x)*exp(-0.7*\x)});
+  \draw[thick,rust,domain=0:8.8,samples=80]
+    plot (\x,{1.6*exp(-0.35*\x)-0.6*exp(-1.8*\x)});
+  \node[navy] at (6.6,0.95) {\small underdamped};
+  \node[teal] at (6.6,0.5) {\small critical};
+  \node[rust] at (6.6,-0.6) {\small overdamped};
+\end{tikzpicture}
+\end{center}
+
+\begin{derivbox}[1st-Order System Conversion, Energy Decay \& Overdamped Reduction (PS II Q1)]
+\begin{itemize}
+\item \textbf{Convert to 1st-Order System:} Set $y_0 = x$ and $y_1 = v = \dot x$:
+\[
+\frac{\dd y_0}{\dd t} = y_1,\qquad \frac{\dd y_1}{\dd t} = -\frac{\gamma}{m}y_1 - \frac{k}{m}y_0 + \frac{F(t)}{m}.
+\]
+\item \textbf{Energy Decay:} With $E = \frac{1}{2}m\dot x^2 + \frac{1}{2}kx^2$, differentiating gives $\frac{\dd E}{\dd t} = \dot x(m\ddot x + kx) = -\gamma \dot x^2 \le 0$.
+\item \textbf{Why Simple Euler Fails on Undamped SHM ($\gamma = 0$):} Simple Euler updates $x_{n+1} = x_n + v_n \Delta t$ and $v_{n+1} = v_n - \frac{k}{m}x_n \Delta t$, which adds artificial energy every step ($E_{n+1} > E_n$) and spirals outward. \textbf{Euler-Cromer} fixes this by using the \emph{new} velocity: $v_{n+1} = v_n - \frac{k}{m}x_n\Delta t$, then $x_{n+1} = x_n + v_{n+1}\Delta t$.
+\item \textbf{Overdamped Reduction (PS II Q1):} Characteristic timescales are $\tau_{\text{osc}} = \sqrt{m/k}$, $\tau_{\text{damp}} = \gamma/k$, $\tau_{\text{diss}} = m/\gamma$. When viscous damping dominates inertia ($\gamma^2 \gg mk$), drop $m\ddot x$: $\gamma\dot x + kx = A\sin(\omega t)$. (In PS II Q1: $m=0.5,\gamma=1,k=1,\omega=2\pi$, so $\gamma^2 = 1$ is comparable to $mk = 0.5$ and $\omega$ is fast; inertia matters at early times!)
+\end{itemize}
+\end{derivbox}
+
+\begin{keybox}[Runge-Kutta 4th Order (RK4) for $\dot{\mathbf{y}} = \mathbf{f}(t, \mathbf{y})$]
+Evaluate 4 slopes per step ($\Delta t = h$); local error $O(h^5)$, global error $O(h^4)$:
+\[
+\begin{aligned}
+\mathbf{k}_1 &= \mathbf{f}(t_n, \mathbf{y}_n), &
+\mathbf{k}_2 &= \mathbf{f}\!\left(t_n + \tfrac{h}{2},\, \mathbf{y}_n + \tfrac{h}{2}\mathbf{k}_1\right), \\
+\mathbf{k}_3 &= \mathbf{f}\!\left(t_n + \tfrac{h}{2},\, \mathbf{y}_n + \tfrac{h}{2}\mathbf{k}_2\right), &
+\mathbf{k}_4 &= \mathbf{f}(t_n + h,\, \mathbf{y}_n + h\mathbf{k}_3),
+\end{aligned}
+\qquad
+\mathbf{y}_{n+1} = \mathbf{y}_n + \frac{h}{6}(\mathbf{k}_1 + 2\mathbf{k}_2 + 2\mathbf{k}_3 + \mathbf{k}_4).
+\]
+\end{keybox}
+
+\begin{jupytercode}[Professor's Exact Code: Damped SHM RK4 (Notes/SHM\_rk4.ipynb)]
+import numpy as np
+import matplotlib.pyplot as plt
+
+k = 1; m = 1; gamma = 0.1; t_end = 100; dt = 0.1
+y0 = np.array([1, 0])              # [position, velocity]
+t = np.arange(0, t_end + dt, dt)
+n = len(t)
+y = np.zeros((2, n))
+y[:, 0] = y0
+
+for i in range(n - 1):
+    k1 = np.array([y[1, i], -(gamma / m * y[1, i] + k / m * y[0, i])])
+    k2 = np.array([y[1, i] + 0.5 * dt * k1[1],
+                   -k / m * (y[0, i] + 0.5 * dt * k1[0]) - gamma / m * (y[1, i] + 0.5 * dt * k1[1])])
+    k3 = np.array([y[1, i] + 0.5 * dt * k2[1],
+                   -k / m * (y[0, i] + 0.5 * dt * k2[0]) - gamma / m * (y[1, i] + 0.5 * dt * k2[1])])
+    k4 = np.array([y[1, i] + dt * k3[1],
+                   -k / m * (y[0, i] + dt * k3[0]) - gamma / m * (y[1, i] + dt * k3[1])])
+    y[:, i + 1] = y[:, i] + dt * (k1 + 2 * k2 + 2 * k3 + k4) / 6
+
+plt.plot(t, y[0, :]); plt.xlabel("Time"); plt.ylabel("Position"); plt.show()
+\end{jupytercode}
+
+\begin{jupytercode}[PS II Q1: Driven Oscillator + Euler-Cromer Check]
+# Driven SHM: m*x'' + gamma*x' + k*x = A*sin(omega*t), overdamped: gamma*x' + k*x = A*sin(omega*t)
+m, gamma, k, A, omega = 0.5, 1.0, 1.0, 1.0, 2 * np.pi
+dt = 0.01; t = np.arange(0, 10 + dt, dt); n = len(t)
+y = np.zeros((2, n)); y[:, 0] = [3.0, 5.0]
+x_red = np.zeros(n); x_red[0] = 3.0
+
+def f_full(tv, s): return np.array([s[1], (A * np.sin(omega * tv) - gamma * s[1] - k * s[0]) / m])
+def f_red(tv, xv): return (A * np.sin(omega * tv) - k * xv) / gamma
+
+for i in range(n - 1):
+    k1 = f_full(t[i], y[:, i])
+    k2 = f_full(t[i] + 0.5 * dt, y[:, i] + 0.5 * dt * k1)
+    k3 = f_full(t[i] + 0.5 * dt, y[:, i] + 0.5 * dt * k2)
+    k4 = f_full(t[i] + dt, y[:, i] + dt * k3)
+    y[:, i + 1] = y[:, i] + dt * (k1 + 2 * k2 + 2 * k3 + k4) / 6
+
+    r1 = f_red(t[i], x_red[i]); r2 = f_red(t[i] + 0.5 * dt, x_red[i] + 0.5 * dt * r1)
+    r3 = f_red(t[i] + 0.5 * dt, x_red[i] + 0.5 * dt * r2); r4 = f_red(t[i] + dt, x_red[i] + dt * r3)
+    x_red[i + 1] = x_red[i] + dt * (r1 + 2 * r2 + 2 * r3 + r4) / 6
+
+# Euler-Cromer (symplectic) for undamped SHM: update v FIRST, then x
+v_ec[i + 1] = v_ec[i] - (k / m) * x_ec[i] * dt
+x_ec[i + 1] = x_ec[i] + v_ec[i + 1] * dt
+\end{jupytercode}
+
+\subsection{2D Linear Autonomous Systems ($\dot{\mathbf{X}} = J\mathbf{X}$)}
+For $\dot{X} = J X$ with $X = \binom{u}{v}$ and $J = \begin{pmatrix} a & b \\ c & d \end{pmatrix}$, substituting $X = \mathbf{v}e^{\lambda t}$ gives $\det(J - \lambda I) = 0$:
+\[
+\lambda^2 - \tau\lambda + \Delta = 0, \qquad \tau = \operatorname{tr}J = a+d, \qquad \Delta = \det J = ad-bc, \qquad \lambda_{1,2} = \frac{\tau \pm \sqrt{\tau^2 - 4\Delta}}{2}.
+\]
+
+\begin{center}
+\begin{tabularx}{\linewidth}{@{}>{\centering\arraybackslash}p{0.09\linewidth}
+  >{\centering\arraybackslash}p{0.09\linewidth}
+  >{\centering\arraybackslash}p{0.16\linewidth}
+  >{\raggedright\arraybackslash}X@{}}
+\toprule
+\rowcolor{accent!10}
+$\Delta$ & $\tau$ & Discriminant & Fixed-Point Type (and PS II Q3 Examples) \\
+\midrule
+$<0$ & any & any & \textbf{Saddle} (1 positive, 1 negative $\lambda$); e.g. Q3(i) $\lambda = 3,-1$; Q3(ii) $\lambda = 1,-3$; Q3(v) $\lambda = \pm 2$ \\
+$>0$ & $<0$ & $\tau^2 - 4\Delta > 0$ & \textbf{Stable node} (both real $\lambda < 0$) \\
+$>0$ & $<0$ & $\tau^2 - 4\Delta < 0$ & \textbf{Stable spiral} (complex $\alpha \pm i\beta, \alpha < 0$); e.g. Q3(iv) $\lambda = -1 \pm 2i$ \\
+$>0$ & $>0$ & $\tau^2 - 4\Delta > 0$ & \textbf{Unstable node} (both real $\lambda > 0$) \\
+$>0$ & $>0$ & $\tau^2 - 4\Delta < 0$ & \textbf{Unstable spiral} (complex $\alpha \pm i\beta, \alpha > 0$); e.g. Q3(iii) $\lambda = 1 \pm 2i$ \\
+$>0$ & $0$ & $\tau^2 - 4\Delta < 0$ & \textbf{Center} (pure imaginary $\pm i\beta$); e.g. Q3(vi) $\begin{pmatrix}0&2\\-2&0\end{pmatrix}$, $\lambda = \pm 2i$ \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{warnbox}[Why Simple Euler Fails on Centers (PS II Q3(vi))]
+For a center ($\lambda = \pm i\beta$), Simple Euler updates $X_{n+1} = (I + \Delta t J)X_n$, whose amplification eigenvalues are $\mu = 1 \pm i\beta\Delta t$. Their magnitude is $|\mu| = \sqrt{1 + \beta^2\Delta t^2} > 1$ for \textbf{any} $\Delta t > 0$, so trajectories spiral outward instead of forming closed circles. RK4 keeps $|\mu| \approx 1$ and preserves closed orbits.
+\end{warnbox}
+
+\begin{jupytercode}[2D Linear Systems: Eigenvalues + RK4 vs Simple Euler (PS II Q3)]
+J = np.array([[0.0, 2.0], [-2.0, 0.0]])   # Q3(vi) Center: eigvals +/- 2j
+vals, vecs = np.linalg.eig(J)
+print("Eigenvalues:", vals)
+
+dt = 0.05; t = np.arange(0, 6.0, dt); n = len(t)
+X_eu = np.zeros((2, n)); X_rk = np.zeros((2, n))
+X_eu[:, 0] = [1.0, 0.0]; X_rk[:, 0] = [1.0, 0.0]
+
+for i in range(n - 1):
+    X_eu[:, i + 1] = X_eu[:, i] + dt * (J @ X_eu[:, i])   # Spirals out artificially
+    k1 = J @ X_rk[:, i]
+    k2 = J @ (X_rk[:, i] + 0.5 * dt * k1)
+    k3 = J @ (X_rk[:, i] + 0.5 * dt * k2)
+    k4 = J @ (X_rk[:, i] + dt * k3)
+    X_rk[:, i + 1] = X_rk[:, i] + dt * (k1 + 2*k2 + 2*k3 + k4) / 6
+\end{jupytercode}
+
+%============================================================
+\clearpage
+\colorlet{accent}{teal}
+\section{Nonlinear Ordinary Differential Equations}
+{\small\emph{Sources: \texttt{lec10.pdf}, \texttt{lec11.pdf}, \texttt{Reference\_nonlinear\_system.pptx}, \texttt{Problem Set II.pdf} (Q2, Q4, Q5), \texttt{Newton\_SOE.ipynb}, \texttt{4/Newton\_Systems.ipynb}.}}
+
+\subsection{1D Flows, Fixed Points \& Linear Stability}
+For a 1D autonomous ODE $\dot x = f(x)$, \textbf{fixed points} satisfy $f(x^*) = 0$. Perturbing $x = x^* + u$ and Taylor expanding gives $\dot u = f'(x^*)u \implies u(t) = u(0)e^{f'(x^*)t}$.
+
+\begin{keybox}[1D Stability Criterion \& Graphical Test]
+\[
+\boxed{\;f'(x^*) < 0 \implies \text{Stable},\qquad f'(x^*) > 0 \implies \text{Unstable}\;}
+\]
+If $f'(x^*) = 0$, the linear test fails: plot $f(x)$ vs $x$ (arrows point right where $f>0$, left where $f<0$; downward crossing is stable, upward crossing is unstable).
+\end{keybox}
+
+\textbf{Double-Well Potential:} Gradient flow $\dot x = -V'(x)$ with $V(x) = -\frac{k}{2}x^2 + \frac{\lambda}{4}x^4$ ($k,\lambda>0$) gives $\dot x = kx - \lambda x^3 = x(k - \lambda x^2)$. Fixed points: $x^* = 0$ ($f'(0) = k > 0$, unstable) and $x^* = \pm\sqrt{k/\lambda}$ ($f'(\pm\sqrt{k/\lambda}) = -2k < 0$, stable).
+
+\begin{warnbox}[Double-Well Sign Trap]
+$V = -\frac{k}{2}x^2 + \frac{\lambda}{4}x^4$ has minima at $\pm\sqrt{k/\lambda}$. Reversing the signs to $+\frac{k}{2}x^2 - \frac{\lambda}{4}x^4$ is an inverted well with minimum at $0$.
+\end{warnbox}
+
+\subsection{1D Bifurcations \& Problem Set II Q2}
+A bifurcation occurs when varying a parameter $r$ creates/destroys fixed points or flips their stability:
+\begin{enumerate}
+\item \textbf{Saddle-Node} ($\dot x = r + x^2$): two fixed points collide and annihilate as $r$ crosses $0$.
+\item \textbf{Transcritical} ($\dot x = rx - x^2$): two fixed points cross and exchange stability at $r=0$.
+\item \textbf{Pitchfork} ($\dot x = rx \pm x^3$): symmetry-breaking into 3 branches at $r=0$.
+\end{enumerate}
+
+\begin{keybox}[Problem Set II Q2 Summary]
+\begin{itemize}
+\item \textbf{Q2(i) $\dot x = rx + x^3 - x^5$ (Subcritical pitchfork + 5th-order saturation):} Fixed points $x^* = 0$ and $x^2 = \frac{1 \pm \sqrt{1+4r}}{2}$ (real for $r \ge -1/4$). At $r = 0.4$: $x^* = 0$ is unstable ($f'(0)=0.4$), while $x^* = \pm\sqrt{(1+\sqrt{2.6})/2} \approx \pm 1.143$ are stable ($x(0)=\pm 0.5 \to \pm 1.143$).
+\item \textbf{Q2(ii) Spruce Budworm:} $\dot x = \frac{2x}{5}(1 - \frac{x}{20}) - \frac{x^2}{1+x^2}$. Always $x^* = 0$; plot $f(x)$ vs $x$ to read non-zero roots and stability (downward crossings are stable).
+\item \textbf{Q2(iii) $\dot x = rx - \ln(1+x)$ ($x > -1$):} Always $x^* = 0$ with $f'(0) = r - 1$. Transcritical bifurcation at $r = 1$: for $r < 1$, $x^* = 0$ is stable; for $r > 1$, $x^* = 0$ becomes unstable and a stable fixed point exists at $x^* > 0$.
+\end{itemize}
+\end{keybox}
+
+\begin{jupytercode}[1D Flow Plot, Simple Euler \& 1D Newton Fallback (Premid)]
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Simple Euler for Q2(i): dx/dt = r*x + x^3 - x^5 at r = 0.4
+r = 0.4; dt = 0.05; t = np.arange(0, 8, dt)
+x = np.zeros(len(t)); x[0] = 0.5
+for i in range(len(t) - 1):
+    x[i + 1] = x[i] + dt * (r * x[i] + x[i]**3 - x[i]**5)
+
+# Finding fixed point numerically via 1D Newton (Premid fallback) for Q2(iii)
+x_root = 1.0
+for step in range(15):
+    fx = 1.3 * x_root - np.log(1.0 + x_root)
+    fpx = 1.3 - 1.0 / (1.0 + x_root)
+    x_root = x_root - fx / fpx
+print("Non-zero root x* =", round(x_root, 6))
+\end{jupytercode}
+
+\subsection{Bead on a Rotating Hoop (Problem Set II Q5)}
+A bead of mass $m$ moves on a vertical hoop of radius $R$ rotating at angular speed $\omega$ (or $\Omega$):
+\[
+mr\ddot\varphi = -br\dot\varphi - mg\sin\varphi + mr\omega^2\sin\varphi\cos\varphi.
+\]
+\textbf{Fixed points ($\dot\varphi = \ddot\varphi = 0$):} $\sin\varphi\left(\omega^2\cos\varphi - \frac{g}{r}\right) = 0 \implies \varphi^* = 0, \pi$, plus $\varphi^* = \pm\arccos\!\left(\frac{g}{r\omega^2}\right)$ when $\omega^2 > \frac{g}{r}$.
+
+\begin{keybox}[Pitchfork Bifurcation \& Overdamped Reduction (PS II Q5)]
+\begin{itemize}
+\item Critical speed $\omega_c^2 = \frac{g}{r}$. For $\omega^2 < \omega_c^2$, $\varphi^* = 0$ is stable; for $\omega^2 > \omega_c^2$, $\varphi^* = 0$ turns unstable and $\pm\varphi^*$ become stable (Supercritical Pitchfork).
+\item \textbf{Overdamped Limit:} Viscous timescale $\tau = \frac{br}{mg}$; dropping $mr\ddot\varphi$ is valid when $\frac{m^2 g}{b^2 r} \ll 1$:
+\[
+br\dot\varphi = -mg\sin\varphi + mr\omega^2\sin\varphi\cos\varphi.
+\]
+\end{itemize}
+\end{keybox}
+
+\begin{center}
+\begin{tikzpicture}[x=1.2cm,y=0.95cm,>=Stealth]
+  \draw[->] (0,0)--(6.2,0) node[right] {\small $\omega^2$};
+  \draw[->] (0,-2.0)--(0,2.1) node[above] {\small $\varphi^*$};
+  \draw[very thick,teal] (0,0)--(3,0);
+  \draw[thick,dashed,teal] (3,0)--(5.9,0);
+  \draw[very thick,rust] (3,0) to[out=18,in=200] (5.9,1.7);
+  \draw[very thick,rust] (3,0) to[out=-18,in=160] (5.9,-1.7);
+  \draw[dashed] (3,-0.15)--(3,0.15);
+  \node[below] at (3,-0.12) {\small $\omega_c^2=g/r$};
+  \node[teal] at (1.45,0.3) {\small stable};
+  \node[teal] at (4.5,-0.3) {\small unstable};
+  \node[rust] at (4.6,1.4) {\small stable $\pm\varphi^*$};
+\end{tikzpicture}
+\end{center}
+
+\begin{jupytercode}[PS II Q5: Rotating Hoop Full 2nd-Order vs Overdamped]
+m, b, omega, r, g = 1.0, 20.0, 5.0, 1.0, 9.8
+print("Overdamped ratio m^2*g/(b^2*r) =", round((m**2 * g) / (b**2 * r), 4))  # << 1
+
+dt = 0.005; t = np.arange(0, 6.0, dt); n = len(t)
+phi_full = np.zeros(n); v_full = np.zeros(n); phi_over = np.zeros(n)
+phi_full[0] = 0.5; phi_over[0] = 0.5
+
+for i in range(n - 1):
+    accel = (-b*r*v_full[i] - m*g*np.sin(phi_full[i])
+             + m*r*(omega**2)*np.sin(phi_full[i])*np.cos(phi_full[i])) / (m * r)
+    v_full[i + 1] = v_full[i] + dt * accel
+    phi_full[i + 1] = phi_full[i] + dt * v_full[i + 1]
+
+    dphi = (-m*g*np.sin(phi_over[i])
+            + m*r*(omega**2)*np.sin(phi_over[i])*np.cos(phi_over[i])) / (b * r)
+    phi_over[i + 1] = phi_over[i] + dt * dphi
+\end{jupytercode}
+
+\subsection{2D Nonlinear Systems, Jacobian \& Phase Plane (Problem Set II Q4)}
+Given $\dot x = f(x, y),\; \dot y = g(x, y)$:
+\begin{enumerate}
+\item Find fixed points $(x^*, y^*)$ where $f(x^*, y^*) = 0$ and $g(x^*, y^*) = 0$.
+\item Compute the Jacobian matrix at each fixed point:
+\[
+J(x^*, y^*) = \begin{pmatrix} \frac{\partial f}{\partial x} & \frac{\partial f}{\partial y} \\[4pt] \frac{\partial g}{\partial x} & \frac{\partial g}{\partial y} \end{pmatrix}_{(x^*, y^*)}.
+\]
+\item Find eigenvalues $\lambda_1, \lambda_2$ (same table as 2D linear systems). Note: linearization is inconclusive if $\operatorname{Re}(\lambda) = 0$ (borderline center).
+\end{enumerate}
+
+\textbf{Lotka-Volterra Competition (PS II Q4):} $\dot x = x(3 - x - 2y)$, $\dot y = y(2 - y - x)$.
+Fixed points: $(0,0)$ (unstable node, $\lambda=3,2$), $(1,1)$ (saddle, $\lambda = -1 \pm \sqrt{2}$), $(3,0)$ (stable node, $\lambda=-3,-1$), and $(0,2)$ (stable node, $\lambda=-1,-2$).
+
+\begin{jupytercode}[PS II Q4: Check Jacobian Eigenvalues \& Simple Euler Phase Plane]
+fixed_points = [(0, 0), (3, 0), (0, 2), (1, 1)]
+for fp in fixed_points:
+    xs, ys = fp
+    J = np.array([[3 - 2*xs - 2*ys, -2*xs], [-ys, 2 - 2*ys - xs]])
+    print(f"FP {fp}: eigvals = {np.round(np.linalg.eigvals(J), 3)}")
+
+dt = 0.02; t = np.arange(0, 12, dt); n = len(t)
+for x0, y0 in [(0.4, 0.2), (2.0, 0.4), (0.3, 1.8), (2.5, 2.0)]:
+    x = np.zeros(n); y = np.zeros(n); x[0], y[0] = x0, y0
+    for i in range(n - 1):
+        x[i + 1] = x[i] + dt * x[i] * (3 - x[i] - 2 * y[i])
+        y[i + 1] = y[i] + dt * y[i] * (2 - y[i] - x[i])
+    plt.plot(x, y)
+plt.xlabel('x'); plt.ylabel('y'); plt.show()
+\end{jupytercode}
+
+\subsection{Multivariable Newton-Raphson Solver}
+To solve a coupled nonlinear system $\mathbf{F}(\mathbf{x}) = \mathbf{0}$ (such as finding 2D ODE fixed points), Taylor expansion $\mathbf{F}(\mathbf{x}_k + \Delta\mathbf{x}) \approx \mathbf{F}(\mathbf{x}_k) + J(\mathbf{x}_k)\Delta\mathbf{x} = \mathbf{0}$ gives quadratic convergence:
+\[
+\boxed{\;J(\mathbf{x}_k)\,\Delta\mathbf{x} = -\mathbf{F}(\mathbf{x}_k), \qquad \mathbf{x}_{k+1} = \mathbf{x}_k + \Delta\mathbf{x}\;}
+\]
+
+\begin{jupytercode}[Clean Newton Solver + Professor's Gaussian Elimination (Newton\_SOE.ipynb)]
+import numpy as np
+
+# Clean solver using np.linalg.solve (solve y - x^3 = 0, x^2 + y^2 - 1 = 0)
+def F(x): return np.array([x[1] - x[0]**3, x[0]**2 + x[1]**2 - 1.0])
+def J(x): return np.array([[-3.0 * x[0]**2, 1.0], [2.0 * x[0], 2.0 * x[1]]])
+
+x = np.array([1.0, 2.0])
+for step in range(20):
+    dx = np.linalg.solve(J(x), -F(x))
+    x = x + dx
+    if np.linalg.norm(dx) < 1e-8:
+        break
+print("Solution:", x)
+
+# --- Professor's manual Gaussian elimination step (when linalg.solve is not used) ---
+# For matrix a = J(x) and rhs f = -F(x) of size n:
+# for j in range(n - 1):
+#     I = j + np.argmax(np.abs(a[j:n, j]))
+#     if I != j:
+#         a[[j, I], :] = a[[I, j], :]; f[[j, I]] = f[[I, j]]
+#     for i in range(j + 1, n):
+#         mult = a[i, j] / a[j, j]
+#         for k in range(j, n): a[i, k] = a[i, k] - mult * a[j, k]
+#         f[i] = f[i] - mult * f[j]
+\end{jupytercode}
+
+%============================================================
+\clearpage
+\colorlet{accent}{violet}
+\section{Linear Partial Differential Equations}
+{\small\emph{Sources: \texttt{lec\_pde.pdf}, \texttt{Tutorial\_03\_11\_26.pptx}, \texttt{problem\_set\_III.pdf} (Q2--Q6), \texttt{1D\_diffusion.ipynb}, \texttt{1storderwaveeqn.ipynb}, \texttt{2ndorderwaveeqn.ipynb}.}}
+
+\subsection{Finite Differences, Symmetries \& Boundary Conditions}
+Grid points: $x_i = i\Delta x$ ($i = 0, \dots, N$, $L = N\Delta x$), $t_n = n\Delta t$.
+
+\begin{center}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.23\linewidth}
+  >{\raggedright\arraybackslash}X
+  >{\centering\arraybackslash}p{0.13\linewidth}@{}}
+\toprule
+\rowcolor{accent!10}
+\textbf{Derivative} & \textbf{Finite-Difference Formula} & \textbf{Error} \\
+\midrule
+Forward 1st & $f_i' \approx \dfrac{f_{i+1}-f_i}{\Delta x}$ & $O(\Delta x)$ \\
+Backward 1st & $f_i' \approx \dfrac{f_i-f_{i-1}}{\Delta x}$ & $O(\Delta x)$ \\
+Central 1st & $f_i' \approx \dfrac{f_{i+1}-f_{i-1}}{2\Delta x}$ & $O(\Delta x^2)$ \\
+Central 2nd & $f_i'' \approx \dfrac{f_{i+1}-2f_i+f_{i-1}}{\Delta x^2} = \dfrac{1}{\Delta x}\left[\dfrac{f_{i+1}-f_i}{\Delta x}-\dfrac{f_i-f_{i-1}}{\Delta x}\right]$ & $O(\Delta x^2)$ \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\textbf{Symmetries:} Diffusion ($\partial_t\rho = D\partial_x^2\rho$) and 2nd-order wave ($\partial_t^2\psi = c^2\partial_x^2\psi$) have translational ($x\to x+a$) and parity ($x\to -x$) symmetry; 1st-order wave ($\partial_t\psi = -c\partial_x\psi$) breaks parity ($x\to -x$). Boundaries break translational symmetry and dictate the steady state.
+
+\begin{center}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.20\linewidth}
+  >{\raggedright\arraybackslash}p{0.28\linewidth}
+  >{\raggedright\arraybackslash}X@{}}
+\toprule
+\rowcolor{accent!10}
+\textbf{BC Type} & \textbf{Condition} & \textbf{Code Implementation \& Effect} \\
+\midrule
+Dirichlet & $\rho(0,t)=a,\ \rho(L,t)=b$ & \texttt{rho[0] = a; rho[-1] = b} (breaks particle conservation; steady state is linear) \\
+Neumann (No-flux) & $\partial_x\rho = 0 \implies J = 0$ at ends & \texttt{rho[0] = rho[1]; rho[-1] = rho[-2]} (strictly conserves total mass $\int \rho\,\dd x$) \\
+Periodic & $\rho(0,t) = \rho(L,t)$ & \texttt{np.roll(rho, -1)} or endpoint wrap (conserves mass) \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{1D Diffusion Equation: Explicit FTCS \& Fourier Modes}
+Combining continuity $\partial_t\rho + \partial_x J = 0$ with Fick's law $J = -D\partial_x\rho$ yields $\frac{\partial\rho}{\partial t} = D\frac{\partial^2\rho}{\partial x^2}$.
+The FTCS update with $C = \frac{D\Delta t}{\Delta x^2}$ is:
+\[
+\rho_i^{n+1} = \rho_i^n + C\left(\rho_{i+1}^n + \rho_{i-1}^n - 2\rho_i^n\right).
+\]
+
+\begin{derivbox}[von Neumann Stability Proof for 1D Diffusion]
+Substitute Fourier mode $\rho_j^n = T^n e^{ik x_j}$:
+\[
+\frac{T^{n+1}}{T^n} = 1 + C\left(e^{ik\Delta x} + e^{-ik\Delta x} - 2\right) = 1 + C(2\cos(k\Delta x) - 2) = 1 - 4C\sin^2\!\left(\frac{k\Delta x}{2}\right).
+\]
+Worst case is $\sin^2 = 1$: $-1 \le 1 - 4C \le 1 \implies \boxed{\;C = \frac{D\Delta t}{\Delta x^2} \le \frac{1}{2}\;}$. Physical meaning: $\sqrt{2D\Delta t} \le \Delta x$.
+\end{derivbox}
+
+\begin{keybox}[Fourier Mode Decay (Problem Set III Q6)]
+In Fourier space, $\partial_t \hat\rho(k,t) = -Dk^2\hat\rho(k,t) \implies \hat\rho(k,t) = \hat\rho(k,0)e^{-Dk^2 t}$, with timescale:
+\[
+\tau_k = \frac{1}{Dk^2} = \frac{\lambda^2}{4\pi^2 D}.
+\]
+For $\rho(x) = 1 + \sin(kx)$, $k_2 = 16\pi/L$ is $8\times$ larger than $k_1 = 2\pi/L$, so it equilibrates $\mathbf{8^2 = 64\times}$ \textbf{faster} (steeper gradients give larger flux $J = -D\partial_x\rho$).
+\end{keybox}
+
+\begin{jupytercode}[1D FTCS Diffusion + Professor's 1D\_diffusion.ipynb + PS III Q6]
+# 1. Exact Professor Code (Notes/1D_diffusion.ipynb, Dirichlet BC)
+N = 100; dt = 0.1; dx = 0.15; D = 0.05; L = N * dx; t_end = 2000
+rho = np.zeros(N); rho_temp = np.zeros(N)
+x = np.arange(0, L, dx); t = np.arange(dt, t_end, dt)
+for i in range(len(t)):
+    # No-flux (Neumann): rho[-1] = rho[-2]; rho[0] = rho[1]
+    rho[0] = 1; rho[-1] = 0     # Dirichlet BC
+    for p in range(1, N - 1):
+        rho_temp[p] = rho[p] + D * dt / (dx * dx) * (rho[p+1] + rho[p-1] - 2*rho[p])
+    rho = rho_temp.copy()
+
+# 2. PS III Q6: Fourier modes k_low = 2*pi/L vs k_high = 16*pi/L (Periodic BC)
+N = 200; L = 1.0; dx = L / N; x = np.linspace(0, L, N, endpoint=False)
+D = 0.01; dt = 0.0005; C = D * dt / (dx**2)
+rho_low = 1.0 + np.sin(2*np.pi*x/L); rho_high = 1.0 + np.sin(16*np.pi*x/L)
+for step in range(400):
+    rho_low  += C * (np.roll(rho_low, -1)  + np.roll(rho_low, 1)  - 2*rho_low)
+    rho_high += C * (np.roll(rho_high, -1) + np.roll(rho_high, 1) - 2*rho_high)
+\end{jupytercode}
+
+\subsection{Implicit BTCS, 2D Diffusion \& Heterogeneous $D(x)$}
+\begin{derivbox}[Implicit BTCS Stability Proof (Problem Set III Q5)]
+Evaluating the spatial second derivative at $t_{n+1}$ gives the tridiagonal linear system:
+\[
+-C\rho_{i-1}^{n+1} + (1 + 2C)\rho_i^{n+1} - C\rho_{i+1}^{n+1} = \rho_i^n.
+\]
+Substituting $\rho_j^n = T^n e^{ik x_j}$ gives $T^{n+1}\big[1 + 4C\sin^2(k\Delta x/2)\big] = T^n$:
+\[
+\boxed{\;G(k) = \frac{1}{1 + 4C\sin^2(k\Delta x/2)} \in (0, 1]\quad\forall\, D, \Delta t, \Delta x > 0\;}
+\]
+Thus BTCS is \textbf{unconditionally stable} (though very large $\Delta t$ reduces temporal accuracy).
+\end{derivbox}
+
+\begin{keybox}[2D Diffusion (PS III Q3) \& Heterogeneous $D(x)$ (PS III Q2)]
+\begin{itemize}
+\item \textbf{2D / $d$-D Diffusion:} $\partial_t\rho = D(\partial_x^2\rho + \partial_y^2\rho)$ with $\Delta x = \Delta y = \delta$. Substituting $e^{i(k_x x + k_y y)}$ gives $G = 1 - 4C(\sin^2\frac{k_x\delta}{2} + \sin^2\frac{k_y\delta}{2}) \ge -1 \implies \mathbf{C = \frac{D\Delta t}{\delta^2} \le \frac{1}{4}}$ (and in $d$ dimensions: $\mathbf{\frac{D\Delta t}{\delta^2} \le \frac{1}{2d}}$).
+\item \textbf{Heterogeneous Medium:} $\frac{\partial\rho}{\partial t} = \frac{\partial}{\partial x}\left(D(x)\frac{\partial\rho}{\partial x}\right)$. At steady state ($\partial_t\rho = 0$), $D(x)\partial_x\rho = -J = \text{const}$. Under periodic (or no-flux) BCs, steady flux $J = 0 \implies \mathbf{\rho(x) = \text{constant}}$. Numerically, use half-grid fluxes $J_{i+1/2} = -D_{i+1/2}\frac{\rho_{i+1}-\rho_i}{\Delta x}$ with $\max(D)\frac{\Delta t}{\Delta x^2} \le \frac{1}{2}$.
+\end{itemize}
+\end{keybox}
+
+\begin{jupytercode}[Implicit BTCS (PS III Q5) + 2D Diffusion (Q3) + Heterogeneous D(x) (Q2)]
+import scipy.linalg as la
+
+# 1. Implicit BTCS tridiagonal solve (use Premid Gaussian elimination if linalg.solve disallowed)
+N = 100; dx = 0.15; L = N * dx; D = 0.05; dt = 1.0; C = D * dt / (dx**2)  # C = 2.22 >> 0.5
+A = np.diag((1 + 2*C)*np.ones(N)) + np.diag(-C*np.ones(N-1), -1) + np.diag(-C*np.ones(N-1), 1)
+A[0, :] = 0; A[0, 0] = 1.0; A[-1, :] = 0; A[-1, -1] = 1.0
+for step in range(50):
+    rhs = rho.copy(); rhs[0] = 0.0; rhs[-1] = 0.0
+    rho = la.solve(A, rhs)
+
+# 2. 2D Diffusion (C <= 0.25)
+delta = 0.1; D = 0.2; dt = 0.01; C2 = D * dt / (delta**2)   # 0.20 <= 0.25
+for step in range(150):
+    rho_2d[1:-1, 1:-1] += C2 * (rho_2d[2:, 1:-1] + rho_2d[:-2, 1:-1] +
+                                rho_2d[1:-1, 2:] + rho_2d[1:-1, :-2] - 4*rho_2d[1:-1, 1:-1])
+
+# 3. PS III Q2: Heterogeneous D(x) = cos(pi*x / (2*L)) with periodic BC
+D_x = np.cos(np.pi * x / (2 * L))
+D_half = 0.5 * (D_x + np.roll(D_x, -1))
+for step in range(30000):
+    flux = -D_half * (np.roll(rho, -1) - rho) / dx
+    rho = rho - (dt / dx) * (flux - np.roll(flux, 1))
+\end{jupytercode}
+
+\subsection{First-Order Wave (Advection) \& Second-Order Wave Equations}
+\textbf{1st-Order Advection:} $\frac{\partial\psi}{\partial t} + c\frac{\partial\psi}{\partial x} = 0$ moves $\psi(x,0) = f(x) \to f(x - ct)$.
+\begin{itemize}
+\item \textbf{Upwind Scheme ($K = |c|\Delta t/\Delta x$):}
+  - If $c > 0$ (rightward): $\psi_i^{n+1} = \psi_i^n - K(\psi_i^n - \psi_{i-1}^n)$ (backward in space).
+  - If $c < 0$ (leftward): $\psi_i^{n+1} = \psi_i^n + K(\psi_{i+1}^n - \psi_i^n)$ (forward in space).
+\item \textbf{CFL Condition \& Numerical Diffusion:} Stable iff $\boxed{\;K = \frac{|c|\Delta t}{\Delta x} \le 1\;}$. Modified equation analysis gives artificial numerical diffusion $D_{\text{num}} = \frac{c\Delta x}{2}(1-K)$; at $K=1$, $D_{\text{num}} = 0$ (exact shift).
+\item \textbf{Why Central Space Fails:} $|G|^2 = 1 + K^2\sin^2(k\Delta x) > 1$ for all $\Delta t > 0$ (unconditionally unstable).
+\end{itemize}
+
+\textbf{2nd-Order Wave:} $\frac{\partial^2\psi}{\partial t^2} = c^2\frac{\partial^2\psi}{\partial x^2}$ factors as $(\partial_t - c\partial_x)(\partial_t + c\partial_x)\psi = 0 \implies \psi(x,t) = f(x-ct) + g(x+ct)$.
+
+\begin{keybox}[Leap-Frog Scheme, Magic Step ($K=1$) \& Initial Velocity (PS III Q4)]
+With $K = \frac{c\Delta t}{\Delta x} \le 1$:
+\[
+\psi_i^{n+1} = K^2\left(\psi_{i+1}^n + \psi_{i-1}^n\right) + 2(1 - K^2)\psi_i^n - \psi_i^{n-1}.
+\]
+At the \textbf{magic time step $K = 1$}, $\psi_i^{n+1} = \psi_{i+1}^n + \psi_{i-1}^n - \psi_i^{n-1}$ gives exact propagation with zero error.
+First step uses initial velocity $v(x_i) = \dot\psi(x_i, 0)$:
+\[
+\psi_i^1 = \frac{K^2}{2}\left(\psi_{i+1}^0 + \psi_{i-1}^0\right) + (1 - K^2)\psi_i^0 + \Delta t\, v(x_i).
+\]
+\begin{itemize}
+\item \textbf{Q4(i) $\dot\psi(x,0) = 0$:} Pulse splits into two half-amplitude waves moving left and right, inverting upon reflection at Dirichlet ends $\psi(0)=\psi(L)=0$.
+\item \textbf{Q4(ii) Leftward Traveling Wave:} Choose $v(x) = +c\partial_x\psi(x,0) = -200c(x-L/2)e^{-100(x-L/2)^2}$ to launch a pure leftward wave without splitting.
+\end{itemize}
+\end{keybox}
+
+\begin{jupytercode}[1st-Order Upwind (c > 0 and c < 0) + 2nd-Order Wave Leap-Frog (PS III Q4)]
+# 1. 1st-Order Advection Upwind (Periodic BC, c > 0; flip to psi[i+1]-psi[i] for c < 0)
+N = 200; L = 1.0; dx = L / N; x = np.linspace(0, L, N, endpoint=False)
+v = 1.0; k = 0.5; dt = k * dx / v; nt = int(round(0.5 / dt))
+psi = np.exp(-200 * (x - 0.25)**2)
+for n in range(nt):
+    psi_new = np.zeros(N)
+    for i in range(1, N):
+        psi_new[i] = psi[i] - k * (psi[i] - psi[i - 1])
+    psi_new[0] = psi[0] - k * (psi[0] - psi[-1])
+    psi = psi_new
+
+# 2. 2nd-Order Wave (PS III Q4): k = c*dt/dx = 1.0, Dirichlet BC psi[0]=psi[-1]=0
+N = 100; c = 100.0; dt = 1e-4; dx = 1e-2; L = N * dx; k = c * dt / dx
+x = np.linspace(0, L, N)
+psi_0 = np.exp(-100 * (x - L/2)**2)
+v_left = -200.0 * c * (x - L/2) * np.exp(-100 * (x - L/2)**2)   # Use 0 for Q4(i)
+psi_1 = np.zeros(N)
+for i in range(1, N - 1):
+    psi_1[i] = (k**2 / 2) * (psi_0[i+1] + psi_0[i-1]) + (1 - k**2) * psi_0[i] + dt * v_left[i]
+
+psi_prev = psi_0.copy(); psi_curr = psi_1.copy()
+for step in range(2, 80):
+    psi_next = np.zeros(N)
+    for i in range(1, N - 1):
+        psi_next[i] = (k**2)*(psi_curr[i+1] + psi_curr[i-1]) + 2*(1 - k**2)*psi_curr[i] - psi_prev[i]
+    psi_prev = psi_curr.copy(); psi_curr = psi_next.copy()
+\end{jupytercode}
+
+%============================================================
+\clearpage
+\colorlet{accent}{rust}
+\section{Stochastic Systems}
+{\small\emph{Sources: \texttt{lec\_sde.pdf} (incl.\ Exercises 1 \& 2), \texttt{lec\_pde.pdf} (Slides 7--9), \texttt{randomwalk\_1D.ipynb}, \texttt{FokkerPlanck.ipynb}.}}
+
+\subsection{Brownian Motion \& Langevin Dynamics}
+Newton's equation for a Brownian particle splits collisions into viscous drag and random thermal kicks:
+\[
+m\frac{\dd \mathbf{v}}{\dd t} = -\gamma\mathbf{v} + \boldsymbol\xi(t), \qquad \avg{\xi_i(t)} = 0, \qquad \avg{\xi_i(t)\xi_j(t')} = 2\gamma k_B T\,\delta_{ij}\delta(t-t').
+\]
+In the overdamped limit ($m \to 0$), $\gamma\frac{\dd\mathbf{x}}{\dd t} = \boldsymbol\xi(t)$. Integrating $x(t)-x(0) = \frac{1}{\gamma}\int_0^t \xi(s)\dd s$, squaring, and using $\avg{\xi(s)\xi(s')} = 2\gamma k_B T\delta(s-s')$ yields:
+\[
+\boxed{\;\avg{\Delta x} = 0, \qquad \avg{(\Delta x)^2} = \frac{2k_B T}{\gamma}t = 2Dt, \qquad D = \frac{k_B T}{\gamma}\;\text{(Einstein relation)}\;}
+\]
+In $d$ dimensions, $\avg{r^2} = 2dDt$ (so $6Dt$ in 3D).
+
+\begin{warnbox}[Euler-Maruyama $\sqrt{\Delta t}$ Rule + External Potential]
+Because white noise has $\delta(t-t')$ variance, random kicks in code scale as $\mathbf{\sqrt{\Delta t}}$ (NOT $\Delta t$!):
+\[
+v_{n+1} = v_n - \frac{\gamma}{m}v_n\Delta t + \sqrt{\frac{2\gamma k_B T\Delta t}{m^2}}\,\eta_n, \qquad x_{n+1} = x_n + v_n\Delta t, \quad \eta_n \sim \mathcal{N}(0, 1).
+\]
+With an external force $-U'(x)$, overdamped position updates as $x_{n+1} = x_n - \frac{U'(x_n)}{\gamma}\Delta t + \sqrt{2D\Delta t}\,\eta_n$.
+\end{warnbox}
+
+\subsection{1D \& 2D Random Walks (Exercises 1 \& 2)}
+For $x_n = x_{n-1} + \eta_n$ with $\eta_n = +a$ (prob.\ $p$) or $-a$ (prob.\ $q = 1-p$):
+\[
+\avg{\eta} = a(p-q), \qquad \operatorname{Var}(\eta) = \avg{\eta^2} - \avg{\eta}^2 = 4a^2 pq.
+\]
+\begin{keybox}[Random Walk Results (1D Unbiased, 1D Biased, 2D)]
+\begin{itemize}
+\item \textbf{1D Symmetric ($p=q=1/2, a=1$):} $\avg{x_n} = 0$, $\avg{x_n^2} = n$ (spread envelope $\pm\sqrt{n}$).
+\item \textbf{1D Biased ($p=2/3, q=1/3, a=1$, Exercise 2):} $\avg{x_n} = n(p-q) = \frac{n}{3}$, shifted MSD $\avg{(x_n - \avg{x_n})^2} = 4pqn = \frac{8}{9}n$, and raw MSD $\avg{x_n^2} = \frac{8}{9}n + \frac{n^2}{9}$.
+\item \textbf{2D Symmetric ($\mathbf{R}_n = x_n\hat{i} + y_n\hat{j}$, Exercise 1):} $\avg{\mathbf{R}_n} = \mathbf{0}$, $\avg{R_n^2} = \avg{x_n^2} + \avg{y_n^2} = n + n = \mathbf{2n}$ (twice 1D).
+\item \textbf{Diffusion Link ($t = n\Delta t$):} $\avg{x^2} = na^2 = \frac{a^2}{\Delta t}t \implies \boxed{\;D = \frac{a^2}{2\Delta t}\;}$; bias adds drift $v = \frac{a(p-q)}{\Delta t}$ so $\partial_t\rho = D\partial_x^2\rho - v\partial_x\rho$.
+\end{itemize}
+\end{keybox}
+
+\begin{jupytercode}[Professor's randomwalk\_1D.ipynb + 2D Walk + Biased Walk + Langevin]
+# 1. Professor's 1D Random Walk (Notes/randomwalk_1D.ipynb)
+N = 20000; Nre = 1000
+x = np.zeros(N); msd = np.zeros((N, Nre)); X = np.zeros((N, Nre))
+for ire in range(Nre):
+    x[0] = 0
+    for i in range(1, N):
+        rd = np.random.rand()
+        if rd >= 0.5: x[i] = x[i-1] + 1
+        else:         x[i] = x[i-1] - 1
+    msd[:, ire] = x**2; X[:, ire] = x
+avgX = np.mean(X, axis=1); avgMSD = np.mean(msd, axis=1)
+
+# 2. Fast vectorized 2D walk (Ex 1) and Biased 1D walk (Ex 2, p=2/3)
+p = 2.0 / 3.0; X_bias = np.zeros((500, 2000))
+for ire in range(2000):
+    steps = np.where(np.random.rand(500) < p, 1, -1); steps[0] = 0
+    X_bias[:, ire] = np.cumsum(steps)
+avg_x = np.mean(X_bias, axis=1); msd_x = np.mean(X_bias**2, axis=1)
+shifted_msd = np.mean((X_bias - avg_x[:, None])**2, axis=1)
+
+# 3. 1D Langevin with external trap U(x) = 0.5*k_trap*x^2
+m = 1.0; gamma = 1.0; kB_T = 1.0; D = kB_T / gamma; dt = 0.01; nt = 5000
+x_t = np.zeros(nt); x_t[0] = 3.0; k_trap = 2.0
+for i in range(nt - 1):
+    force = -k_trap * x_t[i]
+    x_t[i+1] = x_t[i] + (force / gamma) * dt + np.sqrt(2 * D * dt) * np.random.randn()
+\end{jupytercode}
+
+\subsection{Fokker-Planck (Smoluchowski) Equation}
+From particle conservation $\frac{\partial\rho}{\partial t} + \frac{\partial J}{\partial x} = 0$ and total current $J = J_{\text{diffusion}} + J_{\text{drift}} = -D\frac{\partial\rho}{\partial x} - \rho\frac{\dd U}{\dd x}$ (for $\gamma = 1$):
+\[
+\boxed{\;\frac{\partial\rho}{\partial t} = \frac{\partial}{\partial x}\left(D\frac{\partial\rho}{\partial x} + \rho\frac{\dd U}{\dd x}\right)\;}
+\]
+Setting steady-state flux $J = 0$ gives $\frac{1}{\rho}\frac{\dd\rho}{\dd x} = -\frac{1}{D}\frac{\dd U}{\dd x} \implies$ \textbf{Gibbs-Boltzmann equilibrium}: $\rho_{\text{eq}}(x) \propto \exp(-U(x)/D)$ (peaking at the potential minimum).
+
+\begin{jupytercode}[Professor's Exact Code: Fokker-Planck (Notes/FokkerPlanck.ipynb)]
+dt = 0.01; dx = 0.05; D = 0.02; t_end = 100; N = 100; L = N * dx
+t = np.arange(dt, t_end + dt, dt); x = np.arange(1, N + 1) * dx
+k = 0.1
+rho_0 = np.exp(-((x - L / 4) / 1)**2); rho = rho_0.copy(); rho_temp = np.zeros(N)
+U = (k / 2) * (x - L / 2)**2
+Up = k * (x - L / 2)
+Up[0] = Up[-1]       # Periodic BC on derivative
+
+rho_T = np.zeros((N, len(t)))
+for i in range(len(t)):
+    rho[-1] = rho[1]; rho[0] = rho[-2]     # Periodic BCs
+    rU = rho * Up
+    for p in range(1, N - 1):
+        rho_temp[p] = rho[p] + dt * (
+            D / dx**2 * (rho[p + 1] + rho[p - 1] - 2 * rho[p]) +
+            (rU[p + 1] - rU[p - 1]) / (2 * dx)
+        )
+    rho = rho_temp.copy()
+    rho_T[:, i] = rho
+\end{jupytercode}
+
+%============================================================
+\clearpage
+\colorlet{accent}{navy}
+\section*{Last-Minute Exam Checklist \& Common Traps}
+\markboth{Last-Minute Checklist}{Last-Minute Checklist}
+\addcontentsline{toc}{section}{Last-Minute Exam Checklist \& Common Traps}
+
+\subsection*{Numerical Methods at a Glance}
+\begin{center}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.26\linewidth}
+  >{\centering\arraybackslash}p{0.15\linewidth}
+  >{\raggedright\arraybackslash}X@{}}
+\toprule
+\rowcolor{black!8}
+\textbf{Method / PDE} & \textbf{Global Order} & \textbf{Stability / Key Condition} \\
+\midrule
+Explicit Euler & $O(\Delta t)$ & $\Delta t \le 2/\lambda$ (blows up on SHM centers) \\
+Improved Euler (Heun) & $O(\Delta t^2)$ & $\Delta t \le 2/\lambda$ \\
+Implicit Euler & $O(\Delta t)$ & Unconditional ($\lambda > 0$); needs solve \\
+Euler-Cromer & $O(\Delta t)$ & Preserves bounded oscillations on SHM \\
+RK4 & $O(\Delta t^4)$ & High accuracy; 4 slope evaluations \\
+Multivariable Newton & Quadratic & $J(\mathbf{x}_k)\Delta\mathbf{x} = -\mathbf{F}(\mathbf{x}_k)$; needs good guess \\
+1D Diffusion (FTCS) & $O(\Delta t, \Delta x^2)$ & $D\Delta t/\Delta x^2 \le 1/2$ \\
+1D Diffusion (BTCS) & $O(\Delta t, \Delta x^2)$ & Unconditional; tridiagonal solve \\
+$d$-D Diffusion (FTCS) & $O(\Delta t, \delta^2)$ & $D\Delta t/\delta^2 \le 1/(2d)$ ($1/4$ in 2D) \\
+Advection (Upwind) & $O(\Delta t, \Delta x)$ & $|c|\Delta t/\Delta x \le 1$ (backward if $c>0$, forward if $c<0$) \\
+2nd-Order Wave & $O(\Delta t^2, \Delta x^2)$ & $c\Delta t/\Delta x \le 1$ (exact at $K=1$) \\
+Euler-Maruyama (SDE) & --- & Random kick scales as $\sqrt{\Delta t}$, NOT $\Delta t$ \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection*{Key Derivations You Should Be Ready to Reproduce}
+\begin{enumerate}
+\item Explicit Euler global error $O(h)$ from $N = T/h$ steps of $O(h^2)$ local error, and stability $|1-\lambda h| \le 1$.
+\item Implicit Euler $y_{n+1} = y_n/(1+\lambda h)$ and proof of unconditional stability (PS III Q1).
+\item Harmonic oscillator $r^2 + 2br + \omega_0^2 = 0$ regimes, $dE/dt = -\gamma\dot x^2 \le 0$, and overdamped limit (PS II Q1).
+\item 2D linear classification from $\lambda^2 - \tau\lambda + \Delta = 0$ and why Simple Euler fails on centers (PS II Q3).
+\item Fixed-point linearization $\dot u = f'(x^*)u$, double well, and rotating hoop pitchfork $\omega_c^2 = g/r$ + overdamped check (PS II Q5).
+\item Diffusion ($\partial_t\rho = D\partial_x^2\rho$) from continuity + Fick's law, plus von Neumann proofs for FTCS ($\le 1/2$), $d$-D ($\le 1/(2d)$), and BTCS (unconditional) (PS III Q3, Q5).
+\item Fourier decay $\tau_k = 1/(Dk^2)$ (why $k = 16\pi/L$ decays $64\times$ faster than $2\pi/L$, PS III Q6).
+\item Advection upwind CFL ($K \le 1$), numerical diffusion, wave factorization $f(x-ct)+g(x+ct)$, and leftward initial velocity (PS III Q4).
+\item Langevin MSD $\avg{(\Delta x)^2} = 2Dt$ ($D = k_BT/\gamma$), 1D biased / 2D random walks (Ex 1, 2), and Fokker-Planck $\to \rho_{\text{eq}} \propto e^{-U/D}$.
+\end{enumerate}
+
+\subsection*{Common Exam Traps}
+\begin{warnbox}[Do Not Lose Marks on These]
+\begin{itemize}
+\item \textbf{Simple Euler on SHM / Centers:} Always drifts outward even at tiny $\Delta t$. Use RK4 or Euler-Cromer.
+\item \textbf{Diffusion vs Wave Stability:} Diffusion has $D\Delta t/\Delta x^2 \le 1/2$ (and $1/4$ in 2D); Wave/Advection has $|c|\Delta t/\Delta x \le 1$.
+\item \textbf{Advection Sign \& Central Space:} $c > 0 \to$ backward space (\texttt{psi[i]-psi[i-1]}); $c < 0 \to$ forward space (\texttt{psi[i+1]-psi[i]}). Central space is \emph{always} unstable.
+\item \textbf{Arrays in Time Loops:} Always use \texttt{.copy()} (\texttt{rho = rho\_temp.copy()}) so old and new arrays do not alias.
+\item \textbf{Neumann vs Dirichlet in Code:} No-flux is \texttt{rho[0] = rho[1]; rho[-1] = rho[-2]}, NOT \texttt{rho = 0}.
+\item \textbf{Stochastic Noise:} Multiply \texttt{np.random.randn()} by \texttt{np.sqrt(2*D*dt)}, NEVER by \texttt{dt}.
+\end{itemize}
+\end{warnbox}
+
+\end{document}
