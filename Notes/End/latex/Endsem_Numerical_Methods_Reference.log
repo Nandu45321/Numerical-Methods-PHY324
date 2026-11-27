@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Arch Linux) (preloaded format=pdflatex 2026.10.23)  27 NOV 2026 04:14
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Arch Linux) (preloaded format=pdflatex 2026.10.23)  28 NOV 2026 02:05
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1249,7 +1249,7 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (./Endsem_Numerical_Methods_Reference.listing) [12 <./figs/Linear_Ordinary_Diff
 erential_Equations__04_Linear_ODE_Problem_Set_Solutions__c4_o0.png>]
 <figs/Linear_Ordinary_Differential_Equations__03_2D_Linear_Autonomous_Systems__
-c1_o1.png, id=622, 339.669pt x 338.9463pt>
+c1_o1.png, id=615, 339.669pt x 338.9463pt>
 File: figs/Linear_Ordinary_Differential_Equations__03_2D_Linear_Autonomous_Syst
 ems__c1_o1.png Graphic file (type png)
 <use figs/Linear_Ordinary_Differential_Equations__03_2D_Linear_Autonomous_Syste
@@ -1263,7 +1263,7 @@ ear_Autonomous_Systems__c1_o1.png  used on input line 733.
 (./Endsem_Numerical_Methods_Reference.listing) [13 <./figs/Linear_Ordinary_Diff
 erential_Equations__03_2D_Linear_Autonomous_Systems__c1_o1.png>]
 <figs/Linear_Ordinary_Differential_Equations__03_2D_Linear_Autonomous_Systems__
-c2_o1.png, id=671, 330.2739pt x 338.9463pt>
+c2_o1.png, id=664, 330.2739pt x 338.9463pt>
 File: figs/Linear_Ordinary_Differential_Equations__03_2D_Linear_Autonomous_Syst
 ems__c2_o1.png Graphic file (type png)
 <use figs/Linear_Ordinary_Differential_Equations__03_2D_Linear_Autonomous_Syste
@@ -1276,35 +1276,40 @@ ear_Autonomous_Systems__c2_o1.png  used on input line 779.
 
 (./Endsem_Numerical_Methods_Reference.listing) [14 <./figs/Linear_Ordinary_Diff
 erential_Equations__03_2D_Linear_Autonomous_Systems__c2_o1.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 854--856
+\T1/lmtt/m/n/10 (iv) Eigenvalues: [0.5+0.866j 0.5-0.866j]  (v) [-0.5+0.866j -0.
+5-0.866j]  (vi) [0.+1.j
+ []
+
 <figs/Linear_Ordinary_Differential_Equations__04_Linear_ODE_Problem_Set_Solutio
-ns__c7_o0.png, id=717, 715.473pt x 281.853pt>
+ns__c7_o0.png, id=710, 713.3049pt x 281.853pt>
 File: figs/Linear_Ordinary_Differential_Equations__04_Linear_ODE_Problem_Set_So
 lutions__c7_o0.png Graphic file (type png)
 <use figs/Linear_Ordinary_Differential_Equations__04_Linear_ODE_Problem_Set_Sol
 utions__c7_o0.png>
 Package pdftex.def Info: figs/Linear_Ordinary_Differential_Equations__04_Linear
-_ODE_Problem_Set_Solutions__c7_o0.png  used on input line 857.
-(pdftex.def)             Requested size: 288.79639pt x 113.76707pt.
+_ODE_Problem_Set_Solutions__c7_o0.png  used on input line 858.
+(pdftex.def)             Requested size: 288.79639pt x 114.11543pt.
 <figs/Linear_Ordinary_Differential_Equations__04_Linear_ODE_Problem_Set_Solutio
-ns__c8_o0.png, id=718, 339.669pt x 338.9463pt>
+ns__c8_o0.png, id=711, 344.7279pt x 338.9463pt>
 File: figs/Linear_Ordinary_Differential_Equations__04_Linear_ODE_Problem_Set_So
 lutions__c8_o0.png Graphic file (type png)
 <use figs/Linear_Ordinary_Differential_Equations__04_Linear_ODE_Problem_Set_Sol
 utions__c8_o0.png>
 Package pdftex.def Info: figs/Linear_Ordinary_Differential_Equations__04_Linear
-_ODE_Problem_Set_Solutions__c8_o0.png  used on input line 858.
-(pdftex.def)             Requested size: 194.18976pt x 193.78065pt.
- [15 <./figs/Linear_Ordinary_Differential_Equations__04_Linear_ODE_Problem_Set_
-Solutions__c7_o0.png> <./figs/Linear_Ordinary_Differential_Equations__04_Linear
-_ODE_Problem_Set_Solutions__c8_o0.png>]
-Overfull \hbox (5.01688pt too wide) in paragraph at lines 865--865
+_ODE_Problem_Set_Solutions__c8_o0.png  used on input line 859.
+(pdftex.def)             Requested size: 194.18976pt x 190.93611pt.
+[15] [16 <./figs/Linear_Ordinary_Differential_Equations__04_Linear_ODE_Problem_
+Set_Solutions__c7_o0.png> <./figs/Linear_Ordinary_Differential_Equations__04_Li
+near_ODE_Problem_Set_Solutions__c8_o0.png>]
+Overfull \hbox (5.01688pt too wide) in paragraph at lines 866--866
 \T1/lmr/m/it/9 (-20) Notebooks cov-ered: \T1/lmtt/m/it/9 01_1D_Nonlinear_Flows_
 and_Bifurcations.ipynb\T1/lmr/m/it/9 (-20) , \T1/lmtt/m/it/9 02_2D_Nonlinear_Sy
 stems_and_Phase_Plane.ipynb\T1/lmr/m/it/9 (-20) ,
  []
 
 
-Underfull \hbox (badness 4765) in paragraph at lines 865--865
+Underfull \hbox (badness 4765) in paragraph at lines 866--866
 \T1/lmtt/m/it/9 03_Nonlinear_System_Solvers_Newton_Method.ipynb\T1/lmr/m/it/9 (
 +20) , \T1/lmtt/m/it/9 04_Nonlinear_ODE_Problem_Set_Solutions.ipynb\T1/lmr/m/it
 /9 (+20) . Sources:
@@ -1314,15 +1319,15 @@ Underfull \hbox (badness 4765) in paragraph at lines 865--865
 
 (./Endsem_Numerical_Methods_Reference.listing)
 <figs/Nonlinear_Ordinary_Differential_Equations__01_1D_Nonlinear_Flows_and_Bifu
-rcations__c1_o0.png, id=771, 443.0151pt x 283.2984pt>
+rcations__c1_o0.png, id=777, 443.0151pt x 283.2984pt>
 File: figs/Nonlinear_Ordinary_Differential_Equations__01_1D_Nonlinear_Flows_and
 _Bifurcations__c1_o0.png Graphic file (type png)
 <use figs/Nonlinear_Ordinary_Differential_Equations__01_1D_Nonlinear_Flows_and_
 Bifurcations__c1_o0.png>
 Package pdftex.def Info: figs/Nonlinear_Ordinary_Differential_Equations__01_1D_
-Nonlinear_Flows_and_Bifurcations__c1_o0.png  used on input line 902.
+Nonlinear_Flows_and_Bifurcations__c1_o0.png  used on input line 903.
 (pdftex.def)             Requested size: 348.54475pt x 222.89116pt.
- [16
+ [17
 
 ]
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
@@ -1330,15 +1335,15 @@ Nonlinear_Flows_and_Bifurcations__c1_o0.png  used on input line 902.
 
 (./Endsem_Numerical_Methods_Reference.listing)
 <figs/Nonlinear_Ordinary_Differential_Equations__01_1D_Nonlinear_Flows_and_Bifu
-rcations__c2_o0.png, id=795, 452.4102pt x 283.2984pt>
+rcations__c2_o0.png, id=801, 452.4102pt x 283.2984pt>
 File: figs/Nonlinear_Ordinary_Differential_Equations__01_1D_Nonlinear_Flows_and
 _Bifurcations__c2_o0.png Graphic file (type png)
 <use figs/Nonlinear_Ordinary_Differential_Equations__01_1D_Nonlinear_Flows_and_
 Bifurcations__c2_o0.png>
 Package pdftex.def Info: figs/Nonlinear_Ordinary_Differential_Equations__01_1D_
-Nonlinear_Flows_and_Bifurcations__c2_o0.png  used on input line 934.
+Nonlinear_Flows_and_Bifurcations__c2_o0.png  used on input line 935.
 (pdftex.def)             Requested size: 348.54475pt x 218.25714pt.
- [17 <./figs/Nonlinear_Ordinary_Differential_Equations__01_1D_Nonlinear_Flows_a
+ [18 <./figs/Nonlinear_Ordinary_Differential_Equations__01_1D_Nonlinear_Flows_a
 nd_Bifurcations__c1_o0.png>]
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
@@ -1347,108 +1352,108 @@ nd_Bifurcations__c1_o0.png>]
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
 
-(./Endsem_Numerical_Methods_Reference.listing) [18 <./figs/Nonlinear_Ordinary_D
+(./Endsem_Numerical_Methods_Reference.listing) [19 <./figs/Nonlinear_Ordinary_D
 ifferential_Equations__01_1D_Nonlinear_Flows_and_Bifurcations__c2_o0.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 1005--1006
+Underfull \hbox (badness 10000) in paragraph at lines 1006--1007
 []\T1/lmtt/m/n/10 Positive stable fixed point x* = 1.1429  | Final from +0.5: 1
 .1429  | Final from -0.5:
  []
 
 <figs/Nonlinear_Ordinary_Differential_Equations__04_Nonlinear_ODE_Problem_Set_S
-olutions__c2_o1.png, id=861, 452.4102pt x 283.2984pt>
+olutions__c2_o1.png, id=869, 452.4102pt x 283.2984pt>
 File: figs/Nonlinear_Ordinary_Differential_Equations__04_Nonlinear_ODE_Problem_
 Set_Solutions__c2_o1.png Graphic file (type png)
 <use figs/Nonlinear_Ordinary_Differential_Equations__04_Nonlinear_ODE_Problem_S
 et_Solutions__c2_o1.png>
 Package pdftex.def Info: figs/Nonlinear_Ordinary_Differential_Equations__04_Non
-linear_ODE_Problem_Set_Solutions__c2_o1.png  used on input line 1008.
+linear_ODE_Problem_Set_Solutions__c2_o1.png  used on input line 1009.
 (pdftex.def)             Requested size: 348.54475pt x 218.25714pt.
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
-(./Endsem_Numerical_Methods_Reference.listing) [19 <./figs/Nonlinear_Ordinary_D
+(./Endsem_Numerical_Methods_Reference.listing) [20 <./figs/Nonlinear_Ordinary_D
 ifferential_Equations__04_Nonlinear_ODE_Problem_Set_Solutions__c2_o1.png>]
 <figs/Nonlinear_Ordinary_Differential_Equations__04_Nonlinear_ODE_Problem_Set_S
-olutions__c4_o0.png, id=913, 458.9145pt x 283.2984pt>
+olutions__c4_o0.png, id=919, 458.9145pt x 283.2984pt>
 File: figs/Nonlinear_Ordinary_Differential_Equations__04_Nonlinear_ODE_Problem_
 Set_Solutions__c4_o0.png Graphic file (type png)
 <use figs/Nonlinear_Ordinary_Differential_Equations__04_Nonlinear_ODE_Problem_S
 et_Solutions__c4_o0.png>
 Package pdftex.def Info: figs/Nonlinear_Ordinary_Differential_Equations__04_Non
-linear_ODE_Problem_Set_Solutions__c4_o0.png  used on input line 1046.
+linear_ODE_Problem_Set_Solutions__c4_o0.png  used on input line 1047.
 (pdftex.def)             Requested size: 239.00102pt x 147.54079pt.
 <figs/Nonlinear_Ordinary_Differential_Equations__04_Nonlinear_ODE_Problem_Set_S
-olutions__c4_o1.png, id=914, 450.2421pt x 283.2984pt>
+olutions__c4_o1.png, id=920, 450.2421pt x 283.2984pt>
 File: figs/Nonlinear_Ordinary_Differential_Equations__04_Nonlinear_ODE_Problem_
 Set_Solutions__c4_o1.png Graphic file (type png)
 <use figs/Nonlinear_Ordinary_Differential_Equations__04_Nonlinear_ODE_Problem_S
 et_Solutions__c4_o1.png>
 Package pdftex.def Info: figs/Nonlinear_Ordinary_Differential_Equations__04_Non
-linear_ODE_Problem_Set_Solutions__c4_o1.png  used on input line 1047.
+linear_ODE_Problem_Set_Solutions__c4_o1.png  used on input line 1048.
 (pdftex.def)             Requested size: 239.00102pt x 150.38086pt.
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
 
 (./Endsem_Numerical_Methods_Reference.listing)
 <figs/Nonlinear_Ordinary_Differential_Equations__04_Nonlinear_ODE_Problem_Set_S
-olutions__c6_o0.png, id=915, 443.7378pt x 283.2984pt>
+olutions__c6_o0.png, id=921, 443.7378pt x 283.2984pt>
 File: figs/Nonlinear_Ordinary_Differential_Equations__04_Nonlinear_ODE_Problem_
 Set_Solutions__c6_o0.png Graphic file (type png)
 <use figs/Nonlinear_Ordinary_Differential_Equations__04_Nonlinear_ODE_Problem_S
 et_Solutions__c6_o0.png>
 Package pdftex.def Info: figs/Nonlinear_Ordinary_Differential_Equations__04_Non
-linear_ODE_Problem_Set_Solutions__c6_o0.png  used on input line 1069.
+linear_ODE_Problem_Set_Solutions__c6_o0.png  used on input line 1070.
 (pdftex.def)             Requested size: 348.54475pt x 222.53238pt.
- [20 <./figs/Nonlinear_Ordinary_Differential_Equations__04_Nonlinear_ODE_Proble
+ [21 <./figs/Nonlinear_Ordinary_Differential_Equations__04_Nonlinear_ODE_Proble
 m_Set_Solutions__c4_o0.png> <./figs/Nonlinear_Ordinary_Differential_Equations__
 04_Nonlinear_ODE_Problem_Set_Solutions__c4_o1.png>]
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
- (./Endsem_Numerical_Methods_Reference.listing) [21 <./figs/Nonlinear_Ordinary_
+ (./Endsem_Numerical_Methods_Reference.listing) [22 <./figs/Nonlinear_Ordinary_
 Differential_Equations__04_Nonlinear_ODE_Problem_Set_Solutions__c6_o0.png>]
 <figs/Nonlinear_Ordinary_Differential_Equations__04_Nonlinear_ODE_Problem_Set_S
-olutions__c10_o1.png, id=976, 443.7378pt x 283.2984pt>
+olutions__c10_o1.png, id=983, 443.7378pt x 283.2984pt>
 File: figs/Nonlinear_Ordinary_Differential_Equations__04_Nonlinear_ODE_Problem_
 Set_Solutions__c10_o1.png Graphic file (type png)
 <use figs/Nonlinear_Ordinary_Differential_Equations__04_Nonlinear_ODE_Problem_S
 et_Solutions__c10_o1.png>
 Package pdftex.def Info: figs/Nonlinear_Ordinary_Differential_Equations__04_Non
-linear_ODE_Problem_Set_Solutions__c10_o1.png  used on input line 1157.
+linear_ODE_Problem_Set_Solutions__c10_o1.png  used on input line 1158.
 (pdftex.def)             Requested size: 348.54475pt x 222.53238pt.
- [22 <./figs/Nonlinear_Ordinary_Differential_Equations__04_Nonlinear_ODE_Proble
+ [23 <./figs/Nonlinear_Ordinary_Differential_Equations__04_Nonlinear_ODE_Proble
 m_Set_Solutions__c10_o1.png>]
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
 
 (./Endsem_Numerical_Methods_Reference.listing)
 <figs/Nonlinear_Ordinary_Differential_Equations__02_2D_Nonlinear_Systems_and_Ph
-ase_Plane__c1_o1.png, id=1018, 331.7193pt x 338.9463pt>
+ase_Plane__c1_o1.png, id=1024, 331.7193pt x 338.9463pt>
 File: figs/Nonlinear_Ordinary_Differential_Equations__02_2D_Nonlinear_Systems_a
 nd_Phase_Plane__c1_o1.png Graphic file (type png)
 <use figs/Nonlinear_Ordinary_Differential_Equations__02_2D_Nonlinear_Systems_an
 d_Phase_Plane__c1_o1.png>
 Package pdftex.def Info: figs/Nonlinear_Ordinary_Differential_Equations__02_2D_
-Nonlinear_Systems_and_Phase_Plane__c1_o1.png  used on input line 1217.
+Nonlinear_Systems_and_Phase_Plane__c1_o1.png  used on input line 1218.
 (pdftex.def)             Requested size: 258.92221pt x 264.58392pt.
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
 
-(./Endsem_Numerical_Methods_Reference.listing) [23 <./figs/Nonlinear_Ordinary_D
+(./Endsem_Numerical_Methods_Reference.listing) [24 <./figs/Nonlinear_Ordinary_D
 ifferential_Equations__02_2D_Nonlinear_Systems_and_Phase_Plane__c1_o1.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 1262--1263
+Underfull \hbox (badness 10000) in paragraph at lines 1263--1264
 []\T1/lmtt/m/n/10 FP (0, 0): [3. 2.]  | FP (3, 0): [-3. -1.]  | FP (0, 2): [-2.
  -1.]  | FP (1,
  []
 
 <figs/Nonlinear_Ordinary_Differential_Equations__04_Nonlinear_ODE_Problem_Set_S
-olutions__c8_o1.png, id=1066, 393.8715pt x 338.9463pt>
+olutions__c8_o1.png, id=1072, 393.8715pt x 338.9463pt>
 File: figs/Nonlinear_Ordinary_Differential_Equations__04_Nonlinear_ODE_Problem_
 Set_Solutions__c8_o1.png Graphic file (type png)
 <use figs/Nonlinear_Ordinary_Differential_Equations__04_Nonlinear_ODE_Problem_S
 et_Solutions__c8_o1.png>
 Package pdftex.def Info: figs/Nonlinear_Ordinary_Differential_Equations__04_Non
-linear_ODE_Problem_Set_Solutions__c8_o1.png  used on input line 1265.
+linear_ODE_Problem_Set_Solutions__c8_o1.png  used on input line 1266.
 (pdftex.def)             Requested size: 298.75697pt x 257.11053pt.
-[24 <./figs/Nonlinear_Ordinary_Differential_Equations__04_Nonlinear_ODE_Problem
+[25 <./figs/Nonlinear_Ordinary_Differential_Equations__04_Nonlinear_ODE_Problem
 _Set_Solutions__c8_o1.png>]
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
@@ -1456,8 +1461,8 @@ _Set_Solutions__c8_o1.png>]
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
 
-(./Endsem_Numerical_Methods_Reference.listing) [25] [26]
-Underfull \hbox (badness 10000) in paragraph at lines 1402--1402
+(./Endsem_Numerical_Methods_Reference.listing) [26] [27]
+Underfull \hbox (badness 10000) in paragraph at lines 1403--1403
 \T1/lmtt/m/it/9 lec_pde.pdf\T1/lmr/m/it/9 (+20) , \T1/lmtt/m/it/9 Tutorial_03_1
 1_26.pptx\T1/lmr/m/it/9 (+20) , \T1/lmtt/m/it/9 problem_set_III Q2--Q6\T1/lmr/m
 /it/9 (+20) , \T1/lmtt/m/it/9 1D_diffusion.ipynb\T1/lmr/m/it/9 (+20) , \T1/lmtt
@@ -1466,316 +1471,316 @@ Underfull \hbox (badness 10000) in paragraph at lines 1402--1402
 
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
-(./Endsem_Numerical_Methods_Reference.listing) [27
+(./Endsem_Numerical_Methods_Reference.listing) [28
 
 ]
 <figs/Linear_Partial_Differential_Equations__01_1D_Diffusion_Explicit_FTCS__c1_
-o1.png, id=1246, 715.473pt x 281.853pt>
+o1.png, id=1252, 715.473pt x 281.853pt>
 File: figs/Linear_Partial_Differential_Equations__01_1D_Diffusion_Explicit_FTCS
 __c1_o1.png Graphic file (type png)
 <use figs/Linear_Partial_Differential_Equations__01_1D_Diffusion_Explicit_FTCS_
 _c1_o1.png>
 Package pdftex.def Info: figs/Linear_Partial_Differential_Equations__01_1D_Diff
-usion_Explicit_FTCS__c1_o1.png  used on input line 1521.
+usion_Explicit_FTCS__c1_o1.png  used on input line 1522.
 (pdftex.def)             Requested size: 448.12788pt x 176.53185pt.
- [28]
+ [29]
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
 
 (./Endsem_Numerical_Methods_Reference.listing)
 <figs/Linear_Partial_Differential_Equations__01_1D_Diffusion_Explicit_FTCS__c2_
-o0.png, id=1309, 387.3672pt x 255.1131pt>
+o0.png, id=1315, 387.3672pt x 255.1131pt>
 File: figs/Linear_Partial_Differential_Equations__01_1D_Diffusion_Explicit_FTCS
 __c2_o0.png Graphic file (type png)
 <use figs/Linear_Partial_Differential_Equations__01_1D_Diffusion_Explicit_FTCS_
 _c2_o0.png>
 Package pdftex.def Info: figs/Linear_Partial_Differential_Equations__01_1D_Diff
-usion_Explicit_FTCS__c2_o0.png  used on input line 1552.
+usion_Explicit_FTCS__c2_o0.png  used on input line 1553.
 (pdftex.def)             Requested size: 338.58415pt x 222.99763pt.
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
 
-(./Endsem_Numerical_Methods_Reference.listing) [29 <./figs/Linear_Partial_Diffe
+(./Endsem_Numerical_Methods_Reference.listing) [30 <./figs/Linear_Partial_Diffe
 rential_Equations__01_1D_Diffusion_Explicit_FTCS__c1_o1.png> <./figs/Linear_Par
 tial_Differential_Equations__01_1D_Diffusion_Explicit_FTCS__c2_o0.png>]
 <figs/Linear_Partial_Differential_Equations__01_1D_Diffusion_Explicit_FTCS__c4_
-o0.png, id=1343, 409.7709pt x 312.2064pt>
+o0.png, id=1349, 409.7709pt x 312.2064pt>
 File: figs/Linear_Partial_Differential_Equations__01_1D_Diffusion_Explicit_FTCS
 __c4_o0.png Graphic file (type png)
 <use figs/Linear_Partial_Differential_Equations__01_1D_Diffusion_Explicit_FTCS_
 _c4_o0.png>
 Package pdftex.def Info: figs/Linear_Partial_Differential_Equations__01_1D_Diff
-usion_Explicit_FTCS__c4_o0.png  used on input line 1617.
+usion_Explicit_FTCS__c4_o0.png  used on input line 1618.
 (pdftex.def)             Requested size: 239.00102pt x 182.09454pt.
 <figs/Linear_Partial_Differential_Equations__01_1D_Diffusion_Explicit_FTCS__c4_
-o1.png, id=1344, 406.8801pt x 312.2064pt>
+o1.png, id=1350, 406.8801pt x 312.2064pt>
 File: figs/Linear_Partial_Differential_Equations__01_1D_Diffusion_Explicit_FTCS
 __c4_o1.png Graphic file (type png)
 <use figs/Linear_Partial_Differential_Equations__01_1D_Diffusion_Explicit_FTCS_
 _c4_o1.png>
 Package pdftex.def Info: figs/Linear_Partial_Differential_Equations__01_1D_Diff
-usion_Explicit_FTCS__c4_o1.png  used on input line 1618.
+usion_Explicit_FTCS__c4_o1.png  used on input line 1619.
 (pdftex.def)             Requested size: 239.00102pt x 183.39032pt.
 
-[30]
+[31]
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
  (./Endsem_Numerical_Methods_Reference.listing)
 <figs/Linear_Partial_Differential_Equations__06_Linear_PDE_Problem_Set_Solution
-s__c8_o0.png, id=1411, 450.2421pt x 283.2984pt>
+s__c8_o0.png, id=1418, 450.2421pt x 283.2984pt>
 File: figs/Linear_Partial_Differential_Equations__06_Linear_PDE_Problem_Set_Sol
 utions__c8_o0.png Graphic file (type png)
 <use figs/Linear_Partial_Differential_Equations__06_Linear_PDE_Problem_Set_Solu
 tions__c8_o0.png>
 Package pdftex.def Info: figs/Linear_Partial_Differential_Equations__06_Linear_
-PDE_Problem_Set_Solutions__c8_o0.png  used on input line 1655.
+PDE_Problem_Set_Solutions__c8_o0.png  used on input line 1656.
 (pdftex.def)             Requested size: 348.54475pt x 219.31622pt.
- [31 <./figs/Linear_Partial_Differential_Equations__01_1D_Diffusion_Explicit_FT
+ [32 <./figs/Linear_Partial_Differential_Equations__01_1D_Diffusion_Explicit_FT
 CS__c4_o0.png> <./figs/Linear_Partial_Differential_Equations__01_1D_Diffusion_E
 xplicit_FTCS__c4_o1.png>]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 1658.
+(hyperref)                removing `math shift' on input line 1659.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 1658.
+(hyperref)                removing `math shift' on input line 1659.
 
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
-(./Endsem_Numerical_Methods_Reference.listing) [32 <./figs/Linear_Partial_Diffe
+(./Endsem_Numerical_Methods_Reference.listing) [33 <./figs/Linear_Partial_Diffe
 rential_Equations__06_Linear_PDE_Problem_Set_Solutions__c8_o0.png>]
 <figs/Linear_Partial_Differential_Equations__02_1D_Diffusion_Implicit_BTCS__c1_
-o1.png, id=1478, 443.7378pt x 283.2984pt>
+o1.png, id=1484, 443.7378pt x 283.2984pt>
 File: figs/Linear_Partial_Differential_Equations__02_1D_Diffusion_Implicit_BTCS
 __c1_o1.png Graphic file (type png)
 <use figs/Linear_Partial_Differential_Equations__02_1D_Diffusion_Implicit_BTCS_
 _c1_o1.png>
 Package pdftex.def Info: figs/Linear_Partial_Differential_Equations__02_1D_Diff
-usion_Implicit_BTCS__c1_o1.png  used on input line 1719.
+usion_Implicit_BTCS__c1_o1.png  used on input line 1720.
 (pdftex.def)             Requested size: 348.54475pt x 222.53238pt.
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
 
-(./Endsem_Numerical_Methods_Reference.listing) [33 <./figs/Linear_Partial_Diffe
+(./Endsem_Numerical_Methods_Reference.listing) [34 <./figs/Linear_Partial_Diffe
 rential_Equations__02_1D_Diffusion_Implicit_BTCS__c1_o1.png>]
 <figs/Linear_Partial_Differential_Equations__06_Linear_PDE_Problem_Set_Solution
-s__c6_o1.png, id=1533, 715.473pt x 281.853pt>
+s__c6_o1.png, id=1539, 715.473pt x 281.853pt>
 File: figs/Linear_Partial_Differential_Equations__06_Linear_PDE_Problem_Set_Sol
 utions__c6_o1.png Graphic file (type png)
 <use figs/Linear_Partial_Differential_Equations__06_Linear_PDE_Problem_Set_Solu
 tions__c6_o1.png>
 Package pdftex.def Info: figs/Linear_Partial_Differential_Equations__06_Linear_
-PDE_Problem_Set_Solutions__c6_o1.png  used on input line 1766.
+PDE_Problem_Set_Solutions__c6_o1.png  used on input line 1767.
 (pdftex.def)             Requested size: 448.12788pt x 176.53185pt.
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
 
-(./Endsem_Numerical_Methods_Reference.listing) [34 <./figs/Linear_Partial_Diffe
+(./Endsem_Numerical_Methods_Reference.listing) [35 <./figs/Linear_Partial_Diffe
 rential_Equations__06_Linear_PDE_Problem_Set_Solutions__c6_o1.png>]
 <figs/Linear_Partial_Differential_Equations__03_2D_and_Heterogeneous_Diffusion_
-_c1_o1.png, id=1591, 857.1222pt x 244.9953pt>
+_c1_o1.png, id=1597, 857.1222pt x 244.9953pt>
 File: figs/Linear_Partial_Differential_Equations__03_2D_and_Heterogeneous_Diffu
 sion__c1_o1.png Graphic file (type png)
 <use figs/Linear_Partial_Differential_Equations__03_2D_and_Heterogeneous_Diffus
 ion__c1_o1.png>
 Package pdftex.def Info: figs/Linear_Partial_Differential_Equations__03_2D_and_
-Heterogeneous_Diffusion__c1_o1.png  used on input line 1835.
+Heterogeneous_Diffusion__c1_o1.png  used on input line 1836.
 (pdftex.def)             Requested size: 473.02556pt x 135.20763pt.
 <figs/Linear_Partial_Differential_Equations__03_2D_and_Heterogeneous_Diffusion_
-_c1_o2.png, id=1592, 387.3672pt x 227.6505pt>
+_c1_o2.png, id=1598, 387.3672pt x 227.6505pt>
 File: figs/Linear_Partial_Differential_Equations__03_2D_and_Heterogeneous_Diffu
 sion__c1_o2.png Graphic file (type png)
 <use figs/Linear_Partial_Differential_Equations__03_2D_and_Heterogeneous_Diffus
 ion__c1_o2.png>
 Package pdftex.def Info: figs/Linear_Partial_Differential_Equations__03_2D_and_
-Heterogeneous_Diffusion__c1_o2.png  used on input line 1836.
+Heterogeneous_Diffusion__c1_o2.png  used on input line 1837.
 (pdftex.def)             Requested size: 288.79639pt x 169.73009pt.
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
 
-(./Endsem_Numerical_Methods_Reference.listing) [35 <./figs/Linear_Partial_Diffe
+(./Endsem_Numerical_Methods_Reference.listing) [36 <./figs/Linear_Partial_Diffe
 rential_Equations__03_2D_and_Heterogeneous_Diffusion__c1_o1.png> <./figs/Linear
 _Partial_Differential_Equations__03_2D_and_Heterogeneous_Diffusion__c1_o2.png>]
 <figs/Linear_Partial_Differential_Equations__06_Linear_PDE_Problem_Set_Solution
-s__c4_o1.png, id=1640, 341.8371pt x 283.2984pt>
+s__c4_o1.png, id=1646, 341.8371pt x 283.2984pt>
 File: figs/Linear_Partial_Differential_Equations__06_Linear_PDE_Problem_Set_Sol
 utions__c4_o1.png Graphic file (type png)
 <use figs/Linear_Partial_Differential_Equations__06_Linear_PDE_Problem_Set_Solu
 tions__c4_o1.png>
 Package pdftex.def Info: figs/Linear_Partial_Differential_Equations__06_Linear_
-PDE_Problem_Set_Solutions__c4_o1.png  used on input line 1870.
+PDE_Problem_Set_Solutions__c4_o1.png  used on input line 1871.
 (pdftex.def)             Requested size: 273.8593pt x 226.9762pt.
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
 (./Endsem_Numerical_Methods_Reference.listing)
 <figs/Linear_Partial_Differential_Equations__03_2D_and_Heterogeneous_Diffusion_
-_c2_o0.png, id=1641, 443.7378pt x 283.2984pt>
+_c2_o0.png, id=1647, 443.7378pt x 283.2984pt>
 File: figs/Linear_Partial_Differential_Equations__03_2D_and_Heterogeneous_Diffu
 sion__c2_o0.png Graphic file (type png)
 <use figs/Linear_Partial_Differential_Equations__03_2D_and_Heterogeneous_Diffus
 ion__c2_o0.png>
 Package pdftex.def Info: figs/Linear_Partial_Differential_Equations__03_2D_and_
-Heterogeneous_Diffusion__c2_o0.png  used on input line 1906.
+Heterogeneous_Diffusion__c2_o0.png  used on input line 1907.
 (pdftex.def)             Requested size: 348.54475pt x 222.53238pt.
- [36 <./figs/Linear_Partial_Differential_Equations__06_Linear_PDE_Problem_Set_S
+ [37 <./figs/Linear_Partial_Differential_Equations__06_Linear_PDE_Problem_Set_S
 olutions__c4_o1.png>]
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
 
 (./Endsem_Numerical_Methods_Reference.listing)
 <figs/Linear_Partial_Differential_Equations__06_Linear_PDE_Problem_Set_Solution
-s__c2_o0.png, id=1696, 443.7378pt x 283.2984pt>
+s__c2_o0.png, id=1703, 443.7378pt x 283.2984pt>
 File: figs/Linear_Partial_Differential_Equations__06_Linear_PDE_Problem_Set_Sol
 utions__c2_o0.png Graphic file (type png)
 <use figs/Linear_Partial_Differential_Equations__06_Linear_PDE_Problem_Set_Solu
 tions__c2_o0.png>
 Package pdftex.def Info: figs/Linear_Partial_Differential_Equations__06_Linear_
-PDE_Problem_Set_Solutions__c2_o0.png  used on input line 1949.
+PDE_Problem_Set_Solutions__c2_o0.png  used on input line 1950.
 (pdftex.def)             Requested size: 348.54475pt x 222.53238pt.
- [37 <./figs/Linear_Partial_Differential_Equations__03_2D_and_Heterogeneous_Dif
+ [38 <./figs/Linear_Partial_Differential_Equations__03_2D_and_Heterogeneous_Dif
 fusion__c2_o0.png>]
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
 
-(./Endsem_Numerical_Methods_Reference.listing) [38 <./figs/Linear_Partial_Diffe
+(./Endsem_Numerical_Methods_Reference.listing) [39 <./figs/Linear_Partial_Diffe
 rential_Equations__06_Linear_PDE_Problem_Set_Solutions__c2_o0.png>]
 <figs/Linear_Partial_Differential_Equations__04_1st_Order_Wave_Advection__c1_o0
-.png, id=1763, 707.5233pt x 281.853pt>
+.png, id=1769, 707.5233pt x 281.853pt>
 File: figs/Linear_Partial_Differential_Equations__04_1st_Order_Wave_Advection__
 c1_o0.png Graphic file (type png)
 <use figs/Linear_Partial_Differential_Equations__04_1st_Order_Wave_Advection__c
 1_o0.png>
 Package pdftex.def Info: figs/Linear_Partial_Differential_Equations__04_1st_Ord
-er_Wave_Advection__c1_o0.png  used on input line 2026.
+er_Wave_Advection__c1_o0.png  used on input line 2027.
 (pdftex.def)             Requested size: 448.12788pt x 178.52309pt.
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
 
 (./Endsem_Numerical_Methods_Reference.listing)
 <figs/Linear_Partial_Differential_Equations__04_1st_Order_Wave_Advection__c2_o0
-.png, id=1764, 443.7378pt x 227.6505pt>
+.png, id=1770, 443.7378pt x 227.6505pt>
 File: figs/Linear_Partial_Differential_Equations__04_1st_Order_Wave_Advection__
 c2_o0.png Graphic file (type png)
 <use figs/Linear_Partial_Differential_Equations__04_1st_Order_Wave_Advection__c
 2_o0.png>
 Package pdftex.def Info: figs/Linear_Partial_Differential_Equations__04_1st_Ord
-er_Wave_Advection__c2_o0.png  used on input line 2051.
+er_Wave_Advection__c2_o0.png  used on input line 2052.
 (pdftex.def)             Requested size: 338.58415pt x 173.70743pt.
- [39 <./figs/Linear_Partial_Differential_Equations__04_1st_Order_Wave_Advection
+ [40 <./figs/Linear_Partial_Differential_Equations__04_1st_Order_Wave_Advection
 __c1_o0.png>]
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
 
 (./Endsem_Numerical_Methods_Reference.listing)
 <figs/Linear_Partial_Differential_Equations__04_1st_Order_Wave_Advection__c4_o0
-.png, id=1821, 409.7709pt x 312.2064pt>
+.png, id=1827, 409.7709pt x 312.2064pt>
 File: figs/Linear_Partial_Differential_Equations__04_1st_Order_Wave_Advection__
 c4_o0.png Graphic file (type png)
 <use figs/Linear_Partial_Differential_Equations__04_1st_Order_Wave_Advection__c
 4_o0.png>
 Package pdftex.def Info: figs/Linear_Partial_Differential_Equations__04_1st_Ord
-er_Wave_Advection__c4_o0.png  used on input line 2106.
+er_Wave_Advection__c4_o0.png  used on input line 2107.
 (pdftex.def)             Requested size: 239.00102pt x 182.09454pt.
 <figs/Linear_Partial_Differential_Equations__04_1st_Order_Wave_Advection__c4_o1
-.png, id=1822, 406.1574pt x 315.8199pt>
+.png, id=1828, 406.1574pt x 315.8199pt>
 File: figs/Linear_Partial_Differential_Equations__04_1st_Order_Wave_Advection__
 c4_o1.png Graphic file (type png)
 <use figs/Linear_Partial_Differential_Equations__04_1st_Order_Wave_Advection__c
 4_o1.png>
 Package pdftex.def Info: figs/Linear_Partial_Differential_Equations__04_1st_Ord
-er_Wave_Advection__c4_o1.png  used on input line 2107.
+er_Wave_Advection__c4_o1.png  used on input line 2108.
 (pdftex.def)             Requested size: 239.00102pt x 185.84058pt.
- [40 <./figs/Linear_Partial_Differential_Equations__04_1st_Order_Wave_Advection
+ [41 <./figs/Linear_Partial_Differential_Equations__04_1st_Order_Wave_Advection
 __c2_o0.png>]
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
 
 (./Endsem_Numerical_Methods_Reference.listing)
 <figs/Linear_Partial_Differential_Equations__04_1st_Order_Wave_Advection__c6_o0
-.png, id=1880, 387.3672pt x 255.1131pt>
+.png, id=1886, 387.3672pt x 255.1131pt>
 File: figs/Linear_Partial_Differential_Equations__04_1st_Order_Wave_Advection__
 c6_o0.png Graphic file (type png)
 <use figs/Linear_Partial_Differential_Equations__04_1st_Order_Wave_Advection__c
 6_o0.png>
 Package pdftex.def Info: figs/Linear_Partial_Differential_Equations__04_1st_Ord
-er_Wave_Advection__c6_o0.png  used on input line 2139.
+er_Wave_Advection__c6_o0.png  used on input line 2140.
 (pdftex.def)             Requested size: 338.58415pt x 222.99763pt.
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
 
-(./Endsem_Numerical_Methods_Reference.listing) [41 <./figs/Linear_Partial_Diffe
+(./Endsem_Numerical_Methods_Reference.listing) [42 <./figs/Linear_Partial_Diffe
 rential_Equations__04_1st_Order_Wave_Advection__c4_o0.png> <./figs/Linear_Parti
 al_Differential_Equations__04_1st_Order_Wave_Advection__c4_o1.png> <./figs/Line
 ar_Partial_Differential_Equations__04_1st_Order_Wave_Advection__c6_o0.png>]
 <figs/Linear_Partial_Differential_Equations__05_2nd_Order_Wave_Equation__c1_o0.
-png, id=1916, 516.7305pt x 311.4837pt>
+png, id=1922, 516.7305pt x 311.4837pt>
 File: figs/Linear_Partial_Differential_Equations__05_2nd_Order_Wave_Equation__c
 1_o0.png Graphic file (type png)
 <use figs/Linear_Partial_Differential_Equations__05_2nd_Order_Wave_Equation__c1
 _o0.png>
 Package pdftex.def Info: figs/Linear_Partial_Differential_Equations__05_2nd_Ord
-er_Wave_Equation__c1_o0.png  used on input line 2190.
+er_Wave_Equation__c1_o0.png  used on input line 2191.
 (pdftex.def)             Requested size: 373.44243pt x 225.1141pt.
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
 
-(./Endsem_Numerical_Methods_Reference.listing) [42 <./figs/Linear_Partial_Diffe
+(./Endsem_Numerical_Methods_Reference.listing) [43 <./figs/Linear_Partial_Diffe
 rential_Equations__05_2nd_Order_Wave_Equation__c1_o0.png>]
 <figs/Linear_Partial_Differential_Equations__05_2nd_Order_Wave_Equation__c3_o0.
-png, id=1970, 424.9476pt x 312.2064pt>
+png, id=1977, 424.9476pt x 312.2064pt>
 File: figs/Linear_Partial_Differential_Equations__05_2nd_Order_Wave_Equation__c
 3_o0.png Graphic file (type png)
 <use figs/Linear_Partial_Differential_Equations__05_2nd_Order_Wave_Equation__c3
 _o0.png>
 Package pdftex.def Info: figs/Linear_Partial_Differential_Equations__05_2nd_Ord
-er_Wave_Equation__c3_o0.png  used on input line 2255.
+er_Wave_Equation__c3_o0.png  used on input line 2256.
 (pdftex.def)             Requested size: 239.00102pt x 175.59184pt.
 <figs/Linear_Partial_Differential_Equations__05_2nd_Order_Wave_Equation__c3_o1.
-png, id=1971, 434.3427pt x 327.3831pt>
+png, id=1978, 434.3427pt x 327.3831pt>
 File: figs/Linear_Partial_Differential_Equations__05_2nd_Order_Wave_Equation__c
 3_o1.png Graphic file (type png)
 <use figs/Linear_Partial_Differential_Equations__05_2nd_Order_Wave_Equation__c3
 _o1.png>
 Package pdftex.def Info: figs/Linear_Partial_Differential_Equations__05_2nd_Ord
-er_Wave_Equation__c3_o1.png  used on input line 2256.
+er_Wave_Equation__c3_o1.png  used on input line 2257.
 (pdftex.def)             Requested size: 239.00102pt x 180.14618pt.
- [43]
+ [44]
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
 
-(./Endsem_Numerical_Methods_Reference.listing) [44 <./figs/Linear_Partial_Diffe
+(./Endsem_Numerical_Methods_Reference.listing) [45 <./figs/Linear_Partial_Diffe
 rential_Equations__05_2nd_Order_Wave_Equation__c3_o0.png> <./figs/Linear_Partia
 l_Differential_Equations__05_2nd_Order_Wave_Equation__c3_o1.png>]
 <figs/Linear_Partial_Differential_Equations__06_Linear_PDE_Problem_Set_Solution
-s__c10_o0.png, id=2099, 452.4102pt x 283.2984pt>
+s__c10_o0.png, id=2105, 452.4102pt x 283.2984pt>
 File: figs/Linear_Partial_Differential_Equations__06_Linear_PDE_Problem_Set_Sol
 utions__c10_o0.png Graphic file (type png)
 <use figs/Linear_Partial_Differential_Equations__06_Linear_PDE_Problem_Set_Solu
 tions__c10_o0.png>
 Package pdftex.def Info: figs/Linear_Partial_Differential_Equations__06_Linear_
-PDE_Problem_Set_Solutions__c10_o0.png  used on input line 2326.
+PDE_Problem_Set_Solutions__c10_o0.png  used on input line 2327.
 (pdftex.def)             Requested size: 239.00102pt x 149.65895pt.
 <figs/Linear_Partial_Differential_Equations__06_Linear_PDE_Problem_Set_Solution
-s__c11_o0.png, id=2100, 458.9145pt x 283.2984pt>
+s__c11_o0.png, id=2106, 458.9145pt x 283.2984pt>
 File: figs/Linear_Partial_Differential_Equations__06_Linear_PDE_Problem_Set_Sol
 utions__c11_o0.png Graphic file (type png)
 <use figs/Linear_Partial_Differential_Equations__06_Linear_PDE_Problem_Set_Solu
 tions__c11_o0.png>
 Package pdftex.def Info: figs/Linear_Partial_Differential_Equations__06_Linear_
-PDE_Problem_Set_Solutions__c11_o0.png  used on input line 2327.
+PDE_Problem_Set_Solutions__c11_o0.png  used on input line 2328.
 (pdftex.def)             Requested size: 239.00102pt x 147.54079pt.
- [45 <./figs/Linear_Partial_Differential_Equations__06_Linear_PDE_Problem_Set_S
+ [46 <./figs/Linear_Partial_Differential_Equations__06_Linear_PDE_Problem_Set_S
 olutions__c10_o0.png> <./figs/Linear_Partial_Differential_Equations__06_Linear_
 PDE_Problem_Set_Solutions__c11_o0.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 2334--2334
+Underfull \hbox (badness 10000) in paragraph at lines 2335--2335
 \T1/lmr/m/it/9 (+20) Notebooks cov-ered: \T1/lmtt/m/it/9 01_1D_and_2D_Random_Wa
 lks.ipynb\T1/lmr/m/it/9 (+20) , \T1/lmtt/m/it/9 02_Langevin_Dynamics_and_Browni
 an_Motion.ipynb\T1/lmr/m/it/9 (+20) ,
  []
 
 
-Underfull \hbox (badness 1609) in paragraph at lines 2334--2334
+Underfull \hbox (badness 1609) in paragraph at lines 2335--2335
 \T1/lmtt/m/it/9 03_Fokker_Planck_Equation.ipynb\T1/lmr/m/it/9 (+20) , \T1/lmtt/
 m/it/9 04_Stochastic_Problem_Set_Solutions.ipynb\T1/lmr/m/it/9 (+20) . Sources:
  \T1/lmtt/m/it/9 lec_sde.pdf \T1/lmr/m/it/9 (+20) (Ex-er-
@@ -1784,175 +1789,175 @@ m/it/9 04_Stochastic_Problem_Set_Solutions.ipynb\T1/lmr/m/it/9 (+20) . Sources:
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
 (./Endsem_Numerical_Methods_Reference.listing)
-<figs/Stochastic_System__01_1D_and_2D_Random_Walks__c1_o0.png, id=2120, 713.304
+<figs/Stochastic_System__01_1D_and_2D_Random_Walks__c1_o0.png, id=2126, 713.304
 9pt x 281.853pt>
 File: figs/Stochastic_System__01_1D_and_2D_Random_Walks__c1_o0.png Graphic file
  (type png)
 <use figs/Stochastic_System__01_1D_and_2D_Random_Walks__c1_o0.png>
 Package pdftex.def Info: figs/Stochastic_System__01_1D_and_2D_Random_Walks__c1_
-o0.png  used on input line 2391.
+o0.png  used on input line 2392.
 (pdftex.def)             Requested size: 448.12788pt x 177.07375pt.
- [46
+ [47
 
 ]
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
 
 (./Endsem_Numerical_Methods_Reference.listing)
-<figs/Stochastic_System__01_1D_and_2D_Random_Walks__c2_o0.png, id=2166, 403.989
+<figs/Stochastic_System__01_1D_and_2D_Random_Walks__c2_o0.png, id=2172, 403.989
 3pt x 283.2984pt>
 File: figs/Stochastic_System__01_1D_and_2D_Random_Walks__c2_o0.png Graphic file
  (type png)
 <use figs/Stochastic_System__01_1D_and_2D_Random_Walks__c2_o0.png>
 Package pdftex.def Info: figs/Stochastic_System__01_1D_and_2D_Random_Walks__c2_
-o0.png  used on input line 2422.
+o0.png  used on input line 2423.
 (pdftex.def)             Requested size: 338.58415pt x 237.44165pt.
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
 
-(./Endsem_Numerical_Methods_Reference.listing) [47 <./figs/Stochastic_System__0
+(./Endsem_Numerical_Methods_Reference.listing) [48 <./figs/Stochastic_System__0
 1_1D_and_2D_Random_Walks__c1_o0.png> <./figs/Stochastic_System__01_1D_and_2D_Ra
 ndom_Walks__c2_o0.png>]
-<figs/Stochastic_System__01_1D_and_2D_Random_Walks__c4_o1.png, id=2200, 426.393
+<figs/Stochastic_System__01_1D_and_2D_Random_Walks__c4_o1.png, id=2206, 426.393
 pt x 328.1058pt>
 File: figs/Stochastic_System__01_1D_and_2D_Random_Walks__c4_o1.png Graphic file
  (type png)
 <use figs/Stochastic_System__01_1D_and_2D_Random_Walks__c4_o1.png>
 Package pdftex.def Info: figs/Stochastic_System__01_1D_and_2D_Random_Walks__c4_
-o1.png  used on input line 2475.
+o1.png  used on input line 2476.
 (pdftex.def)             Requested size: 239.00102pt x 183.9082pt.
-<figs/Stochastic_System__01_1D_and_2D_Random_Walks__c4_o2.png, id=2201, 400.375
+<figs/Stochastic_System__01_1D_and_2D_Random_Walks__c4_o2.png, id=2207, 400.375
 8pt x 328.1058pt>
 File: figs/Stochastic_System__01_1D_and_2D_Random_Walks__c4_o2.png Graphic file
  (type png)
 <use figs/Stochastic_System__01_1D_and_2D_Random_Walks__c4_o2.png>
 Package pdftex.def Info: figs/Stochastic_System__01_1D_and_2D_Random_Walks__c4_
-o2.png  used on input line 2476.
+o2.png  used on input line 2477.
 (pdftex.def)             Requested size: 239.00102pt x 195.8637pt.
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
- (./Endsem_Numerical_Methods_Reference.listing) [48 <./figs/Stochastic_System__
+ (./Endsem_Numerical_Methods_Reference.listing) [49 <./figs/Stochastic_System__
 01_1D_and_2D_Random_Walks__c4_o1.png> <./figs/Stochastic_System__01_1D_and_2D_R
 andom_Walks__c4_o2.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 2527--2528
+Underfull \hbox (badness 10000) in paragraph at lines 2528--2529
 []\T1/lmtt/m/n/10 Final <Rx> = -0.23, <Ry> = -0.44 (Theory: 0)  | 1D MSD = 2148
 .2 (1999)  | 2D MSD =
  []
 
-<figs/Stochastic_System__04_Stochastic_Problem_Set_Solutions__c2_o1.png, id=225
-7, 713.3049pt x 281.853pt>
+<figs/Stochastic_System__04_Stochastic_Problem_Set_Solutions__c2_o1.png, id=226
+4, 713.3049pt x 281.853pt>
 File: figs/Stochastic_System__04_Stochastic_Problem_Set_Solutions__c2_o1.png Gr
 aphic file (type png)
 <use figs/Stochastic_System__04_Stochastic_Problem_Set_Solutions__c2_o1.png>
 Package pdftex.def Info: figs/Stochastic_System__04_Stochastic_Problem_Set_Solu
-tions__c2_o1.png  used on input line 2530.
+tions__c2_o1.png  used on input line 2531.
 (pdftex.def)             Requested size: 448.12788pt x 177.07375pt.
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
-(./Endsem_Numerical_Methods_Reference.listing) [49 <./figs/Stochastic_System__0
+(./Endsem_Numerical_Methods_Reference.listing) [50 <./figs/Stochastic_System__0
 4_Stochastic_Problem_Set_Solutions__c2_o1.png>]
 <figs/Stochastic_System__04_Stochastic_Problem_Set_Solutions__c4_o0.png, id=231
-2, 858.5676pt x 245.718pt>
+8, 858.5676pt x 245.718pt>
 File: figs/Stochastic_System__04_Stochastic_Problem_Set_Solutions__c4_o0.png Gr
 aphic file (type png)
 <use figs/Stochastic_System__04_Stochastic_Problem_Set_Solutions__c4_o0.png>
 Package pdftex.def Info: figs/Stochastic_System__04_Stochastic_Problem_Set_Solu
-tions__c4_o0.png  used on input line 2580.
+tions__c4_o0.png  used on input line 2581.
 (pdftex.def)             Requested size: 473.02556pt x 135.37776pt.
- [50 <./figs/Stochastic_System__04_Stochastic_Problem_Set_Solutions__c4_o0.png>
+ [51 <./figs/Stochastic_System__04_Stochastic_Problem_Set_Solutions__c4_o0.png>
 ]
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
 
 (./Endsem_Numerical_Methods_Reference.listing)
 <figs/Stochastic_System__02_Langevin_Dynamics_and_Brownian_Motion__c1_o0.png, i
-d=2365, 443.0151pt x 283.2984pt>
+d=2371, 443.0151pt x 283.2984pt>
 File: figs/Stochastic_System__02_Langevin_Dynamics_and_Brownian_Motion__c1_o0.p
 ng Graphic file (type png)
 <use figs/Stochastic_System__02_Langevin_Dynamics_and_Brownian_Motion__c1_o0.pn
 g>
 Package pdftex.def Info: figs/Stochastic_System__02_Langevin_Dynamics_and_Brown
-ian_Motion__c1_o0.png  used on input line 2630.
+ian_Motion__c1_o0.png  used on input line 2631.
 (pdftex.def)             Requested size: 348.54475pt x 222.89116pt.
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
 
-(./Endsem_Numerical_Methods_Reference.listing) [51 <./figs/Stochastic_System__0
+(./Endsem_Numerical_Methods_Reference.listing) [52 <./figs/Stochastic_System__0
 2_Langevin_Dynamics_and_Brownian_Motion__c1_o0.png>]
 <figs/Stochastic_System__02_Langevin_Dynamics_and_Brownian_Motion__c2_o0.png, i
-d=2406, 440.1243pt x 283.2984pt>
+d=2412, 440.1243pt x 283.2984pt>
 File: figs/Stochastic_System__02_Langevin_Dynamics_and_Brownian_Motion__c2_o0.p
 ng Graphic file (type png)
 <use figs/Stochastic_System__02_Langevin_Dynamics_and_Brownian_Motion__c2_o0.pn
 g>
 Package pdftex.def Info: figs/Stochastic_System__02_Langevin_Dynamics_and_Brown
-ian_Motion__c2_o0.png  used on input line 2662.
+ian_Motion__c2_o0.png  used on input line 2663.
 (pdftex.def)             Requested size: 348.54475pt x 224.36523pt.
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
 
 (./Endsem_Numerical_Methods_Reference.listing)
 <figs/Stochastic_System__02_Langevin_Dynamics_and_Brownian_Motion__c4_o0.png, i
-d=2407, 443.0151pt x 255.8358pt>
+d=2413, 443.0151pt x 255.8358pt>
 File: figs/Stochastic_System__02_Langevin_Dynamics_and_Brownian_Motion__c4_o0.p
 ng Graphic file (type png)
 <use figs/Stochastic_System__02_Langevin_Dynamics_and_Brownian_Motion__c4_o0.pn
 g>
 Package pdftex.def Info: figs/Stochastic_System__02_Langevin_Dynamics_and_Brown
-ian_Motion__c4_o0.png  used on input line 2690.
+ian_Motion__c4_o0.png  used on input line 2691.
 (pdftex.def)             Requested size: 348.54475pt x 201.28438pt.
- [52 <./figs/Stochastic_System__02_Langevin_Dynamics_and_Brownian_Motion__c2_o0
+ [53 <./figs/Stochastic_System__02_Langevin_Dynamics_and_Brownian_Motion__c2_o0
 .png>]
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
 
 (./Endsem_Numerical_Methods_Reference.listing)
-<figs/Stochastic_System__03_Fokker_Planck_Equation__c1_o0.png, id=2457, 443.737
+<figs/Stochastic_System__03_Fokker_Planck_Equation__c1_o0.png, id=2463, 443.737
 8pt x 283.2984pt>
 File: figs/Stochastic_System__03_Fokker_Planck_Equation__c1_o0.png Graphic file
  (type png)
 <use figs/Stochastic_System__03_Fokker_Planck_Equation__c1_o0.png>
 Package pdftex.def Info: figs/Stochastic_System__03_Fokker_Planck_Equation__c1_
-o0.png  used on input line 2739.
+o0.png  used on input line 2740.
 (pdftex.def)             Requested size: 348.54475pt x 222.53238pt.
- [53 <./figs/Stochastic_System__02_Langevin_Dynamics_and_Brownian_Motion__c4_o0
+ [54 <./figs/Stochastic_System__02_Langevin_Dynamics_and_Brownian_Motion__c4_o0
 .png>]
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
 
-(./Endsem_Numerical_Methods_Reference.listing) [54 <./figs/Stochastic_System__0
+(./Endsem_Numerical_Methods_Reference.listing) [55 <./figs/Stochastic_System__0
 3_Fokker_Planck_Equation__c1_o0.png>]
-<figs/Stochastic_System__03_Fokker_Planck_Equation__c3_o0.png, id=2559, 395.316
+<figs/Stochastic_System__03_Fokker_Planck_Equation__c3_o0.png, id=2566, 395.316
 9pt x 312.2064pt>
 File: figs/Stochastic_System__03_Fokker_Planck_Equation__c3_o0.png Graphic file
  (type png)
 <use figs/Stochastic_System__03_Fokker_Planck_Equation__c3_o0.png>
 Package pdftex.def Info: figs/Stochastic_System__03_Fokker_Planck_Equation__c3_
-o0.png  used on input line 2809.
+o0.png  used on input line 2810.
 (pdftex.def)             Requested size: 348.54475pt x 275.26651pt.
- [55 <./figs/Stochastic_System__03_Fokker_Planck_Equation__c3_o0.png>]
+ [56 <./figs/Stochastic_System__03_Fokker_Planck_Equation__c3_o0.png>]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <14.4> on input line 2815.
+(Font)              <14.4> on input line 2816.
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <14.4> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 2815.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 2816.
 
-Underfull \hbox (badness 2205) in paragraph at lines 2822--2823
+Underfull \hbox (badness 2205) in paragraph at lines 2823--2824
 []\T1/lmr/bx/n/10 (+20) Work on copies: \T1/lmr/m/n/10 (+20) Copy $\OML/lmm/m/i
 t/10 A$ \T1/lmr/m/n/10 (+20) and $\OT1/lmr/bx/n/10 (+20) b$ \T1/lmr/m/n/10 (+20
 ) as floats so the orig-i-nal ar-rays are not mu-tated (\T1/lmtt/m/n/10 A =
  []
 
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <12> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 2841.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 2842.
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
-(./Endsem_Numerical_Methods_Reference.listing) [56
+(./Endsem_Numerical_Methods_Reference.listing) [57
 
 ]
 \openout6 = `Endsem_Numerical_Methods_Reference.listing'.
 
 
-(./Endsem_Numerical_Methods_Reference.listing) [57] [58
+(./Endsem_Numerical_Methods_Reference.listing) [58] [59
 
 ]
 
@@ -1967,11 +1972,11 @@ not changed.
 (rerunfilecheck)             Checksum: CF9E2E8D8ED379E191864A9DA3F19C57;7272.
  ) 
 Here is how much of TeX's memory you used:
- 36400 strings out of 469472
- 737997 string characters out of 5469745
- 1765276 words of memory out of 5000000
+ 36408 strings out of 469472
+ 738088 string characters out of 5469745
+ 1790276 words of memory out of 5000000
  62025 multiletter control sequences out of 15000+600000
- 753548 words of font info for 232 fonts, out of 8000000 for 9000
+ 753808 words of font info for 235 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
  98i,17n,108p,1031b,1785s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></usr/share/texmf-dis
@@ -1997,11 +2002,11 @@ hare/texmf-dist/fonts/type1/public/lm/lmsy9.pfb></usr/share/texmf-dist/fonts/ty
 pe1/public/lm/lmtk10.pfb></usr/share/texmf-dist/fonts/type1/public/lm/lmtt10.pf
 b></usr/share/texmf-dist/fonts/type1/public/lm/lmtt8.pfb></usr/share/texmf-dist
 /fonts/type1/public/lm/lmtti10.pfb>
-Output written on Endsem_Numerical_Methods_Reference.pdf (58 pages, 2681046 byt
+Output written on Endsem_Numerical_Methods_Reference.pdf (59 pages, 2685430 byt
 es).
 PDF statistics:
- 3302 PDF objects out of 3580 (max. 8388607)
- 3004 compressed objects within 31 object streams
- 2146 named destinations out of 2487 (max. 500000)
+ 3308 PDF objects out of 3580 (max. 8388607)
+ 3009 compressed objects within 31 object streams
+ 2148 named destinations out of 2487 (max. 500000)
  73848 words of extra memory for PDF output out of 74296 (max. 10000000)
 
