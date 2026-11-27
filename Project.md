@@ -23,7 +23,7 @@ This repository contains lecture notes, problem sets, Python implementations, an
 - **Model Answer Key:** [`Notes/Quiz2/quiz2_answers.txt`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/Quiz2/quiz2_answers.txt)
 
 ### 3. End-Semester Organization
-- **All-in-One End-Sem LaTeX & PDF Notes:** [`Endsem_Numerical_Methods_Reference.pdf`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/End/latex/Endsem_Numerical_Methods_Reference.pdf) (Source: [`Endsem_Numerical_Methods_Reference.tex`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/End/latex/Endsem_Numerical_Methods_Reference.tex)) — self-contained 15-page reference combining theory, derivations, problem-set summaries, and clean Python reference code across all 4 sections.
+- **All-in-One End-Sem LaTeX & PDF Notes:** [`Endsem_Numerical_Methods_Reference.pdf`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/End/latex/Endsem_Numerical_Methods_Reference.pdf) (Source: [`Endsem_Numerical_Methods_Reference.tex`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Notes/End/latex/Endsem_Numerical_Methods_Reference.tex)) — self-contained 58-page reference combining theory, derivations, problem-set solutions, complete runnable Python scripts with rendered output figures across all 4 sections, plus a manual linear solver (`manual_solve`) replacing `linalg.solve`.
 - **Packaged Zip Archive:** [`Endsem_Numerical_Methods.zip`](file:///home/nandu/Documents/IISER%205/Numerical%20Methods/Endsem_Numerical_Methods.zip) (contains all 4 End-Semester directories with all 18 executed `.ipynb` notebooks).
 - **End-Semester Examination Syllabus Sections & Mapped Materials:**
 

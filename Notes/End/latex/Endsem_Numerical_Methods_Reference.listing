@@ -1,19 +1,48 @@
-dt = 0.01; dx = 0.05; D = 0.02; t_end = 100; N = 100; L = N * dx
-t = np.arange(dt, t_end + dt, dt); x = np.arange(1, N + 1) * dx
-k = 0.1
-rho_0 = np.exp(-((x - L / 4) / 1)**2); rho = rho_0.copy(); rho_temp = np.zeros(N)
-U = (k / 2) * (x - L / 2)**2
-Up = k * (x - L / 2)
-Up[0] = Up[-1]       # Periodic BC on derivative
+import numpy as np
+import matplotlib.pyplot as plt
 
-rho_T = np.zeros((N, len(t)))
-for i in range(len(t)):
-    rho[-1] = rho[1]; rho[0] = rho[-2]     # Periodic BCs
-    rU = rho * Up
-    for p in range(1, N - 1):
-        rho_temp[p] = rho[p] + dt * (
-            D / dx**2 * (rho[p + 1] + rho[p - 1] - 2 * rho[p]) +
-            (rU[p + 1] - rU[p - 1]) / (2 * dx)
-        )
-    rho = rho_temp.copy()
-    rho_T[:, i] = rho
+def manual_solve(A_in, b_in):
+    A = A_in.astype(float).copy()
+    b = b_in.astype(float).copy()
+    n = len(b)
+    for j in range(n - 1):
+        I = j + np.argmax(np.abs(A[j:n, j]))
+        if I != j:
+            A[[j, I], :] = A[[I, j], :]
+            b[[j, I]] = b[[I, j]]
+        for i in range(j + 1, n):
+            mult = A[i, j] / A[j, j]
+            for k in range(j, n):
+                A[i, k] = A[i, k] - mult * A[j, k]
+            b[i] = b[i] - mult * b[j]
+    x = np.zeros(n)
+    x[n - 1] = b[n - 1] / A[n - 1, n - 1]
+    for i in range(n - 2, -1, -1):
+        SUM = 0.0
+        for j in range(i + 1, n):
+            SUM = SUM + A[i, j] * x[j]
+        x[i] = (b[i] - SUM) / A[i, i]
+    return x
+
+# --- Application A: Implicit BTCS Diffusion without scipy.linalg.solve ---
+N = 100; dx = 0.15; L = N * dx; D = 0.05; dt = 1.0; C = D * dt / (dx**2)
+x = np.linspace(0, L, N)
+rho = np.exp(-((x - L/2) / 1.5)**2)
+A = np.diag((1 + 2*C)*np.ones(N)) + np.diag(-C*np.ones(N-1), -1) + np.diag(-C*np.ones(N-1), 1)
+A[0, :] = 0; A[0, 0] = 1.0; A[-1, :] = 0; A[-1, -1] = 1.0
+
+for step in range(50):
+    rhs = rho.copy(); rhs[0] = 0.0; rhs[-1] = 0.0
+    rho = manual_solve(A, rhs)   # Replaces: rho = la.solve(A, rhs)
+
+# --- Application B: Multivariable Newton without np.linalg.solve ---
+def F(v): return np.array([v[1] - v[0]**3, v[0]**2 + v[1]**2 - 1.0])
+def J(v): return np.array([[-3.0 * v[0]**2, 1.0], [2.0 * v[0], 2.0 * v[1]]])
+
+xv = np.array([1.0, 2.0])
+for step in range(20):
+    dx_v = manual_solve(J(xv), -F(xv))   # Replaces: np.linalg.solve(J(xv), -F(xv))
+    xv = xv + dx_v
+    if np.linalg.norm(dx_v) < 1e-8:
+        break
+print('Newton solution via manual_solve:', np.round(xv, 6))
