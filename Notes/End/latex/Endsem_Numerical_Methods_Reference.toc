@@ -6,20 +6,20 @@
 \contentsline {section}{\numberline {2}Nonlinear Ordinary Differential Equations}{17}{section.2}%
 \contentsline {subsection}{\numberline {2.1}1D Flows, Fixed Points \& Linear Stability}{17}{subsection.2.1}%
 \contentsline {subsection}{\numberline {2.2}1D Bifurcations \& Problem Set II Q2}{19}{subsection.2.2}%
-\contentsline {subsection}{\numberline {2.3}Bead on a Rotating Hoop (Problem Set II Q5)}{22}{subsection.2.3}%
-\contentsline {subsection}{\numberline {2.4}2D Nonlinear Systems, Jacobian \& Phase Plane (Problem Set II Q4)}{23}{subsection.2.4}%
-\contentsline {subsection}{\numberline {2.5}Multivariable Newton-Raphson Solver}{26}{subsection.2.5}%
-\contentsline {section}{\numberline {3}Linear Partial Differential Equations}{28}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Finite Differences, Symmetries \& Boundary Conditions}{28}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.2}1D Diffusion Equation: Explicit FTCS \& Fourier Modes}{28}{subsection.3.2}%
-\contentsline {subsection}{\numberline {3.3}Implicit BTCS, 2D Diffusion \& Heterogeneous $D(x)$}{33}{subsection.3.3}%
-\contentsline {subsection}{\numberline {3.4}First-Order Wave (Advection) \& Second-Order Wave Equations}{39}{subsection.3.4}%
-\contentsline {section}{\numberline {4}Stochastic Systems}{47}{section.4}%
-\contentsline {subsection}{\numberline {4.1}1D \& 2D Random Walks (Exercises 1 \& 2)}{47}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Brownian Motion \& Langevin Dynamics}{51}{subsection.4.2}%
-\contentsline {subsection}{\numberline {4.3}Fokker-Planck (Smoluchowski) Equation}{54}{subsection.4.3}%
-\contentsline {section}{\numberline {5}Manual Linear Solver (Replacing linalg.solve)}{57}{section.5}%
-\contentsline {subsection}{\numberline {5.1}How the Algorithm Works Step by Step}{57}{subsection.5.1}%
-\contentsline {subsection}{\numberline {5.2}Complete Reusable \texttt {manual\_solve(A, b)} Function \& Verification}{57}{subsection.5.2}%
-\contentsline {subsection}{\numberline {5.3}Drop-In Usage Inside End-Sem Problems (BTCS \& Newton)}{58}{subsection.5.3}%
-\contentsline {section}{Last-Minute Exam Checklist \& Common Traps}{59}{lstnumber.-52.48}%
+\contentsline {subsection}{\numberline {2.3}Bead on a Rotating Hoop (Problem Set II Q5)}{24}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}2D Nonlinear Systems, Jacobian \& Phase Plane (Problem Set II Q4)}{26}{subsection.2.4}%
+\contentsline {subsection}{\numberline {2.5}Multivariable Newton-Raphson Solver}{29}{subsection.2.5}%
+\contentsline {section}{\numberline {3}Linear Partial Differential Equations}{31}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Finite Differences, Symmetries \& Boundary Conditions}{31}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}1D Diffusion Equation: Explicit FTCS \& Fourier Modes}{31}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Implicit BTCS, 2D Diffusion \& Heterogeneous $D(x)$}{36}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}First-Order Wave (Advection) \& Second-Order Wave Equations}{42}{subsection.3.4}%
+\contentsline {section}{\numberline {4}Stochastic Systems}{50}{section.4}%
+\contentsline {subsection}{\numberline {4.1}1D \& 2D Random Walks (Exercises 1 \& 2)}{50}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Brownian Motion \& Langevin Dynamics}{54}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Fokker-Planck (Smoluchowski) Equation}{57}{subsection.4.3}%
+\contentsline {section}{\numberline {5}Manual Linear Solver (Replacing linalg.solve)}{60}{section.5}%
+\contentsline {subsection}{\numberline {5.1}How the Algorithm Works Step by Step}{60}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Complete Reusable \texttt {manual\_solve(A, b)} Function \& Verification}{60}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Drop-In Usage Inside End-Sem Problems (BTCS \& Newton)}{61}{subsection.5.3}%
+\contentsline {section}{Last-Minute Exam Checklist \& Common Traps}{62}{lstnumber.-52.48}%
